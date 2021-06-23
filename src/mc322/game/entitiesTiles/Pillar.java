@@ -18,8 +18,8 @@ public class Pillar extends Entity{
             this.velocityAnim = 8;
             this.nFrames = 6;
 
-		if(direction == "north-south") this.updateDir = 1;
-		this.updateFrame = 0;
+            this.updateFrame = 0;
+            if(direction != "internal") this.updateDir = 1;
 	}
 	
 	public void update(double dt){
@@ -32,7 +32,7 @@ public class Pillar extends Entity{
 	}
 
 	public void renderer(Renderer r) {
-		GameRenderer.drawTile(i,j,elevation,name,r, 0, 0,this.color);
+		GameRenderer.drawTile(i,j,elevation,name,r, 0, updateDir, this.color);
 	}
 
       public void toggleAnimation(){

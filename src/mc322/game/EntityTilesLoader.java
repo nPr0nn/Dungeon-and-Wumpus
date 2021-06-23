@@ -5,7 +5,9 @@ import mc322.game.entitiesTiles.*;
 
 public abstract class EntityTilesLoader {
 
-      public static Pair<Entity, Entity> getEntity(char token, int i, int j, String dir,String color){
+      public static Pair<Entity, Entity> getEntity(char token, boolean blocked, int i, int j, 
+                  String dir,String color,Room room){
+
             Pair<Entity, Entity> entityTile = null;
 
             boolean internal;
@@ -15,10 +17,14 @@ public abstract class EntityTilesLoader {
                   // External Wall;
                   case '#':
                         internal = false;
-                        entityTile = Pair.of(new Wall(i, j, internal, dir,elevation, color),null);
+                        if( (dir == "north" || dir == "west") && (i%2 == 1 || j%2 == 1) )
+                              entityTile = Pair.of(new Wall(i,j,internal,dir,elevation,color),new Torch(i,j,dir,elevation,color));
+                        else
+                              entityTile = Pair.of(new Wall(i,j,internal,dir,elevation,color),null);
+
                         break;
 
-                  // Internal Wall;
+                        // Internal Wall;
                   case 'l':
                         internal = true;
                         dir = "west";
@@ -44,15 +50,23 @@ public abstract class EntityTilesLoader {
 
                         // Door
                   case 'd':
-                        entityTile = Pair.of(new Door(i, j, dir,elevation, color),null);
+                        if(blocked == true){
+                              internal = false;
+                              if( (dir == "north" || dir == "west") && (i%2 == 1 || j%2 == 1) )
+                                    entityTile = Pair.of(new Wall(i,j,internal,dir,elevation,color),new Torch(i,j,dir,elevation,color));
+                              else
+                                    entityTile = Pair.of(new Wall(i,j,internal,dir,elevation,color),null);
+                              break;
+                        }
+                        entityTile = Pair.of(new Door(i, j, dir,elevation, color,room),null);
                         break;
 
-                  // Elevated Floor
+                        // Elevated Floor
                   case 'a':
                         entityTile = Pair.of(new Platform(i, j, color),null);
                         break;
 
-                  // Ladder
+                        // Ladder
                   case 'm':
                         dir = "north-south";
                         entityTile = Pair.of(new Ladder(i, j, dir,elevation, color),null);
@@ -62,17 +76,17 @@ public abstract class EntityTilesLoader {
                         entityTile = Pair.of(new Ladder(i, j, dir,elevation, color),null);
                         break;
 
-                  // Pillar
+                        // Pillar
                   case 'b':
                         entityTile = Pair.of(new Pillar(i, j,dir,elevation, color),null);
                         break;
 
-                  // SafeZone
+                        // SafeZone
                   case 's':
                         entityTile = Pair.of(new SafeZone(i, j),null);
                         break;
 
-                  // Chest
+                        // Chest
                   case 'o':
                         dir = "north-south";
                         entityTile = Pair.of(new Chest(i, j, dir, elevation),null);
@@ -92,7 +106,7 @@ public abstract class EntityTilesLoader {
                         entityTile = Pair.of(new Platform(i, j, color),new Chest(i, j, dir, elevation));
                         break;
 
-                  // Blank Space
+                        // Blank Space
                   case '.':
                         break;
 

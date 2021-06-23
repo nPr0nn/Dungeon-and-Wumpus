@@ -113,6 +113,14 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
             buttons[e.getButton()] = false;
       }
 
+      public Pair<Integer, Integer> getClick(){
+    	  clicked = false;
+    	  return Pair.of(lastClickX, lastClickY );
+      }
+      public boolean wasClicked(){
+    	  return clicked;
+      }
+
       
       @Override
       public void keyPressed(KeyEvent e){
@@ -129,7 +137,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
 
       // Getters
-
       public int getMouseX(){
             return this.mouseX;
       }
@@ -138,21 +145,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
       }
       public int getScroll(){
             return this.scroll;
-      }
-      
-      
-      
-      
-      
-      public Pair<Integer, Integer> getClick()
-      {
-    	  clicked = false;
-    	  return Pair.of(lastClickX,lastClickY);
-      }
-      
-      public boolean wasClicked()
-      {
-    	  return clicked;
       }
       
 }

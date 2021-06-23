@@ -39,7 +39,7 @@ public class AudioPlayer {
       
       public void pause() {
           if (status.equals("pausado")) {
-                System.out.println("Esse audio j· est· pausado");
+                System.out.println("Esse audio j√° est√° pausado");
                 return;
           }
           this.currentFrame = this.clip.getMicrosecondPosition();
@@ -57,7 +57,7 @@ public class AudioPlayer {
       public void resumeAudio() throws UnsupportedAudioFileException,
              IOException, LineUnavailableException {
                    if (status.equals("play")) {
-                         System.out.println("Esse audio est· sendo tocado Û");
+                         System.out.println("Esse audio est√° sendo tocado √≥");
                          return;
                    }
                    clip.close();
@@ -66,5 +66,4 @@ public class AudioPlayer {
                    this.play();
       }
 }
-
 

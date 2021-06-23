@@ -9,8 +9,15 @@ public abstract class Entity implements BasicObject{
       protected String name;
       
       protected boolean initAnimation;
+      protected String state;
+
       protected int velocityAnim;
+      protected int velocityAnimIdle;
+      protected int velocityAnimMoving;
+      
       protected int nFrames;
+      protected int nFramesIdle;
+      protected int nFramesMoving;
 
       protected double elevation;
       protected int i;
@@ -18,7 +25,6 @@ public abstract class Entity implements BasicObject{
       protected int updateDir;
       protected double updateFrame;
 
-      
       public abstract void update(double dt);
       public abstract void renderer(Renderer r);
       public abstract void toggleAnimation();
