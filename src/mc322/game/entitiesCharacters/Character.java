@@ -18,6 +18,9 @@ public abstract class Character extends Entity{
       protected int hp;
       protected int hpMax;
       protected int armor;
+      protected int damage;
+      protected double legSize;
+      protected String name;
 
       public Character(int i,int j,double elevation)
       {
@@ -27,12 +30,9 @@ public abstract class Character extends Entity{
             this.legSize = 0.7;
             this.solutionIndex = 0;
       }
-
-      protected double legSize;
-      protected String name;
-
+      
       //public abstract void change_state(String state);
-      public abstract void attack(int i,int j);
+      public abstract void attack(int i,int j, Room room);
       public abstract void move(int i, int j, Room room);
       public abstract boolean move(char dir, Room room, double timing_keys_move);
       public abstract void die();

@@ -15,6 +15,7 @@ import mc322.game.entitiesCharacters.Milo;
 import mc322.game.entitiesCharacters.Raju;
 import mc322.game.entitiesCharacters.Ze;
 import mc322.game.entitiesTiles.*;
+import mc322.game.entitiesCharacters.Character;
 
 public class MapBuilder{
 
@@ -189,9 +190,9 @@ public class MapBuilder{
             return false;
       }
 
-      public Entity[][] buildEntities(int size,Pair<Integer,Integer> pos,String numberRoom,Room room,boolean buildEnemys) {
+      public Character[][] buildEntities(int size,Pair<Integer,Integer> pos,String numberRoom,Room room,boolean buildEnemys) {
             player = null;
-            Entity entities[][] = new Entity[size][size];
+            Character entities[][] = new Character[size][size];
 
             CSVHandling scannerCSV = new CSVHandling();
             scannerCSV.setDataSource(GameMapTokens.getRoomPATH(numberRoom));

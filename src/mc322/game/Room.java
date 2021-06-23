@@ -18,8 +18,7 @@ import mc322.game.itens.Key;
 
 public class Room implements BasicObject {
       private final int size = 15;
-      private Entity entities[][] = new Entity[size][size];
-
+      private Character entities[][] = new Character[size][size];
       private String numberRoom;
       private String rooms_around;
       private ArrayList<ArrayList<Pair<Entity, Entity>>> tiles = new ArrayList<>(size);
@@ -253,7 +252,7 @@ public class Room implements BasicObject {
 
       public void move(int i0,int j0,int i,int j,Character charac){
 
-            Entity removedEntity = null;
+    	  Character removedEntity = null;
             if(entities[i][j] instanceof Heroes ) {
                   if(charac == player)
                   {
@@ -457,6 +456,12 @@ public class Room implements BasicObject {
 
             return map;
       }
+
+	public void atack(int i, int j, int damage) {
+		if(this.entities[i][j] == null)
+			return;
+		entities[i][j].hurt(damage);
+	}
 
 }
 

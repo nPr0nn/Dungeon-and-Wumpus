@@ -24,13 +24,15 @@ public class Milo extends Heroes{
             this.nFramesMoving = 4;
             hpMax = 100;
             hp = hpMax;
+            this.damage = 50;
 	}
 
 
-	@Override
-	public void attack(int i, int j) {
-		// TODO Auto-generated method stub
-		
+	public void attack(int i, int j, Room room) {
+		if(LinearAlgebra.getModulo(i-this.i)>4 || LinearAlgebra.getModulo(j-this.j)>4)
+			return;
+		else
+			room.atack(i,j,this.damage);
 	}
 
 	@Override
@@ -46,6 +48,8 @@ public class Milo extends Heroes{
       }
 
 	public void update(double dt) {
+		if(hp<=0)
+			this.die();
             this.updateFrame += this.velocityAnim*dt;
             
 	}

@@ -2,6 +2,7 @@ package mc322.game.entitiesCharacters;
 
 import mc322.engine.Renderer;
 import mc322.game.GameRenderer;
+import mc322.game.Room;
 
 public class Eye extends Enemys{
 
@@ -35,6 +36,8 @@ public class Eye extends Enemys{
 	}
 
 	public void update(double dt) {
+		if(hp<=0)
+			this.die();
             this.updateFrame += this.velocityAnim*dt;
             
 	}
@@ -50,6 +53,11 @@ public class Eye extends Enemys{
 
 
 	public void brain() {
+		
+	}
+
+
+	public void attack(int i, int j, Room room) {
 		
 	}
 
