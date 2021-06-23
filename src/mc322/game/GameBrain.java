@@ -12,7 +12,7 @@ import mc322.game.entitiesCharacters.Milo;
 import mc322.game.entitiesCharacters.Raju;
 import mc322.game.entitiesCharacters.Ze;
 import java.util.Random;
-//testando
+
 
 public abstract class GameBrain{
 
