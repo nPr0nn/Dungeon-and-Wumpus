@@ -12,7 +12,11 @@ public class AudioManager{
             this.musics = new AudioPlayer[5];
       }
       
+      private boolean muted = true;
+      
       public void playMusic(String path, boolean loop){
+    	  if(muted)
+    		  return;
             try{
                   AudioPlayer audioPlayer = new AudioPlayer(path, loop);
                   audioPlayer.play();
@@ -31,6 +35,8 @@ public class AudioManager{
       }
 
       public void stopMusic(){
+    	  if(muted)
+    		  return;
             try {
                   this.nMusics--;
                   this.musics[this.nMusics].stop();
@@ -42,6 +48,8 @@ public class AudioManager{
       }
 
       public void pauseMusic(){
+    	  if(muted)
+    		  return;
             try {
                   this.musics[this.nMusics-1].pause();
             }
@@ -53,6 +61,8 @@ public class AudioManager{
       }
       
       public void resumeMusic(){
+    	  if(muted)
+    		  return;
             try {
                   this.musics[this.nMusics-1].resumeAudio();
             }

@@ -36,6 +36,7 @@ public class Eye extends Enemys{
 
 	public void update(double dt) {
             this.updateFrame += this.velocityAnim*dt;
+            
 	}
 
 	public void renderer(Renderer r) {

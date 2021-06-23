@@ -5,7 +5,9 @@ import java.util.Random;
 
 import mc322.engine.Pair;
 import mc322.engine.Renderer;
+import mc322.engine.sfx.AudioManager;
 import mc322.game.Entity;
+import mc322.game.GameMapTokens;
 import mc322.game.GameRenderer;
 import mc322.game.itens.HealthPotion;
 import mc322.game.itens.Item;
@@ -78,6 +80,8 @@ public class Chest extends Entity{
       }
 
       public ArrayList<Item> getItens() {
+    	  	AudioManager audio = new AudioManager();
+    	  	audio.playMusic(GameMapTokens.getPathSound("Discover"),false);
             ArrayList<Item> removedItens = itens;
             itens = null;
             return removedItens;

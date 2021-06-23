@@ -122,6 +122,10 @@ public class MapBuilder{
                                     rooms[i][j] = new Room(this, pi, rooms_around,"Purple", dungeon,selectedRoom[1]==0);
                                     selectedRoom[1]--;
                                     break;
+                              case 'o':
+                                  rooms[i][j] = new Room(this, pi, rooms_around,"Origin", dungeon,selectedRoom[1]==0);
+                                  selectedRoom[1]--;
+                                  break;
                               case '0':
                               default:
                                     rooms[i][j] = null;

@@ -34,7 +34,7 @@ public class GameManager implements AbstractGame{
       private boolean pause;
 
       public GameManager(){
-            dungeon = new Dungeon();
+            dungeon = new Dungeon(this);
             audio = new AudioManager();
             menu = new Menu(this);
 
@@ -44,7 +44,7 @@ public class GameManager implements AbstractGame{
             
             this.movingToPointer = false;
             this.mouseClick = null;
-            audio.playMusic(GameMapTokens.getPathSound("BestAmbientMusic"),true);
+            audio.playMusic(GameMapTokens.getPathSound("Exploration"),true);
             bag = new Bag();
       }
 
@@ -60,6 +60,16 @@ public class GameManager implements AbstractGame{
   	public void unpause() {
 		this.pause = false;
 	}
+  	
+  	public void setState(String state)
+  	{
+  		if(this.STATE.equals(state))
+  			return;
+  		
+  		this.STATE = state;
+  		audio.stopMusic();
+  		audio.playMusic(GameMapTokens.getPathSound(state),true);
+  	}
 
 
       @Override

@@ -7,6 +7,7 @@ import mc322.engine.BasicObject;
 import mc322.engine.Pair;
 import mc322.engine.Renderer;
 import mc322.game.entitiesCharacters.Character;
+import mc322.game.entitiesCharacters.Enemys;
 import mc322.game.entitiesCharacters.Heroes;
 import mc322.game.entitiesTiles.Chest;
 import mc322.game.entitiesTiles.Door;
@@ -34,6 +35,8 @@ public class Room implements BasicObject {
       private int i;
       private int j;
 
+      
+      
       public Room(MapBuilder mapBuilder,Pair<Integer,Integer>pos,String rooms_around,
                   String color,
                   Dungeon dungeon, boolean hasKey){
@@ -48,10 +51,19 @@ public class Room implements BasicObject {
             this.color = color;
             this.rooms_around = rooms_around;
             //numberRoom = "6";
+            
+            boolean hasEnemys = true;
+            if(color.equals("Origin"))
+            {
+            	numberRoom="0";
+            	hasEnemys = false;
+            	this.color = "Purple";
+            }
+            
             this.blocked = true;
 
             tiles = mapBuilder.buildTiles(size, pos, rooms_around,numberRoom,this);
-            entities = mapBuilder.buildEntities(size, pos, numberRoom,this,true);
+            entities = mapBuilder.buildEntities(size, pos, numberRoom,this,hasEnemys);
             this.updateHerosAtRoom();
             if(hasKey)
             {
@@ -84,6 +96,7 @@ public class Room implements BasicObject {
       }
 
       public void update(double dt) {
+    	  boolean isEnemys = false;
             for(int i = size-1; i >= 0; i--){
                   for(int j=0;j<size;j++){
                         if(tiles.get(i).get(j) != null){
@@ -92,9 +105,21 @@ public class Room implements BasicObject {
                                     tiles.get(i).get(j).getSecond().update(dt);
 
                         }
-                        if(entities[i][j] != null) entities[i][j].update(dt);
+                        if(entities[i][j] != null)
+                    	{
+                        	if(entities[i][j].getClass().getSuperclass()==Enemys.class)
+	                        {
+	                        	isEnemys = true;
+	                        }
+                    		entities[i][j].update(dt);
+                    		
+                    		
+                    	}
+                        
                   }
             }
+            if(!isEnemys)
+            	dungeon.setState("exploration");
       }
 
       public void renderer(Renderer r) {
@@ -313,6 +338,7 @@ public class Room implements BasicObject {
       }
 
       private void changeRoom(int iSala, int jSala, char dir){
+    	  dungeon.setState("Combat");
             // remover suas posicoes da sala antiga
             entities[luna.getPos().getFirst()][luna.getPos().getSecond()] = null;
             entities[raju.getPos().getFirst()][raju.getPos().getSecond()] = null;
