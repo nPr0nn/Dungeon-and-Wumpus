@@ -56,8 +56,8 @@ public class GameRenderer {
     	  
     	  int horixontalDistance = 40;
     	  int verticalDistance = 10;
-    	  r.fillRect(verticalDistance+j,horixontalDistance+i,verticalDistance+j+10,horixontalDistance+i+((int)hpMax),50,50,50);
-    	  r.fillRect(verticalDistance+j,horixontalDistance+i,verticalDistance+j+10,horixontalDistance+i+((int)hp),red,green,100);
+    	  r.fillRect(verticalDistance+j,horixontalDistance+i,verticalDistance+j+7,horixontalDistance+i+((int)hpMax),50,50,50);
+    	  r.fillRect(verticalDistance+j,horixontalDistance+i,verticalDistance+j+7,horixontalDistance+i+((int)hp),red,green,100);
     	  
       }
       
