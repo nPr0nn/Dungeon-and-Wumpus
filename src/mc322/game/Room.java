@@ -49,7 +49,7 @@ public class Room implements BasicObject {
             }
             this.color = color;
             this.rooms_around = rooms_around;
-            //numberRoom = "6";
+            numberRoom = "7";
             
             boolean hasEnemys = true;
             if(color.equals("Origin"))
@@ -449,7 +449,18 @@ public class Room implements BasicObject {
                               map[i][j] = '#';
                               continue;
                         }
-
+                     if(entities[j][i]!=null)
+                     {
+                    	 System.out.println(entities[j][i].getClass().getSuperclass()+"  "  +Enemys.class);
+                    	if(entities[j][i].getClass().getSuperclass() == Enemys.class)
+                    	{
+                    		System.out.println("igaul j: "+j+" i "+i);
+                    		map[i][j] = '#'; 
+                    		continue;
+                    	}
+                    		
+                     }
+                     
                   }
 
             }

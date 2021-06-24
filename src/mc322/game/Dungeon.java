@@ -30,6 +30,11 @@ public class Dungeon implements BasicObject{
     		this.game.setState(state);
     	}
       
+      public String getState()
+  	{
+  		return this.game.getState();
+  	}
+      
       @Override
       public void renderer(Renderer r){
             getCurrentRoom().renderer(r);

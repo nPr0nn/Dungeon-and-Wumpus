@@ -59,17 +59,17 @@ public abstract class GameBrain{
             //System.out.println(src.getFirst() + " , " + src.getSecond());
             //System.out.println(dest.getFirst() + " , " + dest.getSecond());
 
-            //for(int i = 0;i<mat.length;i++){
-            //for(int j = 0;j<mat.length;j++) {
-            //if(i == src.getFirst() && j == src.getSecond()) System.out.print('s');
-            //else if(i == dest.getFirst() && j == dest.getSecond()) System.out.print('d');
-            //else System.out.print(mat[i][j]);
-            //}
-            //System.out.println();
-            //}
+            for(int i = 0;i<mat.length;i++){
+            for(int j = 0;j<mat.length;j++) {
+            if(i == src.getFirst() && j == src.getSecond()) System.out.print('s');
+            else if(i == dest.getFirst() && j == dest.getSecond()) System.out.print('d');
+            else System.out.print(mat[i][j]);
+            }
+            System.out.println();
+            }
 
             // Impossible to reach
-            if(mat[iBeg][jBeg]=='#'){
+            if(mat[jBeg][iBeg]=='#'){
                   System.out.println("begbgebge");
                    throw new ImpossibleOriginOrDestiny();
             }
@@ -149,7 +149,11 @@ public abstract class GameBrain{
 
             }
 
-            if (ok) return solution;
+            if (ok)
+        	{
+            	System.out.println(solution);
+            	return solution;
+        	}
             return null;
       }
 

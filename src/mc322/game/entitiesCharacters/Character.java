@@ -70,12 +70,17 @@ public abstract class Character extends Entity{
       }
 
       public boolean followPointer(int i, int j, Room room, boolean ignoreHeroes, double timing_keys_move, 
-                  boolean movingToPointer){
+                  boolean movingToPointer){ // false: para de mover; true se ainda movendo;
 
-            if(i == this.i && j == this.j) return false;
+            if(i == this.j && j == this.i) // o j dado eh o i atual e vice versa, ha uma inversao
+            	{
+            	//System.err.println("quero me mover pra onde eu ja estou");
+            	return false;
+            	}
 
             try{
-                  if(solution != null && movingToPointer && solutionIndex < solution.length() ) {
+            	//System.err.println("tentando");
+                  if(solution != null && movingToPointer && solutionIndex < solution.length()) {
                         //System.out.println(solutionIndex);
                         if(this.move(solution.charAt(solutionIndex), room, timing_keys_move))
                               solutionIndex += 1;
@@ -85,6 +90,8 @@ public abstract class Character extends Entity{
                         }
                   }
                   if(!movingToPointer){
+                	  
+                	  System.err.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                         this.solution = requestSolution(room, i, j, ignoreHeroes);
                         this.solutionIndex = 0;
                   }
@@ -106,7 +113,8 @@ public abstract class Character extends Entity{
                         if(i==0) this.move('S',room, timing_keys_move);
                         if(j==14)this.move('D',room, timing_keys_move);
                   }
-                  return true;
+                  solution = null;
+                  return false;
             }
             return true;
       }
@@ -132,6 +140,7 @@ public abstract class Character extends Entity{
             try{
                   if(solution != null && solution.length() > 0)
                         this.move(solution.charAt(0), room, timing_keys_move);
+                	  
             }
             catch(ImpossibleOriginOrDestiny e){
                   System.out.println("This place is inaccessable");

@@ -70,15 +70,20 @@ public class GameManager implements AbstractGame{
   		audio.stopMusic();
   		audio.playMusic(GameMapTokens.getPathSound(state),true);
   	}
+  	
+  	public String getState()
+  	{
+  		return this.STATE;
+  	}
 
 
       @Override
       public void update(GameContainer gc, double dt){
 
-    	  KeysManager.rawClick(gc,dungeon,bag);
+    	  
             if(timing_background_light > 3) timing_background_light = 0;
             if(!this.pause){
-
+            	//KeysManager.rawClick(gc,dungeon,bag);
                   if(timing_keys_move > 0.12) {
                         timing_keys_move = 0;
 
@@ -87,18 +92,30 @@ public class GameManager implements AbstractGame{
                   KeysManager.keys_action(gc,dungeon, bag);
                   boolean cond = KeysManager.keys_movement(gc,dungeon, timing_keys_move);
 
-                  mouseClick = KeysManager.verifyMouseClick(gc,dungeon);
-                  if(!cond) mouseClickPoint = null;
+                  mouseClick = KeysManager.verifyMouseClick(gc,dungeon,bag);
+                  if(!cond) mouseClickPoint = null; //parar de mover com mouse qnd clicar na seta
 
                   if(mouseClick != null){
                 	  
                         if(mouseClick.getFirst() == 1){
-                              movingToPointer = !movingToPointer;
+                        	System.err.println("linha 101 game");
+                              movingToPointer = !movingToPointer; // se ele esta movendo
                               mouseClickPoint = mouseClick.getSecond();
                               //System.out.println("clicked i: " + mouseClick.getSecond()+" clicked j: " + mouseClick.getFirst());
                         }
                         if(mouseClickPoint != null)
+                        {
+                        	//System.err.println("linha 108 game");
                               movingToPointer = KeysManager.mouse_action(gc,dungeon,timing_keys_move,movingToPointer,mouseClickPoint);
+                              if(!movingToPointer)
+                              {
+                            	  //System.err.println("linha 112 game");
+                              }
+                        }
+                        else
+                        {
+                        	//System.err.println("nao tem direcao pra ir");
+                        }
                   }
 
                   dungeon.update(dt);

@@ -16,25 +16,34 @@ public abstract class KeysManager {
       protected int jPointer;
 
       public static boolean keys_movement(GameContainer gc, Dungeon dungeon, double timing_keys_move){
+    	  
             if(gc.getInput().isKey('W') || gc.getInput().isKey(38)){
+//            	if(dungeon.getState().equals("Combat"))
+//          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('W',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
                   GameBrain.walk(dungeon, timing_keys_move);
                   return false;
             }
             if(gc.getInput().isKey('A') || gc.getInput().isKey(37)){
+//            	if(dungeon.getState().equals("Combat"))
+//          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('A',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
                   GameBrain.walk(dungeon, timing_keys_move);
                   return false;
             }
             if(gc.getInput().isKey('S') || gc.getInput().isKey(40)){
+//            	if(dungeon.getState().equals("Combat"))
+//          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('S',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
                   GameBrain.walk(dungeon, timing_keys_move);
                   return false;
             }
             if(gc.getInput().isKey('D') || gc.getInput().isKey(39)){
+//            	if(dungeon.getState().equals("Combat"))
+//          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('D',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
                   GameBrain.walk(dungeon, timing_keys_move);
@@ -120,12 +129,14 @@ public abstract class KeysManager {
             }
       }
 
-      public static Pair<Integer, Pair<Integer, Integer>> verifyMouseClick(GameContainer gc, Dungeon dungeon){
+      public static Pair<Integer, Pair<Integer, Integer>> verifyMouseClick(GameContainer gc, Dungeon dungeon,Bag bag){
             int clicked = 0;
 
             if(gc.getInput().wasClicked()){
                   clicked = 1;
                   Pair<Integer, Integer> posClick = gc.getInput().getClick();
+                  
+                  
                   //System.out.println("x: "+posClick.getFirst()+" y: "+posClick.getSecond());
                   posClick = LinearAlgebra.toCartesianas(posClick);
 
@@ -134,7 +145,12 @@ public abstract class KeysManager {
                   i /= 32;
                   j /= 32;
 
-                  if( i > 14 || i < 0 || j < 0 || j > 14 ) return null;
+                  if( i > 14 || i < 0 || j < 0 || j > 14 )
+            	  {
+                	  posClick = LinearAlgebra.toIsometrica(posClick);
+                	  bag.click(posClick.getSecond(),posClick.getFirst(),dungeon);
+                	  return null;
+            	  }
 
                   char map[][] = dungeon.getCurrentRoom().builCharMap();
                   
@@ -161,7 +177,7 @@ public abstract class KeysManager {
       }
 
       public static boolean mouse_action(GameContainer gc, Dungeon dungeon, double timing_keys_move, 
-                  boolean movingToPointer, Pair<Integer, Integer> p){
+                  boolean movingToPointer, Pair<Integer, Integer> p){// chama o follow
 
             Room cRoom = dungeon.getCurrentRoom();
             Heroes player = cRoom.getPlayer();
@@ -170,15 +186,7 @@ public abstract class KeysManager {
             GameBrain.walk(dungeon, timing_keys_move);
             return mov;
       }
-      
-      public static void rawClick(GameContainer gc, Dungeon dungeon,Bag bag)
-      {
-    	  if(gc.getInput().wasClicked()){
-    		  Pair<Integer, Integer> posClick = gc.getInput().getClick();
-    		  bag.click(posClick.getSecond(),posClick.getFirst(),dungeon);
-    		  
-    	  }
-      }
+
 
 
 }

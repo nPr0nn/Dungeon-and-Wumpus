@@ -65,7 +65,7 @@ public abstract class Heroes extends Character{
             this.change_state("idle");
       }
 
-      public boolean move(char dir,Room room, double timing_keys_move){
+      public boolean move(char dir,Room room, double timing_keys_move){ //true: se moveu| false se n moveu
             if(timing_keys_move != 0) return false;
             int tI=0;
             int tJ=0;
