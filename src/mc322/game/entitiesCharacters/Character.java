@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import mc322.engine.LinearAlgebra;
 import mc322.engine.Pair;
+import mc322.engine.UnexpectedError;
 import mc322.game.GameBrain;
 import mc322.game.ImpossibleOriginOrDestiny;
 import mc322.game.DoorSelected;
@@ -51,7 +52,7 @@ public abstract class Character extends Entity{
 
       protected abstract boolean verifyMovement(int i, int j, Room room);
 
-      protected String requestSolution(Room room, int iDest, int jDest,boolean ignoreHeroes){
+      protected String requestSolution(Room room, int iDest, int jDest,boolean ignoreHeroes) throws ImpossibleOriginOrDestiny, UnexpectedError{
             char map[][] = room.builCharMap();
             String solution = GameBrain.solveMaze(map,this.i,this.j,iDest,jDest);
             return solution;
@@ -79,29 +80,31 @@ public abstract class Character extends Entity{
             	}
 
             try{
-            	//System.err.println("tentando");
-                  if(solution != null && movingToPointer && solutionIndex < solution.length()) {
+//            	System.err.println("solution: "+ solution+"  movingToPointer: "+movingToPointer+" solutionIndex : "+solutionIndex);
+//            	if(solution!=null)
+//            		System.err.println(" solution.length() "+solution.length());
+                  if(solution != null && movingToPointer) {
                         //System.out.println(solutionIndex);
                         if(this.move(solution.charAt(solutionIndex), room, timing_keys_move))
                               solutionIndex += 1;
-                        if(solutionIndex == solution.length()-1) {
+                        if(solutionIndex == solution.length()) {
                               solution = null;
                               return false;
                         }
                   }
                   if(!movingToPointer){
                 	  
-                	  System.err.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                	  //System.err.println(" pedindo nova solucao");
                         this.solution = requestSolution(room, i, j, ignoreHeroes);
                         this.solutionIndex = 0;
                   }
             }
             catch(ImpossibleOriginOrDestiny e){
-                  System.out.println("This place is inaccessable");
+                  //System.out.println("This place is inaccessable");
                   return false;
             }
             catch(DoorSelected e){
-                  System.out.println("Tentei entrar na porta");
+                  //System.out.println("Tentei entrar na porta");
                   if(i==0) followPointer(i+1, j, room, ignoreHeroes, timing_keys_move, movingToPointer);
                   if(j==0) followPointer(i, j+1, room, ignoreHeroes, timing_keys_move, movingToPointer);
                   if(i==14)followPointer(i-1, j, room, ignoreHeroes, timing_keys_move, movingToPointer);
@@ -115,13 +118,15 @@ public abstract class Character extends Entity{
                   }
                   solution = null;
                   return false;
-            }
+            } catch (UnexpectedError e) {
+				//e.printStackTrace();
+			}
             return true;
       }
 
       public void followHero(Character charac, Room room, boolean ignoreHeroes, double timing_keys_move){
-            int i = charac.getPos().getFirst();
-            int j = charac.getPos().getSecond();
+            int j = charac.getPos().getFirst();
+            int i = charac.getPos().getSecond();
 
             char map[][] = room.builCharMap();
 
@@ -134,18 +139,20 @@ public abstract class Character extends Entity{
 
             if(i == this.i && j == this.j) return;
 
-            String solution = requestSolution(room, i, j, ignoreHeroes);
-            System.out.println("i: " + i +" , " + "j: " + j + "  char: " + map[i][j]);
+            String solution;
+			try {
+				solution = requestSolution(room, i, j, ignoreHeroes);
+			} catch (ImpossibleOriginOrDestiny e) {
+				//System.out.println("This place is inaccessable");
+                return;
+			} catch (UnexpectedError e) {
+				//e.printStackTrace();
+				return;
+			}
+            //System.out.println("i: " + i +" , " + "j: " + j + "  char: " + map[i][j]);
 
-            try{
-                  if(solution != null && solution.length() > 0)
-                        this.move(solution.charAt(0), room, timing_keys_move);
-                	  
-            }
-            catch(ImpossibleOriginOrDestiny e){
-                  System.out.println("This place is inaccessable");
-                  return;
-            }
+            if(solution != null && solution.length() > 0)
+			        this.move(solution.charAt(0), room, timing_keys_move);
       }
 
 }

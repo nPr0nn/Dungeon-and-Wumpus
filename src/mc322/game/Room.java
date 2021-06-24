@@ -49,9 +49,13 @@ public class Room implements BasicObject {
             }
             this.color = color;
             this.rooms_around = rooms_around;
-            numberRoom = "7";
-            
             boolean hasEnemys = true;
+            
+            
+//            numberRoom = "7";
+//            hasEnemys = false;
+            
+            
             if(color.equals("Origin"))
             {
             	numberRoom="0";
@@ -260,7 +264,7 @@ public class Room implements BasicObject {
                   }
                   else
                   {
-                        System.err.println("Something went wrong, a hero triet to move to another");
+                        System.err.println("Something went wrong, a hero tried to move to another");
                         return;
                   }
             }
@@ -451,10 +455,10 @@ public class Room implements BasicObject {
                         }
                      if(entities[j][i]!=null)
                      {
-                    	 System.out.println(entities[j][i].getClass().getSuperclass()+"  "  +Enemys.class);
+                    	 //System.out.println(entities[j][i].getClass().getSuperclass()+"  "  +Enemys.class);
                     	if(entities[j][i].getClass().getSuperclass() == Enemys.class)
                     	{
-                    		System.out.println("igaul j: "+j+" i "+i);
+                    		//System.out.println("igaul j: "+j+" i "+i);
                     		map[i][j] = '#'; 
                     		continue;
                     	}

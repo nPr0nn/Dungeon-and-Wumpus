@@ -23,7 +23,7 @@ public abstract class KeysManager {
                   dungeon.getCurrentRoom().getPlayer().move('W',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
                   GameBrain.walk(dungeon, timing_keys_move);
-                  return false;
+                  return true;
             }
             if(gc.getInput().isKey('A') || gc.getInput().isKey(37)){
 //            	if(dungeon.getState().equals("Combat"))
@@ -31,7 +31,7 @@ public abstract class KeysManager {
                   dungeon.getCurrentRoom().getPlayer().move('A',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
                   GameBrain.walk(dungeon, timing_keys_move);
-                  return false;
+                  return true;
             }
             if(gc.getInput().isKey('S') || gc.getInput().isKey(40)){
 //            	if(dungeon.getState().equals("Combat"))
@@ -39,7 +39,7 @@ public abstract class KeysManager {
                   dungeon.getCurrentRoom().getPlayer().move('S',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
                   GameBrain.walk(dungeon, timing_keys_move);
-                  return false;
+                  return true;
             }
             if(gc.getInput().isKey('D') || gc.getInput().isKey(39)){
 //            	if(dungeon.getState().equals("Combat"))
@@ -47,10 +47,10 @@ public abstract class KeysManager {
                   dungeon.getCurrentRoom().getPlayer().move('D',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
                   GameBrain.walk(dungeon, timing_keys_move);
-                  return false;
+                  return true;
             }
             GameRenderer.change_animation_state("idle", dungeon);
-            return true;
+            return false;
       }
 
 
@@ -129,11 +129,9 @@ public abstract class KeysManager {
             }
       }
 
-      public static Pair<Integer, Pair<Integer, Integer>> verifyMouseClick(GameContainer gc, Dungeon dungeon,Bag bag){
-            int clicked = 0;
+      public static Pair<Integer, Integer> verifyMouseClick(GameContainer gc, Dungeon dungeon,Bag bag){
 
             if(gc.getInput().wasClicked()){
-                  clicked = 1;
                   Pair<Integer, Integer> posClick = gc.getInput().getClick();
                   
                   
@@ -155,38 +153,25 @@ public abstract class KeysManager {
                   char map[][] = dungeon.getCurrentRoom().builCharMap();
                   
                   if(".MN".indexOf(map[i][j]) != 1) {
+                	  if(j>0)
                         if(map[i+1][j-1] == 'U'){
-                              System.out.print("palanque: ");
+                              //System.out.print("palanque: ");
                               i += 1;
                               j -= 1;
                         }
-                        else System.out.print("chao: ");
+                        //else System.out.print("chao: ");
                   }
                   else if(map[i][j] == 'U'){
-                        System.out.print("palanque: ");
+                        //System.out.print("palanque: ");
                         i += 1;
                         j -= 1;
 
                   }
 
-                  System.out.println("i: " + i + ", j: " + j);
-                  return Pair.of(clicked, Pair.of(i, j));
+                  //System.out.println("i: " + i + ", j: " + j);
+                  return Pair.of(i, j);
             }
 
-            return Pair.of(clicked, null);
+            return null;
       }
-
-      public static boolean mouse_action(GameContainer gc, Dungeon dungeon, double timing_keys_move, 
-                  boolean movingToPointer, Pair<Integer, Integer> p){// chama o follow
-
-            Room cRoom = dungeon.getCurrentRoom();
-            Heroes player = cRoom.getPlayer();
-            boolean mov = player.followPointer(p.getFirst(),p.getSecond(),cRoom,true,timing_keys_move,movingToPointer);
-
-            GameBrain.walk(dungeon, timing_keys_move);
-            return mov;
-      }
-
-
-
 }
