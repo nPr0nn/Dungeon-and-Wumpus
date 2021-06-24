@@ -216,6 +216,7 @@ public class MapBuilder{
                   room.setPlayer(player);
 
             }
+            buildEnemys = false;
             if(buildEnemys)
             {
             	Random rand = new Random();

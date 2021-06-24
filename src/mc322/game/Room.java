@@ -47,7 +47,7 @@ public class Room implements BasicObject {
             }
             this.color = color;
             this.rooms_around = rooms_around;
-            //numberRoom = "6";
+            numberRoom = "0";
             this.blocked = true;
 
             tiles = mapBuilder.buildTiles(size, pos, rooms_around,numberRoom,this);

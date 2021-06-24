@@ -72,17 +72,17 @@ public abstract class Character extends Entity{
       public boolean followPointer(int i, int j, Room room, boolean ignoreHeroes, double timing_keys_move, 
                   boolean movingToPointer){
 
-            if(i == this.i && j == this.j) return false;
+            if(j == this.i && i == this.j) return false;
 
             try{
-                  if(solution != null && movingToPointer && solutionIndex < solution.length() ) {
+                  if(solution != null && movingToPointer) {
                         //System.out.println(solutionIndex);
-                        if(this.move(solution.charAt(solutionIndex), room, timing_keys_move))
-                              solutionIndex += 1;
-                        if(solutionIndex == solution.length()-1) {
+                        if(solutionIndex == solution.length()) {
                               solution = null;
                               return false;
                         }
+                        if(this.move(solution.charAt(solutionIndex), room, timing_keys_move))
+                              solutionIndex += 1;
                   }
                   if(!movingToPointer){
                         this.solution = requestSolution(room, i, j, ignoreHeroes);

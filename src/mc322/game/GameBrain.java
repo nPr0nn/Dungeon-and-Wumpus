@@ -51,6 +51,22 @@ public abstract class GameBrain{
       public static boolean isSafe(int i, int j, int n){
             return (i >= 0) && (j >= 0) && (i < n) && (j < n); 
       }
+
+
+      public static boolean isPossible(char mat[][], int i, int j, int dirI[], int dirJ[], int k){
+            int ni = i + dirI[k];
+            int nj = j + dirJ[k];
+
+            boolean cond1 = (".D".indexOf(mat[ni][nj]) != -1 && ".MN".indexOf(mat[i][j]) != -1);
+
+            boolean cond2 = mat[ni][nj] == 'N' && (k == 3 || k == 0);
+            boolean cond3 = mat[ni][nj] == 'M' && (k == 1 || k == 2);
+
+            boolean cond4 = mat[ni][nj] == 'U' && ("UMN".indexOf(mat[i][j]) != -1 );
+
+            return (cond1 || cond2 || cond3 || cond4);
+      }
+
       public static String solveMaze(char mat[][],int iBeg, int jBeg, int iEnd, int jEnd){
 
             Pair <Integer, Integer> src  = Pair.of(jBeg, iBeg);
@@ -59,30 +75,27 @@ public abstract class GameBrain{
             //System.out.println(src.getFirst() + " , " + src.getSecond());
             //System.out.println(dest.getFirst() + " , " + dest.getSecond());
 
-            //for(int i = 0;i<mat.length;i++){
-            //for(int j = 0;j<mat.length;j++) {
-            //if(i == src.getFirst() && j == src.getSecond()) System.out.print('s');
-            //else if(i == dest.getFirst() && j == dest.getSecond()) System.out.print('d');
-            //else System.out.print(mat[i][j]);
-            //}
-            //System.out.println();
-            //}
+            for(int i = 0;i<mat.length;i++){
+                  for(int j = 0;j<mat.length;j++) {
+                        if(i == src.getFirst() && j == src.getSecond()) System.out.print('s');
+                        else if(i == dest.getFirst() && j == dest.getSecond()) System.out.print('d');
+                        else System.out.print(mat[i][j]);
+                  }
+                  System.out.println();
+            }
 
             // Impossible to reach
             if(mat[iBeg][jBeg]=='#'){
-                  System.out.println("begbgebge");
-                   throw new ImpossibleOriginOrDestiny();
+                  throw new ImpossibleOriginOrDestiny();
             }
             if(mat[iEnd][jEnd]=='#') {
-                  System.out.println("ENDOENDO");
-
                   throw new ImpossibleOriginOrDestiny();
             }
             //else if(mat[iEnd][jEnd]=='D') throw new DoorSelected();
 
             //directions
-            int dirI[] = {1,0,0,-1};
-            int dirJ[] = {0,-1,1,0};
+            int dirI[] = {0,1,0,-1};
+            int dirJ[] = {-1,0,1,0};
 
             //BFS
             String solution = "";
@@ -115,10 +128,30 @@ public abstract class GameBrain{
                         String pathmoves = "";
 
                         while (i != src.getFirst() || j != src.getSecond()){
-                              if (j > 0   && distance[i][j - 1] == dist - 1){ pathmoves += 'W'; j--; }
-                              if (i < n-1 && distance[i + 1][j] == dist - 1){ pathmoves += 'A'; i++; }
-                              if (j < n-1 && distance[i][j + 1] == dist - 1){ pathmoves += 'S'; j++; }
-                              if (i > 0   && distance[i - 1][j] == dist - 1){ pathmoves += 'D'; i--; }
+                              
+                              if (j > 0   && distance[i][j - 1] == dist - 1) { 
+                                    if(isPossible(mat, i, j, dirI, dirJ, 3)){
+                                          pathmoves += 'W'; j--; 
+                                          int ni = i + dirI[0];
+                                          int nj = j + dirJ[0];
+                                          boolean cond1 = (".D".indexOf(mat[ni][nj]) != -1 && ".MN".indexOf(mat[i][j]) != -1);
+                                          System.out.println(cond1);
+                                    }
+                              }
+
+
+                              if (i < n-1 && distance[i + 1][j] == dist - 1){ 
+                                    if(isPossible(mat, i, j, dirI, dirJ, 1))
+                                          pathmoves += 'A'; i++; 
+                              }
+                              if (j < n-1 && distance[i][j + 1] == dist - 1){ 
+                                    if(isPossible(mat, i, j, dirI, dirJ, 2))
+                                          pathmoves += 'S'; j++; 
+                              }
+                              if (i > 0   && distance[i - 1][j] == dist - 1){ 
+                                    if(isPossible(mat, i, j, dirI, dirJ, 3))
+                                          pathmoves += 'D'; i--; 
+                              }
                               dist--;
                         }
                         for(int k = pathmoves.length() - 1; k >= 0; --k) solution += pathmoves.charAt(k);
@@ -132,13 +165,7 @@ public abstract class GameBrain{
 
                         if ( !isSafe(ni, nj, n) || visited[ni][nj]) continue;
 
-                        boolean cond1 = (".D".indexOf(mat[ni][nj]) != -1 && ".MN".indexOf(mat[i][j]) != -1);
-                        boolean cond2 = mat[ni][nj] == 'N' && (dirI[k]*dirI[k] == 1);
-                        boolean cond3 = mat[ni][nj] == 'M' && (dirJ[k]*dirJ[k] == 1);
-
-                        boolean cond4 = mat[ni][nj] == 'U' && ("UMN".indexOf(mat[i][j]) != -1 );
-
-                        if( cond1 || cond2 || cond3 || cond4 ){
+                        if( isPossible(mat, i, j, dirI, dirJ, k)) {
                               visited[ni][nj] = true;
                               Node adjCell = new Node(Pair.of(ni,nj), curr.dist + 1);
                               q.addLast(adjCell);
@@ -148,6 +175,8 @@ public abstract class GameBrain{
                   }
 
             }
+
+            System.out.println(solution);
 
             if (ok) return solution;
             return null;
@@ -165,37 +194,37 @@ public abstract class GameBrain{
             Random rand = new Random();
 
             //if(cRoom.getMilo() != cRoom.getPlayer()){
-                  //cRoom.getMilo().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
+            //cRoom.getMilo().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
 
-                  ////if(rand.nextInt(9)<7) 
-                  ////cRoom.getMilo().followHero(cRoom.getLuna(),cRoom,false,timing_keys_move);
-                  ////else 
-                  ////cRoom.getMilo().followHero(cRoom.getRaju(),cRoom,false,timing_keys_move);
+            ////if(rand.nextInt(9)<7) 
+            ////cRoom.getMilo().followHero(cRoom.getLuna(),cRoom,false,timing_keys_move);
+            ////else 
+            ////cRoom.getMilo().followHero(cRoom.getRaju(),cRoom,false,timing_keys_move);
             //}
 
             //if(cRoom.getLuna() != cRoom.getPlayer()){
-                  ////if(rand.nextInt(13)<9) 
-                  //cRoom.getLuna().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
-                  ////else 
-                  ////cRoom.getLuna().followHero(cRoom.getZe(),cRoom,false,timing_keys_move);
+            ////if(rand.nextInt(13)<9) 
+            //cRoom.getLuna().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
+            ////else 
+            ////cRoom.getLuna().followHero(cRoom.getZe(),cRoom,false,timing_keys_move);
             //}
 
             //if(cRoom.getZe() != cRoom.getPlayer()) {
-                  //cRoom.getZe().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
+            //cRoom.getZe().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
 
-                  ////if(rand.nextInt(15)<8) 
-                  ////cRoom.getZe().followHero(cRoom.getRaju(),cRoom,false,timing_keys_move);
-                  ////else
-                  ////cRoom.getZe().followHero(cRoom.getLuna(),cRoom,false,timing_keys_move);
+            ////if(rand.nextInt(15)<8) 
+            ////cRoom.getZe().followHero(cRoom.getRaju(),cRoom,false,timing_keys_move);
+            ////else
+            ////cRoom.getZe().followHero(cRoom.getLuna(),cRoom,false,timing_keys_move);
             //}
 
             //if(cRoom.getRaju() != cRoom.getPlayer()){
-                  //cRoom.getRaju().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
+            //cRoom.getRaju().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
 
-                  ////if(rand.nextInt(8)<5)
-                  ////cRoom.getRaju().followHero(cRoom.getMilo(),cRoom,false,timing_keys_move);
-                  ////else 
-                  ////cRoom.getRaju().followHero(cRoom.getLuna(),cRoom,false,timing_keys_move);
+            ////if(rand.nextInt(8)<5)
+            ////cRoom.getRaju().followHero(cRoom.getMilo(),cRoom,false,timing_keys_move);
+            ////else 
+            ////cRoom.getRaju().followHero(cRoom.getLuna(),cRoom,false,timing_keys_move);
             //}
       }
 

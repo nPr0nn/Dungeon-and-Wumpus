@@ -44,7 +44,7 @@ public class GameManager implements AbstractGame{
             
             this.movingToPointer = false;
             this.mouseClick = null;
-            audio.playMusic(GameMapTokens.getPathSound("BestAmbientMusic"),true);
+            //audio.playMusic(GameMapTokens.getPathSound("BestAmbientMusic"),true);
             bag = new Bag();
       }
 
