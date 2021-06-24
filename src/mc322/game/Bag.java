@@ -3,11 +3,13 @@ package mc322.game;
 import java.util.ArrayList;
 
 import mc322.engine.BasicObject;
+import mc322.engine.LinearAlgebra;
 import mc322.engine.Pair;
 import mc322.engine.Renderer;
 import mc322.game.itens.HealthPotion;
 import mc322.game.itens.Item;
 import mc322.game.itens.Key;
+import mc322.game.itens.ResistancePotion;
 import mc322.game.itens.StrengthPotion;
 
 public class Bag implements BasicObject{
@@ -67,13 +69,87 @@ public class Bag implements BasicObject{
 		
 		
 	}
+	
+	public void click(int i,int j,Dungeon dg)
+	{
+		int i1 = 10*2;
+		int j1 = 499*2;
+		int width = 33*2;
+		int hight = 52*2;
+		if(LinearAlgebra.insideRec(i,j,i1,j1,i1+hight,j1+width))
+		{
+			drinkPosion("Resistance",dg);
+		}
+		j1-=width;
+		if(LinearAlgebra.insideRec(i,j,i1,j1,i1+hight,j1+width))
+		{
+			drinkPosion("Strength",dg);
+		}
+		j1-=width;
+		if(LinearAlgebra.insideRec(i,j,i1,j1,i1+hight,j1+width))
+		{
+			drinkPosion("Life",dg);
+		}
+		
+	}
 
+	private void drinkPosion(String type,Dungeon dg)
+	{
+		if(type.equals("Resistance"))
+		{
+			for(int i =0;i<itens.size();i++)
+			{
+				if(seePocket(i).getFirst() instanceof ResistancePotion)
+				{
+					getItemAtPocket(i);
+					dg.getCurrentRoom().getPlayer().incrementDef(5);
+				}
+			}
+		}
+		else if(type.equals("Strength"))
+		{
+			for(int i =0;i<itens.size();i++)
+			{
+				if(seePocket(i).getFirst() instanceof StrengthPotion)
+				{
+					getItemAtPocket(i);
+					dg.getCurrentRoom().getPlayer().incrementStrength(5);
+				}
+			}
+		}
+		else if(type.equals("Life"))
+		{
+			for(int i =0;i<itens.size();i++)
+			{
+				if(seePocket(i).getFirst() instanceof HealthPotion)
+				{
+					getItemAtPocket(i);
+					dg.getCurrentRoom().getPlayer().incrementHP(10);
+				}
+			}
+		}
+		else
+			System.err.println("name of potion invalid!");
+	}
+	
 	public void renderer(Renderer r) {
 		for(int i = 0;i<itens.size();i++)
 		{
 			itens.get(i).getFirst().renderer(r);
 		}
 		
+//		int i = 10;
+//		int j = 499;
+//		int larg = 33;
+//		int altura = 52;
+//		r.fillRect(i,j, i+altura, j+larg, 255,255,255);
+//		
+//		j -=larg;
+//		r.fillRect(i,j, i+altura, j+larg, 255,255,0);
+//		
+//		j -=larg;
+//		r.fillRect(i,j, i+altura, j+larg, 0,255,0);
+//		
 	}
 	
 	

@@ -101,6 +101,7 @@ public abstract class KeysManager {
 
             if(gc.getInput().isKeyDown('I')){
                   System.out.println("Bag: "+bag);
+                  dungeon.getCurrentRoom().getPlayer().printStatus();
             }
             if(gc.getInput().isKeyDown('G')){
             	dungeon.getCurrentRoom().getPlayer().hurt(20);
@@ -168,6 +169,15 @@ public abstract class KeysManager {
 
             GameBrain.walk(dungeon, timing_keys_move);
             return mov;
+      }
+      
+      public static void rawClick(GameContainer gc, Dungeon dungeon,Bag bag)
+      {
+    	  if(gc.getInput().wasClicked()){
+    		  Pair<Integer, Integer> posClick = gc.getInput().getClick();
+    		  bag.click(posClick.getSecond(),posClick.getFirst(),dungeon);
+    		  
+    	  }
       }
 
 

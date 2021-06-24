@@ -32,15 +32,15 @@ public class Chest extends Entity{
             this.updateFrame = 0;
             Random rand = new Random();
             int num = rand.nextInt(60);
-            if(num%2==0)//2
+            if(num%1==0)//2
             {
                   insertItem(new HealthPotion());
             }
-            if(num%5==0)//5
+            if(num%1==0)//5
             {
                   insertItem(new StrengthPotion());
             }
-            if(num%6==0)//6
+            if(num%1==0)//6
             {
                   insertItem(new ResistancePotion());
             }

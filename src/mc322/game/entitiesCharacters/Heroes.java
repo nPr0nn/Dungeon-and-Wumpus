@@ -107,4 +107,23 @@ public abstract class Heroes extends Character{
             if(room.isAccessible(i,j,this.elevation,this.legSize,this.updateDir,this)) return true;
             return false;
       }
+
+	public void incrementDef(int def)
+	{
+		this.armor+=def;
+	}
+	public void incrementHP(int life)
+	{
+		this.hpMax+=life;
+	}
+	public void incrementStrength(int str)
+	{
+		this.damage+=str;
+	}
+
+	public void printStatus() {
+		System.out.println("HP max: "+ hpMax+" hp: "+ hp+" damage: "+damage+" armor: "+armor);
+		
+	}
+	
 }

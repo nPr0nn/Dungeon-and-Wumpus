@@ -75,6 +75,7 @@ public class GameManager implements AbstractGame{
       @Override
       public void update(GameContainer gc, double dt){
 
+    	  KeysManager.rawClick(gc,dungeon,bag);
             if(timing_background_light > 3) timing_background_light = 0;
             if(!this.pause){
 
@@ -90,9 +91,11 @@ public class GameManager implements AbstractGame{
                   if(!cond) mouseClickPoint = null;
 
                   if(mouseClick != null){
+                	  
                         if(mouseClick.getFirst() == 1){
                               movingToPointer = !movingToPointer;
                               mouseClickPoint = mouseClick.getSecond();
+                              //System.out.println("clicked i: " + mouseClick.getSecond()+" clicked j: " + mouseClick.getFirst());
                         }
                         if(mouseClickPoint != null)
                               movingToPointer = KeysManager.mouse_action(gc,dungeon,timing_keys_move,movingToPointer,mouseClickPoint);
@@ -101,7 +104,6 @@ public class GameManager implements AbstractGame{
                   dungeon.update(dt);
 	            timing_keys_move += dt;
             }
-
             menu.update(dt);
             timing_background_light += dt;
             KeysManager.keys_game_flow(gc,this, menu);
