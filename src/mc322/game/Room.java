@@ -53,7 +53,7 @@ public class Room implements BasicObject {
             
             
 //            numberRoom = "7";
-            hasEnemys = false;
+//            hasEnemys = false;
             
             
             if(color.equals("Origin"))

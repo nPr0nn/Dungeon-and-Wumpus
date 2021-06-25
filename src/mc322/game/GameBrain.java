@@ -457,11 +457,10 @@ public abstract class GameBrain{
                 }
       }
       
-      public static boolean mouse_action(GameContainer gc, Dungeon dungeon, double timing_keys_move, 
+      public static boolean mouse_action(Dungeon dungeon, double timing_keys_move, 
               boolean movingToPointer, Pair<Integer, Integer> p,Character charac){
-
-        Room cRoom = dungeon.getCurrentRoom();
-        boolean mov = charac.followPointer(p.getFirst(),p.getSecond(),cRoom,true,timing_keys_move,movingToPointer);
+    	  
+        boolean mov = charac.followPointer(p.getFirst(),p.getSecond(),dungeon.getCurrentRoom(),true,timing_keys_move,movingToPointer);
         GameBrain.walk(dungeon, timing_keys_move);
         return mov;
   }

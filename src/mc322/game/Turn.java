@@ -24,60 +24,17 @@ public class Turn {
 		enemyAction.reset();
 	}
 	
-//	public void update(double dt) {
-//		if(!combat)
-//			return;
-//		boolean notDecided = true;
-//		if(playerTurn)
-//		{
-//			
-//			while(notDecided)
-//			{
-//				Heroes selected = selectPlayer();
-//				if(selected == null)
-//					continue;
-//				
-//				Pair<Integer, Integer> target = selectTarget();
-//				String action = selectAction(target);
-//				if(action == "")
-//					continue;
-//				switch(action)
-//				{
-//					case "atack":
-//						notDecided = false;
-//						break;
-//					case "walk":
-//						
-//						notDecided = false;
-//						break;
-//					default:
-//						System.out.println("this action is invalid");
-//						break;	
-//				}
-//				
-//				//acao dos herois
-//			}
-//		}
-//		else
-//		{
-//			Enemys enemy = selectEnemy();
-//			Pair<Integer, Integer> targetOfEnemy = selectTargetForEnemy();
-//			enemy.atack(targetOfEnemy,dg.getCurrentRoom());
-//		}
-//		playerTurn = !playerTurn;
-//	}
-	
-	
-	public void update(GameContainer gc,double dt) {
+	public void update(GameContainer gc,double dt,double timing_keys_move) {
 		if(!combat)
 			return;
 		if(playerTurn)
 		{
 			if(heroAction.already())
 			{
-				heroAction.act(dt);
+				heroAction.act(dt,timing_keys_move);
 				if(heroAction.finished())
 				{
+					System.out.println("cabou");
 					heroAction.reset();
 					playerTurn = !playerTurn;
 				}
@@ -106,38 +63,9 @@ public class Turn {
 			
 		}
 	}
-	
-	
-	
-
-
-
-//	private Pair<Integer, Integer> selectTargetForEnemy() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	private Enemys selectEnemy() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	private Pair<Integer, Integer> selectTarget() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	private String selectAction(Pair<Integer, Integer> target) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	private Heroes selectPlayer() {
-//		
-//		return null;
-//	}
 
 	public void start() {
+		dg.getCurrentRoom().getPlayer().disselect();
 		heroAction.reset();
 		enemyAction.reset();
 		playerTurn = true;
@@ -146,6 +74,11 @@ public class Turn {
 	}
 
 	public void stop() {
+		dg.getCurrentRoom().getLuna().disselect();
+		dg.getCurrentRoom().getZe().disselect();
+		dg.getCurrentRoom().getRaju().disselect();
+		dg.getCurrentRoom().getMilo().disselect();
+		dg.getCurrentRoom().getPlayer().select();
 		heroAction.reset();
 		enemyAction.reset();
 		combat = false;

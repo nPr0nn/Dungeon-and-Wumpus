@@ -50,7 +50,14 @@ public abstract class Heroes extends Character{
             if(this.selected == 1) this.selected = 0;
             else if(this.selected == 0) this.selected = 1;
       }
-
+      public void disselect()
+      {
+    	  this.selected = 0;
+      }
+      public void select()
+      {
+    	  this.selected = 1;
+      }
 
 
 	public void incrementDef(int def)

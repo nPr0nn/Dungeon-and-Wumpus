@@ -11,10 +11,14 @@ public class HeroAction {
 	private Pair<Integer, Integer> target;
 	private Heroes player;
 	private Dungeon dg;
+	private MovingControl mc;
+	private boolean firstStep;
+	private boolean finished;
 	
 	HeroAction(Dungeon dg)
 	{
 		this.dg = dg;
+		mc = new MovingControl(dg);
 	}
 
 	public boolean already() {
@@ -23,20 +27,41 @@ public class HeroAction {
 		return false;
 	}
 
-	public void act(double dt) {
-		System.out.println("agindo");
+	public void act(double dt,double timing_keys_move) {
+		switch(action)
+		{
+		case "walk":
+			
+			if(firstStep)
+			{
+				mc.update(dt,Pair.of(target.getSecond(),target.getFirst()),timing_keys_move,player);
+				firstStep = false;
+			}
+			else
+				mc.update(dt,null,timing_keys_move,player);
+			if(!mc.walking())
+				finished = true;
+			System.out.println("andando");
+			break;
+		case "atack":
+			System.out.println("atacando");
+			player.attack(target.getFirst(),target.getSecond(),dg.getCurrentRoom());
+			finished = true;
+			break;
+		}
 		
 	}
 
 	public boolean finished() {
-		// TODO Auto-generated method stub
-		return false;
+		return finished;
 	}
 
 	public void reset() {
 		action = "";
 		target = null;
 		player = null;
+		firstStep = false;
+		finished = false;
 		
 	}
 
@@ -62,6 +87,7 @@ public class HeroAction {
 		Character entity = room.getEntityAt(this.target.getFirst(),this.target.getSecond());
 		if(entity == null)
 		{
+			firstStep=true;
 			return "walk";
 		}
 		return "atack";
@@ -70,7 +96,11 @@ public class HeroAction {
 	private Pair<Integer, Integer> selectTarget(GameContainer gc) {
 		Pair<Integer,Integer> click = KeysManager.verifyMouseClick(gc,dg,null);
 		if(click != null)
+		{
 			click = Pair.of(click.getSecond(),click.getFirst());
+			if(click.getFirst()==player.getPos().getFirst() && click.getSecond()==player.getPos().getSecond())
+				click = null;
+		}
 		return click;
 	}
 
@@ -83,6 +113,7 @@ public class HeroAction {
 			if(entity instanceof Heroes)
 			{
 				hero = (Heroes) entity;
+				hero.select();
 			}
 		}
 		return hero;

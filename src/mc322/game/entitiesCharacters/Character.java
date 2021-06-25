@@ -68,18 +68,21 @@ public abstract class Character extends Entity{
 
       public boolean followPointer(int i, int j, Room room, boolean ignoreHeroes, double timing_keys_move, 
                   boolean movingToPointer){ // false: para de mover; true se ainda movendo;
-
+    	  
             if(i == this.j && j == this.i) // o j dado eh o i atual e vice versa, ha uma inversao
             	{
             	//System.err.println("quero me mover pra onde eu ja estou");
             	return false;
             	}
-
+            
             try{
+            	
 //            	System.err.println("solution: "+ solution+"  movingToPointer: "+movingToPointer+" solutionIndex : "+solutionIndex);
 //            	if(solution!=null)
 //            		System.err.println(" solution.length() "+solution.length());
+            	
                   if(solution != null && movingToPointer) {
+                	  System.out.println("ino");
                         //System.out.println(solutionIndex);
                         if(this.move(solution.charAt(solutionIndex), room, timing_keys_move))
                               solutionIndex += 1;
@@ -89,8 +92,7 @@ public abstract class Character extends Entity{
                         }
                   }
                   if(!movingToPointer){
-                	  
-                	  //System.err.println(" pedindo nova solucao");
+                	  System.err.println(" pedindo nova solucao");
                         this.solution = requestSolution(room, i, j, ignoreHeroes);
                         this.solutionIndex = 0;
                   }
@@ -117,6 +119,7 @@ public abstract class Character extends Entity{
             } catch (UnexpectedError e) {
 				//e.printStackTrace();
 			}
+            System.out.println("retornando true");
             return true;
       }
 
