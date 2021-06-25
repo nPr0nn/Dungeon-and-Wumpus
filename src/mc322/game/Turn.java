@@ -20,7 +20,7 @@ public class Turn {
 		this.dg = dg;
 		heroAction =new HeroAction(dg);
 		heroAction.reset();
-		enemyAction =new EnemyAction();
+		enemyAction =new EnemyAction(dg);
 		enemyAction.reset();
 	}
 	
@@ -41,6 +41,7 @@ public class Turn {
 			}
 			else
 			{
+				//System.out.println("jogar");
 				heroAction.getInfo(gc,dg.getCurrentRoom());
 			}
 			
@@ -49,16 +50,22 @@ public class Turn {
 		{
 			if(enemyAction.already())
 			{
-				enemyAction.act(dt);
+				enemyAction.act(dt,timing_keys_move);
 				if(enemyAction.finished())
 				{
+					
 					enemyAction.reset();
+					disselectAll();
 					playerTurn = !playerTurn;
 				}
 			}
 			else
 			{
-				enemyAction.getInfo();
+				try {
+					enemyAction.getInfo(gc,dg.getCurrentRoom());
+				} catch (NoEnemyHere e) {
+					this.stop();
+				}
 			}
 			
 		}
@@ -74,16 +81,21 @@ public class Turn {
 	}
 
 	public void stop() {
-		dg.getCurrentRoom().getLuna().disselect();
-		dg.getCurrentRoom().getZe().disselect();
-		dg.getCurrentRoom().getRaju().disselect();
-		dg.getCurrentRoom().getMilo().disselect();
+		disselectAll();
 		dg.getCurrentRoom().getPlayer().select();
 		heroAction.reset();
 		enemyAction.reset();
 		combat = false;
 		playerTurn = false;
 		
+	}
+	
+	private void disselectAll()
+	{
+		dg.getCurrentRoom().getLuna().disselect();
+		dg.getCurrentRoom().getZe().disselect();
+		dg.getCurrentRoom().getRaju().disselect();
+		dg.getCurrentRoom().getMilo().disselect();
 	}
 
 }

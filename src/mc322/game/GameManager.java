@@ -41,7 +41,7 @@ public class GameManager implements AbstractGame{
 	        this.pause =false;
 	        this.timing_keys_move = 0;
 	        this.timing_background_light = 0;
-	        this.mv = new MovingControl(dungeon);
+	        this.mv = new MovingControl(dungeon,false);
 	        this.mouseClickPoint = null;
 	        bag = new Bag();
 	  }
@@ -97,7 +97,7 @@ public class GameManager implements AbstractGame{
 	                  KeysManager.keys_action(gc,dungeon, bag);
 	                  mouseClickPoint = KeysManager.verifyMouseClick(gc,dungeon,bag);
 	                  if(KeysManager.keys_movement(gc,dungeon, timing_keys_move)) mouseClickPoint = null;
-	                  mv.update(dt,mouseClickPoint,timing_keys_move,dungeon.getCurrentRoom().getPlayer());
+	                  mv.update(dt,mouseClickPoint,timing_keys_move,dungeon.getCurrentRoom().getPlayer(),false);
                   }
                   dungeon.update(dt);
                   timing_keys_move += dt;

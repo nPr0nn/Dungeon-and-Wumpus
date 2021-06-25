@@ -1,30 +1,118 @@
 package mc322.game;
 
+import java.util.Random;
+
+import mc322.engine.GameContainer;
+import mc322.engine.Pair;
+import mc322.game.entitiesCharacters.Character;
+import mc322.game.entitiesCharacters.Enemys;
+
 public class EnemyAction {
 
+	private String action;
+	private Pair<Integer, Integer> target;
+	private Enemys enemy;
+	private Dungeon dg;
+	private MovingControl mc;
+	private boolean firstStep;
+	private boolean finished;
+	
+	public EnemyAction(Dungeon dg)
+	{
+		this.dg = dg;
+		mc = new MovingControl(dg,true);
+	}
+
 	public boolean already() {
-		// TODO Auto-generated method stub
+		if((!action.equals("")) && target != null && enemy != null)
+			return true;
 		return false;
 	}
 
-	public void act(double dt) {
-		// TODO Auto-generated method stub
+	public void act(double dt,double timing_keys_move) {
+		System.out.println("acao sobre inimigo: "+enemy);
+		switch(action)
+		{
+		case "walk":
+			
+			if(firstStep)
+			{
+				mc.update(dt,Pair.of(target.getSecond(),target.getFirst()),timing_keys_move,enemy,true);
+				firstStep = false;
+			}
+			else
+				mc.update(dt,null,timing_keys_move,enemy,true);
+			if(!mc.walking())
+			{
+				
+				finished = true;
+			}
+			System.out.println("andando");
+			break;
+		case "attack":
+			System.out.println("atacando "+target);
+			enemy.attack(target.getFirst(),target.getSecond(),dg.getCurrentRoom());
+			finished = true;
+			break;
+		}
 		
 	}
 
 	public boolean finished() {
-		// TODO Auto-generated method stub
-		return false;
+		return finished;
 	}
 
 	public void reset() {
-		// TODO Auto-generated method stub
+		action = "";
+		target = null;
+		enemy = null;
+		firstStep = false;
+		finished = false;
 		
 	}
 
-	public void getInfo() {
-		// TODO Auto-generated method stub
+	public void getInfo(GameContainer gc,Room room) throws NoEnemyHere {
+		if(enemy == null)
+		{	
+			System.out.println("escolhendo inimigo");
+			enemy = selectEnemy(room);
+			return;
+		}
+		if(target == null)
+		{
+			System.out.println("escolhendo alvo");
+			target = selectTarget(room);
+			return;
+		}
+		if(action == "")
+		{
+			System.out.println("inimigo quer ir para "+target);
+			action = decideAction(room);
+		}
 		
+	}
+
+	private String decideAction(Room room) {
+		Character entity = room.getEntityAt(this.target.getFirst(),this.target.getSecond());
+		if(entity == null)
+		{
+			firstStep=true;
+			return "walk";
+		}
+		return "attack";
+	}
+
+	private Pair<Integer, Integer> selectTarget(Room room) {
+		Pair<Integer, Integer> alvo =enemy.choseTarget(room);
+		if(alvo==null)
+		{
+			
+		}
+		return alvo;
+	}
+
+	private Enemys selectEnemy(Room room) throws NoEnemyHere {
+		return dg.getCurrentRoom().chooseEnemy();
 	}
 
 }

@@ -58,6 +58,12 @@ public abstract class Heroes extends Character{
       {
     	  this.selected = 1;
       }
+      public boolean getSelected()
+      {
+    	  if(this.selected==1)
+    		  return true;
+    	  return false;
+      }
 
 
 	public void incrementDef(int def)

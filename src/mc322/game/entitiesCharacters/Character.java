@@ -22,6 +22,7 @@ public abstract class Character extends Entity{
       protected int damage;
       protected double legSize;
       protected String name;
+      protected boolean dead;
 
       public Character(int i,int j,double elevation)
       {
@@ -48,8 +49,8 @@ public abstract class Character extends Entity{
             return this.name;
       }
 
-      protected String requestSolution(Room room, int iDest, int jDest,boolean ignoreHeroes) throws ImpossibleOriginOrDestiny, UnexpectedError{
-            char map[][] = room.builCharMap();
+      protected String requestSolution(Room room, int iDest, int jDest,boolean ignoreHeroes,boolean enemy) throws ImpossibleOriginOrDestiny, UnexpectedError{
+            char map[][] = room.builCharMap(enemy);
             String solution = GameBrain.solveMaze(map,this.i,this.j,iDest,jDest);
             return solution;
       }
@@ -67,8 +68,8 @@ public abstract class Character extends Entity{
       }
 
       public boolean followPointer(int i, int j, Room room, boolean ignoreHeroes, double timing_keys_move, 
-                  boolean movingToPointer){ // false: para de mover; true se ainda movendo;
-    	  
+                  boolean movingToPointer,boolean enemy){ // false: para de mover; true se ainda movendo;
+    	  System.out.println("estou em "+this.i+" "+this.j+" vou para "+i+" "+j);
             if(i == this.j && j == this.i) // o j dado eh o i atual e vice versa, ha uma inversao
             	{
             	//System.err.println("quero me mover pra onde eu ja estou");
@@ -80,10 +81,9 @@ public abstract class Character extends Entity{
 //            	System.err.println("solution: "+ solution+"  movingToPointer: "+movingToPointer+" solutionIndex : "+solutionIndex);
 //            	if(solution!=null)
 //            		System.err.println(" solution.length() "+solution.length());
-            	
+            	System.out.println("solucao "+ solution + " moving: "+movingToPointer);
                   if(solution != null && movingToPointer) {
-                	  System.out.println("ino");
-                        //System.out.println(solutionIndex);
+                	  System.out.println("resolvendo solucao");
                         if(this.move(solution.charAt(solutionIndex), room, timing_keys_move))
                               solutionIndex += 1;
                         if(solutionIndex == solution.length()) {
@@ -91,22 +91,24 @@ public abstract class Character extends Entity{
                               return false;
                         }
                   }
+                  System.out.println("to tentando1");
                   if(!movingToPointer){
-                	  System.err.println(" pedindo nova solucao");
-                        this.solution = requestSolution(room, i, j, ignoreHeroes);
+                	  System.out.println("pedindo nova solucao");
+                        this.solution = requestSolution(room, i, j, ignoreHeroes,enemy);
                         this.solutionIndex = 0;
                   }
+                  System.out.println("to tentando2");
             }
             catch(ImpossibleOriginOrDestiny e){
-                  //System.out.println("This place is inaccessable");
+                  System.out.println("This place is inaccessable");
                   return false;
             }
             catch(DoorSelected e){
-                  //System.out.println("Tentei entrar na porta");
-                  if(i==0) followPointer(i+1, j, room, ignoreHeroes, timing_keys_move, movingToPointer);
-                  if(j==0) followPointer(i, j+1, room, ignoreHeroes, timing_keys_move, movingToPointer);
-                  if(i==14)followPointer(i-1, j, room, ignoreHeroes, timing_keys_move, movingToPointer);
-                  if(j==14)followPointer(i, j-1, room, ignoreHeroes, timing_keys_move, movingToPointer);
+                  System.out.println("Tentei entrar na porta");
+                  if(i==0) followPointer(i+1, j, room, ignoreHeroes, timing_keys_move, movingToPointer,enemy);
+                  if(j==0) followPointer(i, j+1, room, ignoreHeroes, timing_keys_move, movingToPointer,enemy);
+                  if(i==14)followPointer(i-1, j, room, ignoreHeroes, timing_keys_move, movingToPointer,enemy);
+                  if(j==14)followPointer(i, j-1, room, ignoreHeroes, timing_keys_move, movingToPointer,enemy);
 
                   if(LinearAlgebra.getModulo(i-this.i)+LinearAlgebra.getModulo(j-this.j) == 1){
                         if(i==14)this.move('W',room, timing_keys_move);
@@ -117,9 +119,8 @@ public abstract class Character extends Entity{
                   solution = null;
                   return false;
             } catch (UnexpectedError e) {
-				//e.printStackTrace();
+				e.printStackTrace();
 			}
-            System.out.println("retornando true");
             return true;
       }
 
@@ -127,7 +128,7 @@ public abstract class Character extends Entity{
             int j = charac.getPos().getFirst();
             int i = charac.getPos().getSecond();
 
-            char map[][] = room.builCharMap();
+            char map[][] = room.builCharMap(false);
 
             if(".MN".indexOf(map[i][j]) != -1) {
                   if(map[i+1][j-1] == 'U'){ i += 1; j -= 1; }
@@ -140,7 +141,7 @@ public abstract class Character extends Entity{
 
             String solution;
 			try {
-				solution = requestSolution(room, i, j, ignoreHeroes);
+				solution = requestSolution(room, i, j, ignoreHeroes,false);
 			} catch (ImpossibleOriginOrDestiny e) {
 				//System.out.println("This place is inaccessable");
                 return;
@@ -209,6 +210,11 @@ public abstract class Character extends Entity{
           }
           if(room.isAccessible(i,j,this.elevation,this.legSize,this.updateDir,this)) return true;
           return false;
+    }
+    
+    public boolean getDead()
+    {
+    	return dead;
     }
 
 }

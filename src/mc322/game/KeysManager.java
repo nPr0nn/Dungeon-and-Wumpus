@@ -22,7 +22,7 @@ public abstract class KeysManager {
 //          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('W',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
-                  GameBrain.walk(dungeon, timing_keys_move);
+                  GameBrain.walk(dungeon, timing_keys_move,false);
                   return true;
             }
             if(gc.getInput().isKey('A') || gc.getInput().isKey(37)){
@@ -30,7 +30,7 @@ public abstract class KeysManager {
 //          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('A',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
-                  GameBrain.walk(dungeon, timing_keys_move);
+                  GameBrain.walk(dungeon, timing_keys_move,false);
                   return true;
             }
             if(gc.getInput().isKey('S') || gc.getInput().isKey(40)){
@@ -38,7 +38,7 @@ public abstract class KeysManager {
 //          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('S',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
-                  GameBrain.walk(dungeon, timing_keys_move);
+                  GameBrain.walk(dungeon, timing_keys_move,false);
                   return true;
             }
             if(gc.getInput().isKey('D') || gc.getInput().isKey(39)){
@@ -46,7 +46,7 @@ public abstract class KeysManager {
 //          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('D',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
-                  GameBrain.walk(dungeon, timing_keys_move);
+                  GameBrain.walk(dungeon, timing_keys_move,false);
                   return true;
             }
             GameRenderer.change_animation_state("idle", dungeon);
@@ -156,7 +156,7 @@ public abstract class KeysManager {
                 	  return null;
             	  }
 
-                  char map[][] = dungeon.getCurrentRoom().builCharMap();
+                  char map[][] = dungeon.getCurrentRoom().builCharMap(false);
                   
                   if(".MN".indexOf(map[i][j]) != 1) {
                 	  if(j>0 && i<14)

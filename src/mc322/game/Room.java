@@ -115,7 +115,10 @@ public class Room implements BasicObject {
 	                        	isEnemys = true;
 	                        }
                     		entities[i][j].update(dt);
-                    		
+                    		if(entities[i][j].getDead())
+                    		{
+                    			entities[i][j]=null;
+                    		}
                     		
                     	}
                         
@@ -258,7 +261,7 @@ public class Room implements BasicObject {
 
     	  Character removedEntity = null;
             if(entities[i][j] instanceof Heroes ) {
-                  if(charac == player)
+                  if(charac instanceof Heroes && ((Heroes)charac).getSelected())
                   {
                         removedEntity  = this.entities[i][j];
                   }
@@ -435,7 +438,7 @@ public class Room implements BasicObject {
             this.dungeon.setAtual(iSala,jSala);
       }
 
-      public char[][] builCharMap(){
+      public char[][] builCharMap(boolean enemy){
             char map[][] = new char[size][size];
             for(int i = 0; i < size; i++){
                   for(int j = 0; j < size; j++){
@@ -456,7 +459,7 @@ public class Room implements BasicObject {
                      if(entities[j][i]!=null)
                      {
                     	 //System.out.println(entities[j][i].getClass().getSuperclass()+"  "  +Enemys.class);
-                    	if(entities[j][i].getClass().getSuperclass() == Enemys.class)
+                    	if(entities[j][i].getClass().getSuperclass() == Enemys.class && !enemy)
                     	{
                     		//System.out.println("igaul j: "+j+" i "+i);
                     		map[i][j] = '#'; 
@@ -480,6 +483,76 @@ public class Room implements BasicObject {
 
 	public Character getEntityAt(int i, int j) {
 		return entities[i][j];
+	}
+
+	public Enemys chooseEnemy() throws NoEnemyHere {
+		int numOfEnemies = 0;
+		for(int i = 0;i<entities.length;i++)
+		{
+			for(int j = 0;j<entities.length;j++)
+			{
+				if(entities[i][j] instanceof Enemys)
+				{
+					numOfEnemies++;
+				}
+			}
+		}
+		if(numOfEnemies<1)
+			throw new NoEnemyHere();
+		Random rand = new Random();
+		int enemynumber = rand.nextInt(numOfEnemies);
+		
+		for(int i = 0;i<entities.length;i++)
+		{
+			for(int j = 0;j<entities.length;j++)
+			{
+				if(entities[i][j] instanceof Enemys)
+				{
+					if(enemynumber == 0)
+					{
+						return (Enemys) entities[i][j];
+					}
+					enemynumber--;
+				}
+			}
+		}
+		throw new NoEnemyHere();
+	}
+
+	public char[][] buildMapEnemyTarget() {
+		char map[][] = new char[size][size];
+		
+		for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                  Pair<Entity,Entity> tile = tiles.get(j).get(i);
+
+                  if(tile == null || tile.getFirst() instanceof SafeZone) map[i][j] = '.';
+                  else if(tile.getFirst() instanceof Platform && tile.getSecond()==null) map[i][j] = 'U';
+
+                  else if(tile.getFirst() instanceof Ladder ){
+                        if(tile.getFirst().getDirection() == 1) map[i][j] = 'M';
+                        else map[i][j] = 'N';
+                  }
+                  else if(tile.getFirst() instanceof Door) map[i][j] = 'D';
+                  else{
+                        map[i][j] = '#';
+                        continue;
+                  }
+               if(entities[j][i]!=null)
+               {
+              	if(entities[j][i] instanceof Heroes)
+              	{
+              		map[i][j] = 'O'; 
+              		continue;
+              	}
+              		
+               }
+               
+            }
+
+      }
+
+      return map;
 	}
 
 }

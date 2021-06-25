@@ -15,10 +15,10 @@ public class HeroAction {
 	private boolean firstStep;
 	private boolean finished;
 	
-	HeroAction(Dungeon dg)
+	public HeroAction(Dungeon dg)
 	{
 		this.dg = dg;
-		mc = new MovingControl(dg);
+		mc = new MovingControl(dg,false);
 	}
 
 	public boolean already() {
@@ -34,16 +34,16 @@ public class HeroAction {
 			
 			if(firstStep)
 			{
-				mc.update(dt,Pair.of(target.getSecond(),target.getFirst()),timing_keys_move,player);
+				mc.update(dt,Pair.of(target.getSecond(),target.getFirst()),timing_keys_move,player,true);
 				firstStep = false;
 			}
 			else
-				mc.update(dt,null,timing_keys_move,player);
+				mc.update(dt,null,timing_keys_move,player,true);
 			if(!mc.walking())
 				finished = true;
 			System.out.println("andando");
 			break;
-		case "atack":
+		case "attack":
 			System.out.println("atacando");
 			player.attack(target.getFirst(),target.getSecond(),dg.getCurrentRoom());
 			finished = true;
@@ -90,7 +90,7 @@ public class HeroAction {
 			firstStep=true;
 			return "walk";
 		}
-		return "atack";
+		return "attack";
 	}
 
 	private Pair<Integer, Integer> selectTarget(GameContainer gc) {

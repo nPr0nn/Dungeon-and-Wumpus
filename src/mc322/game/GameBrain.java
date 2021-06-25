@@ -244,6 +244,7 @@ public abstract class GameBrain{
     			  commands+="W";
     			  break;
     		  default:
+    			  //System.out.println("vendo: "+map[i][j]+" commands: "+commands);
     			  throw new UnexpectedError();
     			  
     		  }
@@ -412,17 +413,19 @@ public abstract class GameBrain{
     	}
       
 
-      static void walk(Dungeon dungeon, double timing_keys_move) {
+      static void walk(Dungeon dungeon, double timing_keys_move,boolean combat) {
             if(!dungeon.getFollow()){
                   GameRenderer.change_animation_state("idle", dungeon);
                   dungeon.getCurrentRoom().getPlayer().change_state("moving");
                   return;
             }
 
+            if(combat)
+            	return;
             Room cRoom = dungeon.getCurrentRoom();
             Random rand = new Random();
 
-            if(cRoom.getMilo() != cRoom.getPlayer()){
+            if(!cRoom.getMilo().getSelected()){
                   cRoom.getMilo().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
 
                   if(rand.nextInt(9)<7) 
@@ -431,14 +434,14 @@ public abstract class GameBrain{
                       cRoom.getMilo().followHero(cRoom.getRaju(),cRoom,false,timing_keys_move);
                 }
 
-                if(cRoom.getLuna() != cRoom.getPlayer()){
+                if(!cRoom.getLuna().getSelected()){
                       if(rand.nextInt(13)<9) 
                       cRoom.getLuna().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
                       else 
                       cRoom.getLuna().followHero(cRoom.getZe(),cRoom,false,timing_keys_move);
                 }
 
-                if(cRoom.getZe() != cRoom.getPlayer()) {
+                if(!cRoom.getZe().getSelected()) {
                       cRoom.getZe().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
 
                       if(rand.nextInt(15)<8) 
@@ -447,7 +450,7 @@ public abstract class GameBrain{
                       cRoom.getZe().followHero(cRoom.getLuna(),cRoom,false,timing_keys_move);
                 }
 
-                if(cRoom.getRaju() != cRoom.getPlayer()){
+                if(!cRoom.getRaju().getSelected()){
                       cRoom.getRaju().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
 
                       if(rand.nextInt(8)<5)
@@ -458,11 +461,66 @@ public abstract class GameBrain{
       }
       
       public static boolean mouse_action(Dungeon dungeon, double timing_keys_move, 
-              boolean movingToPointer, Pair<Integer, Integer> p,Character charac){
+              boolean movingToPointer, Pair<Integer, Integer> p,Character charac,boolean combat,boolean enemy){
     	  
-        boolean mov = charac.followPointer(p.getFirst(),p.getSecond(),dungeon.getCurrentRoom(),true,timing_keys_move,movingToPointer);
-        GameBrain.walk(dungeon, timing_keys_move);
+        boolean mov = charac.followPointer(p.getFirst(),p.getSecond(),dungeon.getCurrentRoom(),true,timing_keys_move,movingToPointer,enemy);
+        GameBrain.walk(dungeon, timing_keys_move,combat);
         return mov;
   }
+
+	public static Pair<Integer, Integer> chooseCloserHero(char[][] map, int iBeg, int jBeg, int range) {
+		
+		int distance = 0;
+		int distances[][] = new int[map.length][map.length];
+		for(int i0 = 0;i0<map.length;i0++)
+		{
+			for(int j0 = 0;j0<map.length;j0++)
+			{
+				distances[i0][j0]=-1;
+			}
+		}
+		
+		int dirI[]= {0,0,1,-1};
+		int dirJ[]= {1,-1,0,0};
+		
+		ArrayList<Pair<Integer,Integer>> news = new ArrayList<Pair<Integer,Integer>>();
+		news.add(Pair.of(iBeg,jBeg));
+		distances[iBeg][jBeg]=0;
+		
+		while(distance<range)
+		{
+			int nElements = news.size();
+			for(int n = 0;n<nElements;n++)
+			{
+				for(int k=0;k<4;k++)
+				{
+					if(news.get(n).getFirst()+dirI[k]<0||news.get(n).getFirst()+dirI[k]>=map.length||news.get(n).getSecond()+dirJ[k]<0||news.get(n).getSecond()+dirJ[k]>=map.length)
+						continue;
+					if(map[news.get(n).getFirst()+dirI[k]][news.get(n).getSecond()+dirJ[k]] == 'O')
+						return Pair.of(news.get(n).getFirst()+dirI[k],news.get(n).getSecond()+dirJ[k]);
+					if(distances[news.get(n).getFirst()+dirI[k]][news.get(n).getSecond()+dirJ[k]]==-1)
+					{
+						distances[news.get(n).getFirst()+dirI[k]][news.get(n).getSecond()+dirJ[k]] = distance;
+						news.add(Pair.of(news.get(n).getFirst()+dirI[k],news.get(n).getSecond()+dirJ[k]));
+					}
+				}
+			}
+			for(int n = 0;n<nElements;n++)
+				news.remove(0);
+			distance ++;
+		}
+		Random rand= new Random();
+		while(true)
+		{
+			System.out.println("decidinfo onde ir");
+			
+			int k = rand.nextInt(map.length);
+			int l = rand.nextInt(map.length);
+			if(map[k][l]=='.'||map[k][l]=='U')
+				return Pair.of(k,l);
+			
+		}
+		
+	}
 
 }

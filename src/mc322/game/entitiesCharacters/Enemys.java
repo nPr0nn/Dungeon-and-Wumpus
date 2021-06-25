@@ -2,10 +2,13 @@ package mc322.game.entitiesCharacters;
 
 import mc322.engine.LinearAlgebra;
 import mc322.engine.Pair;
+import mc322.game.GameBrain;
 import mc322.game.Room;
 
 public abstract class Enemys extends Character{
 
+	protected int range;
+	
       public Enemys(int i, int j,double elevation) {
             super(i, j, elevation);
       }
@@ -69,7 +72,11 @@ public abstract class Enemys extends Character{
             return false;
       }
 
-	public void atack(Pair<Integer, Integer> target, Room currentRoom) {
+	public Pair<Integer, Integer> choseTarget(Room room) {
+		char map[][] = room.buildMapEnemyTarget();
+		
+		return GameBrain.chooseCloserHero(map,this.i,this.j,range);
+		
 		
 	}
 }
