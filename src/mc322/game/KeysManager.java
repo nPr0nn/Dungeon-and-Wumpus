@@ -127,6 +127,11 @@ public abstract class KeysManager {
                   else
                         menu.setState("game");
             }
+            
+            
+            if(gc.getInput().isKeyDown('K')){
+            	System.out.println(game.dungeon.getCurrentRoom().getPlayer().getPos());
+          }
       }
 
       public static Pair<Integer, Integer> verifyMouseClick(GameContainer gc, Dungeon dungeon,Bag bag){
@@ -146,7 +151,8 @@ public abstract class KeysManager {
                   if( i > 14 || i < 0 || j < 0 || j > 14 )
             	  {
                 	  posClick = LinearAlgebra.toIsometrica(posClick);
-                	  bag.click(posClick.getSecond(),posClick.getFirst(),dungeon);
+                	  if(bag!=null)
+                		  bag.click(posClick.getSecond(),posClick.getFirst(),dungeon);
                 	  return null;
             	  }
 

@@ -2,6 +2,7 @@ package mc322.game;
 
 import mc322.engine.GameContainer;
 import mc322.engine.Pair;
+import mc322.game.entitiesCharacters.Character;
 
 public class MovingControl {
 
@@ -9,27 +10,27 @@ public class MovingControl {
 	private GameManager game;
 	private Dungeon dg;
 	
-	private Pair<Integer, Integer> lastMouseClick;
+	private Pair<Integer, Integer> lastDestiny;
 	private boolean movingToPointer;
 	
 	public MovingControl(GameManager game,Dungeon dg)
 	{
 		this.game=game;
 		this.dg=dg;
-		lastMouseClick = null;
+		lastDestiny = null;
 	}
 	
-	public void update(GameContainer gc,double dt,Pair<Integer, Integer> mouseClick, double timing_keys_move)
+	public void update(GameContainer gc,double dt,Pair<Integer, Integer> destiny, double timing_keys_move,Character charac)
 	{
-		if(mouseClick != null)
-			startWalk(mouseClick);
+		if(destiny != null)
+			startWalk(destiny);
 		
-        if(lastMouseClick != null)
+        if(lastDestiny != null)
         {
-              movingToPointer = GameBrain.mouse_action(gc,dg,timing_keys_move,movingToPointer,lastMouseClick);
+              movingToPointer = GameBrain.mouse_action(gc,dg,timing_keys_move,movingToPointer,lastDestiny,charac);
               if(!movingToPointer)
               {
-            	  lastMouseClick = null;
+            	  lastDestiny = null;
               }
         }
 	}
@@ -37,6 +38,6 @@ public class MovingControl {
 	public void startWalk(Pair<Integer, Integer> mouseClick)
 	{
 		movingToPointer = false;
-		lastMouseClick = mouseClick;
+		lastDestiny = mouseClick;
 	}
 }

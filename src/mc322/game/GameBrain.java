@@ -12,6 +12,7 @@ import mc322.game.entitiesCharacters.Luna;
 import mc322.game.entitiesCharacters.Milo;
 import mc322.game.entitiesCharacters.Raju;
 import mc322.game.entitiesCharacters.Ze;
+import mc322.game.entitiesCharacters.Character;
 import java.util.Random;
 
 
@@ -457,11 +458,10 @@ public abstract class GameBrain{
       }
       
       public static boolean mouse_action(GameContainer gc, Dungeon dungeon, double timing_keys_move, 
-              boolean movingToPointer, Pair<Integer, Integer> p){
+              boolean movingToPointer, Pair<Integer, Integer> p,Character charac){
 
         Room cRoom = dungeon.getCurrentRoom();
-        Heroes player = cRoom.getPlayer();
-        boolean mov = player.followPointer(p.getFirst(),p.getSecond(),cRoom,true,timing_keys_move,movingToPointer);
+        boolean mov = charac.followPointer(p.getFirst(),p.getSecond(),cRoom,true,timing_keys_move,movingToPointer);
         GameBrain.walk(dungeon, timing_keys_move);
         return mov;
   }

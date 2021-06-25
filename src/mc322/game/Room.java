@@ -31,8 +31,8 @@ public class Room implements BasicObject {
       private String color;
       private Dungeon dungeon;
       private boolean blocked;
-      private int i;
-      private int j;
+      public int i;
+      public int j;
 
       
       
@@ -53,7 +53,7 @@ public class Room implements BasicObject {
             
             
 //            numberRoom = "7";
-//            hasEnemys = false;
+            hasEnemys = false;
             
             
             if(color.equals("Origin"))
@@ -122,7 +122,7 @@ public class Room implements BasicObject {
                   }
             }
             if(!isEnemys)
-            	dungeon.setState("exploration");
+            	dungeon.setState("Exploration");
       }
 
       public void renderer(Renderer r) {
@@ -476,6 +476,10 @@ public class Room implements BasicObject {
 		if(this.entities[i][j] == null)
 			return;
 		entities[i][j].hurt(damage);
+	}
+
+	public Character getEntityAt(int i, int j) {
+		return entities[i][j];
 	}
 
 }

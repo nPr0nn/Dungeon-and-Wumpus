@@ -18,14 +18,14 @@ import mc322.engine.Input;
 import mc322.game.entitiesTiles.*;
 
 public class GameManager implements AbstractGame{
-	  private Dungeon dungeon;
+	  public Dungeon dungeon;
 	  private Menu menu;
 	  private AudioManager audio;
 	  private Bag bag;
 	  private MovingControl mv;
 	  private Turn turn;
 	
-	  private String STATE = "Exploration"; 
+	  private String STATE = ""; 
 	
 	  private double timing_keys_move;
 	  private double timing_background_light;
@@ -61,9 +61,9 @@ public class GameManager implements AbstractGame{
   	
   	public void setState(String state)
   	{
+  		
   		if(this.STATE.equals(state))
   			return;
-  		
   		
   		this.STATE = state;
   		if(this.STATE.equals("Combat"))
@@ -72,6 +72,7 @@ public class GameManager implements AbstractGame{
   		}
   		if(this.STATE.equals("Exploration"))
   		{
+  			
   			turn.stop();
   		}
   		audio.stopMusic();
@@ -90,13 +91,13 @@ public class GameManager implements AbstractGame{
                         timing_keys_move = 0;
 
                   }
-                  turn.update(dt);
+                  turn.update(gc,dt);
                   if(!this.STATE.equals("Combat"))
                   {
 	                  KeysManager.keys_action(gc,dungeon, bag);
 	                  mouseClickPoint = KeysManager.verifyMouseClick(gc,dungeon,bag);
 	                  if(KeysManager.keys_movement(gc,dungeon, timing_keys_move)) mouseClickPoint = null;
-	                  mv.update(gc,dt,mouseClickPoint,timing_keys_move);
+	                  mv.update(gc,dt,mouseClickPoint,timing_keys_move,dungeon.getCurrentRoom().getPlayer());
                   }
                   dungeon.update(dt);
                   timing_keys_move += dt;

@@ -1,5 +1,6 @@
 package mc322.game;
 
+import mc322.engine.GameContainer;
 import mc322.engine.Pair;
 import mc322.game.entitiesCharacters.Enemys;
 import mc322.game.entitiesCharacters.Heroes;
@@ -17,8 +18,10 @@ public class Turn {
 	{
 		combat = false;
 		this.dg = dg;
-		heroAction =new HeroAction();
+		heroAction =new HeroAction(dg);
+		heroAction.reset();
 		enemyAction =new EnemyAction();
+		enemyAction.reset();
 	}
 	
 //	public void update(double dt) {
@@ -65,7 +68,7 @@ public class Turn {
 //	}
 	
 	
-	public void update(double dt) {
+	public void update(GameContainer gc,double dt) {
 		if(!combat)
 			return;
 		if(playerTurn)
@@ -81,19 +84,26 @@ public class Turn {
 			}
 			else
 			{
-				heroAction.getInfo();
+				heroAction.getInfo(gc,dg.getCurrentRoom());
 			}
 			
 		}
 		else
 		{
-			enemyAction.getInfo();
-			enemyAction.act(dt);
-			if(enemyAction.finished())
+			if(enemyAction.already())
 			{
-				enemyAction.reset();
-				playerTurn = !playerTurn;
+				enemyAction.act(dt);
+				if(enemyAction.finished())
+				{
+					enemyAction.reset();
+					playerTurn = !playerTurn;
+				}
 			}
+			else
+			{
+				enemyAction.getInfo();
+			}
+			
 		}
 	}
 	
@@ -136,7 +146,10 @@ public class Turn {
 	}
 
 	public void stop() {
+		heroAction.reset();
+		enemyAction.reset();
 		combat = false;
+		playerTurn = false;
 		
 	}
 
