@@ -153,7 +153,7 @@ public abstract class KeysManager {
                   char map[][] = dungeon.getCurrentRoom().builCharMap();
                   
                   if(".MN".indexOf(map[i][j]) != 1) {
-                	  if(j>0)
+                	  if(j>0 && i<14)
                         if(map[i+1][j-1] == 'U'){
                               //System.out.print("palanque: ");
                               i += 1;

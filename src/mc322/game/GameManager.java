@@ -23,8 +23,9 @@ public class GameManager implements AbstractGame{
 	  private AudioManager audio;
 	  private Bag bag;
 	  private MovingControl mv;
+	  private Turn turn;
 	
-	  private String STATE = "exploration"; 
+	  private String STATE = "Exploration"; 
 	
 	  private double timing_keys_move;
 	  private double timing_background_light;
@@ -36,14 +37,12 @@ public class GameManager implements AbstractGame{
 	        dungeon = new Dungeon(this);
 	        audio = new AudioManager();
 	        menu = new Menu(this);
-	
+	        turn = new Turn(dungeon);
 	        this.pause =false;
 	        this.timing_keys_move = 0;
 	        this.timing_background_light = 0;
-	        
 	        this.mv = new MovingControl(this,dungeon);
 	        this.mouseClickPoint = null;
-	        audio.playMusic(GameMapTokens.getPathSound("Exploration"),true);
 	        bag = new Bag();
 	  }
 	
@@ -65,7 +64,16 @@ public class GameManager implements AbstractGame{
   		if(this.STATE.equals(state))
   			return;
   		
+  		
   		this.STATE = state;
+  		if(this.STATE.equals("Combat"))
+  		{
+  			turn.start();
+  		}
+  		if(this.STATE.equals("Exploration"))
+  		{
+  			turn.stop();
+  		}
   		audio.stopMusic();
   		audio.playMusic(GameMapTokens.getPathSound(state),true);
   	}
@@ -82,11 +90,14 @@ public class GameManager implements AbstractGame{
                         timing_keys_move = 0;
 
                   }
-
-                  KeysManager.keys_action(gc,dungeon, bag);
-                  mouseClickPoint = KeysManager.verifyMouseClick(gc,dungeon,bag);
-                  if(KeysManager.keys_movement(gc,dungeon, timing_keys_move)) mouseClickPoint = null;
-                  mv.update(gc,dt,mouseClickPoint,timing_keys_move);
+                  turn.update(dt);
+                  if(!this.STATE.equals("Combat"))
+                  {
+	                  KeysManager.keys_action(gc,dungeon, bag);
+	                  mouseClickPoint = KeysManager.verifyMouseClick(gc,dungeon,bag);
+	                  if(KeysManager.keys_movement(gc,dungeon, timing_keys_move)) mouseClickPoint = null;
+	                  mv.update(gc,dt,mouseClickPoint,timing_keys_move);
+                  }
                   dungeon.update(dt);
                   timing_keys_move += dt;
             }

@@ -1,6 +1,7 @@
 package mc322.game.entitiesCharacters;
 
 import mc322.engine.LinearAlgebra;
+import mc322.engine.Pair;
 import mc322.game.Room;
 
 public abstract class Enemys extends Character{
@@ -67,4 +68,8 @@ public abstract class Enemys extends Character{
             if(room.isAccessible(i,j,this.elevation,this.legSize,this.updateDir,this)) return true;
             return false;
       }
+
+	public void atack(Pair<Integer, Integer> target, Room currentRoom) {
+		
+	}
 }

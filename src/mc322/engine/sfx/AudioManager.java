@@ -26,7 +26,7 @@ public class AudioManager{
                   }
             } 
             catch (Exception ex){
-                  //System.out.println( "That was an error while playing that song" );
+                  System.out.println( "That was an error while playing that song" );
                   ex.printStackTrace();
             }  
       }
@@ -36,6 +36,8 @@ public class AudioManager{
 
       public void stopMusic(){
     	  if(muted)
+    		  return;
+    	  if(nMusics<1)
     		  return;
             try {
                   this.nMusics--;
