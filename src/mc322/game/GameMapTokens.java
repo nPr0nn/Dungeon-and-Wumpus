@@ -14,9 +14,9 @@ public abstract class GameMapTokens{
       private static String CSV = ".csv";
       private static String WAV = ".wav";
 
-      private static String ASSETS = "_assets";
-      private static String SOUNDS = "_sounds";
-      private static String DATA   = "_data";
+      private static String ASSETS = "../_assets";
+      private static String SOUNDS = "../_sounds";
+      private static String DATA   = "../_data";
 
       private static Map<String, ImageTile> mapTokens = new HashMap<>();
 
