@@ -18,37 +18,35 @@ import mc322.engine.Input;
 import mc322.game.entitiesTiles.*;
 
 public class GameManager implements AbstractGame{
-      private Dungeon dungeon;
-      private Menu menu;
-      private AudioManager audio;
-      private Bag bag;
-
-      private String STATE = "exploration"; 
-
-      private double timing_keys_move;
-      private double timing_background_light;
-
-      private Pair<Integer, Pair<Integer, Integer>> mouseClick;
-      private Pair<Integer, Integer> mouseClickPoint;
-      private boolean movingToPointer;
-      private boolean pause;
-
-      public GameManager(){
-            dungeon = new Dungeon();
-            audio = new AudioManager();
-            menu = new Menu(this);
-
-            this.pause =false;
-            this.timing_keys_move = 0;
-            this.timing_background_light = 0;
-            
-            this.movingToPointer = false;
-            this.mouseClick = null;
-            //audio.playMusic(GameMapTokens.getPathSound("BestAmbientMusic"),true);
-            bag = new Bag();
-      }
-
-      public void togglePause()
+	  public Dungeon dungeon;
+	  private Menu menu;
+	  private AudioManager audio;
+	  private Bag bag;
+	  private MovingControl mv;
+	  private Turn turn;
+	
+	  private String STATE = ""; 
+	
+	  private double timing_keys_move;
+	  private double timing_background_light;
+	
+	  private Pair<Integer, Integer> mouseClickPoint;
+	  private boolean pause;
+	
+	  public GameManager(){
+	        dungeon = new Dungeon(this);
+	        audio = new AudioManager();
+	        menu = new Menu(this);
+	        turn = new Turn(dungeon);
+	        this.pause =false;
+	        this.timing_keys_move = 0;
+	        this.timing_background_light = 0;
+	        this.mv = new MovingControl(dungeon,false);
+	        this.mouseClickPoint = null;
+	        bag = new Bag();
+	  }
+	
+	  public void togglePause()
       {
     	  this.pause = !this.pause;
       }
@@ -60,39 +58,60 @@ public class GameManager implements AbstractGame{
   	public void unpause() {
 		this.pause = false;
 	}
+  	
+  	public void setState(String state)
+  	{
+  		
+  		if(this.STATE.equals(state))
+  			return;
+  		
+  		this.STATE = state;
+  		if(this.STATE.equals("Combat"))
+  		{
+  			turn.start();
+  		}
+  		if(this.STATE.equals("Exploration"))
+  		{
+  			
+  			turn.stop();
+  		}
+  		audio.stopMusic();
+  		audio.playMusic(GameMapTokens.getPathSound(state),true);
+  	}
+  	
+  	public String getState()
+  	{
+  		return this.STATE;
+  	}
 
-
-      @Override
       public void update(GameContainer gc, double dt){
-
             if(timing_background_light > 3) timing_background_light = 0;
             if(!this.pause){
-
                   if(timing_keys_move > 0.12) {
                         timing_keys_move = 0;
 
                   }
-
-                  KeysManager.keys_action(gc,dungeon, bag);
-                  boolean cond = KeysManager.keys_movement(gc,dungeon, timing_keys_move);
-
-                  mouseClick = KeysManager.verifyMouseClick(gc,dungeon);
-                  if(!cond) mouseClickPoint = null;
-
-                  if(mouseClick != null){
-                        if(mouseClick.getFirst() == 1){
-                              movingToPointer = !movingToPointer;
-                              mouseClickPoint = mouseClick.getSecond();
-                        }
-                        if(mouseClickPoint != null)
-                              movingToPointer = KeysManager.mouse_action(gc,dungeon,timing_keys_move,movingToPointer,mouseClickPoint);
+                  turn.update(gc,dt,timing_keys_move);
+                  if(!this.STATE.equals("Combat"))
+                  {
+	                  KeysManager.keys_action(gc,dungeon, bag);
+	                  mouseClickPoint = KeysManager.verifyMouseClick(gc,dungeon,bag,false);
+                        boolean keyPressed = KeysManager.keys_movement(gc,dungeon, timing_keys_move);
+	                  if(keyPressed) mouseClickPoint = null;
+	                  mv.update(dt,mouseClickPoint,timing_keys_move,dungeon.getCurrentRoom().getPlayer(),false,keyPressed);
                   }
-
-                  dungeon.update(dt);
-	            timing_keys_move += dt;
+                  try {
+					dungeon.update(dt);
+				} catch (GameOver e) {
+					menu.setState("defeat") ;
+				} catch (Victory v)
+                  {
+					menu.setState("victory") ;
+                  }
+                  timing_keys_move += dt;
             }
-
             menu.update(dt);
+            bag.update(dt);
             timing_background_light += dt;
             KeysManager.keys_game_flow(gc,this, menu);
       }

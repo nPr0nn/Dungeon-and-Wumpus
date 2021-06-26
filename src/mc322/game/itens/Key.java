@@ -9,6 +9,13 @@ public class Key extends Item{
 	public Key(String Color)
 	{
 		this.Color = Color;
+            this.updateFrame = 0;
+            this.updateDir = 0; 
+
+            this.initAnimation = true;
+            this.velocityAnim = 8;
+            this.nFrames = 4;
+
 		switch(Color)
 		{
 		case "Black":
@@ -37,13 +44,13 @@ public class Key extends Item{
 	
 	@Override
 	public void update(double dt) {
-		// TODO Auto-generated method stub
-		
+		this.updateFrame += this.velocityAnim*dt;
 	}
 
 	@Override
 	public void renderer(Renderer r) {
-		GameRenderer.drawBag(25 + ((this.updateDir)%3)*2,4+((this.updateDir/3)*3),0, "key",r, 0, this.updateDir);
+            int renderer_frame = (int) this.updateFrame%nFrames;
+		GameRenderer.drawBag(24+((this.updateDir)%3)*2,4+((this.updateDir/3)*3),0,"key",r, renderer_frame, this.updateDir);
 		
 	}
 

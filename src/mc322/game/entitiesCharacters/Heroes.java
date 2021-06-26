@@ -50,61 +50,38 @@ public abstract class Heroes extends Character{
             if(this.selected == 1) this.selected = 0;
             else if(this.selected == 0) this.selected = 1;
       }
-
-      public void move(int i, int j,Room room) {
-            if(!((LinearAlgebra.getModulo(i-this.i)==1 && this.j==j)||(LinearAlgebra.getModulo(j-this.j)==1 && this.i==i)))
-                  return;
-            if(verifyMovement(i,j,room)==false)
-                  return;
-
-            int lastI = this.i;
-            int lastJ = this.j;
-            this.i = i;
-            this.j = j;
-            room.move(lastI,lastJ,i,j,this);
-            this.change_state("idle");
+      public void disselect()
+      {
+    	  this.selected = 0;
+      }
+      public void select()
+      {
+    	  this.selected = 1;
+      }
+      public boolean getSelected()
+      {
+    	  if(this.selected==1)
+    		  return true;
+    	  return false;
       }
 
-      public boolean move(char dir,Room room, double timing_keys_move){
-            if(timing_keys_move != 0) return false;
-            int tI=0;
-            int tJ=0;
-            int newDir = updateDir;
 
-            switch(dir){
-                  case 'A':
-                        tI = i;
-                        tJ = j-1;
-                        newDir = 2;
-                        break;
-                  case 'S':
-                        tI = i-1;
-                        tJ = j;
-                        newDir = 1;
-                        break;
-                  case 'D':
-                        tI = i;
-                        tJ = j+1;
-                        newDir = 0;
-                        break;
-                  case 'W':
-                        tI = i+1;
-                        tJ = j;
-                        newDir = 3;
-                        break;
-            }
-            this.updateDir = newDir;
+	public void incrementDef(int def)
+	{
+		this.armor+=def;
+	}
+	public void incrementHP(int life)
+	{
+		this.hpMax+=life;
+	}
+	public void incrementStrength(int str)
+	{
+		this.damage+=str;
+	}
 
-            move(tI,tJ,room);
-            return true;
-      }
-
-      protected boolean verifyMovement(int i, int j, Room room) {
-            if(room == null){
-                  System.out.println("erro: sala e nula");
-                  return false;
-            }
-            if(room.isAccessible(i,j,this.elevation,this.legSize,this.updateDir,this)) return true;
-            return false;
-      }
+	public void printStatus() {
+		System.out.println("HP max: "+ hpMax+" hp: "+ hp+" damage: "+damage+" armor: "+armor);
+		
+	}
+	
 }

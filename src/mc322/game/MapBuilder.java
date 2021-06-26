@@ -13,8 +13,10 @@ import mc322.game.entitiesCharacters.Heroes;
 import mc322.game.entitiesCharacters.Luna;
 import mc322.game.entitiesCharacters.Milo;
 import mc322.game.entitiesCharacters.Raju;
+import mc322.game.entitiesCharacters.Wumpus;
 import mc322.game.entitiesCharacters.Ze;
 import mc322.game.entitiesTiles.*;
+import mc322.game.entitiesCharacters.Character;
 
 public class MapBuilder{
 
@@ -122,6 +124,15 @@ public class MapBuilder{
                                     rooms[i][j] = new Room(this, pi, rooms_around,"Purple", dungeon,selectedRoom[1]==0);
                                     selectedRoom[1]--;
                                     break;
+                              case 'o':
+                                  rooms[i][j] = new Room(this, pi, rooms_around,"Origin", dungeon,false);
+                                  selectedRoom[1]--;
+                                  break;
+                                  
+                              case 'w':
+                                  rooms[i][j] = new Room(this, pi, rooms_around,"Wumpus", dungeon,false);
+                                  selectedRoom[1]--;
+                                  break;
                               case '0':
                               default:
                                     rooms[i][j] = null;
@@ -185,9 +196,9 @@ public class MapBuilder{
             return false;
       }
 
-      public Entity[][] buildEntities(int size,Pair<Integer,Integer> pos,String numberRoom,Room room,boolean buildEnemys) {
+      public Character[][] buildEntities(int size,Pair<Integer,Integer> pos,String numberRoom,Room room,boolean buildEnemys,boolean wumpus) {
             player = null;
-            Entity entities[][] = new Entity[size][size];
+            Character entities[][] = new Character[size][size];
 
             CSVHandling scannerCSV = new CSVHandling();
             scannerCSV.setDataSource(GameMapTokens.getRoomPATH(numberRoom));
@@ -216,8 +227,7 @@ public class MapBuilder{
                   room.setPlayer(player);
 
             }
-            buildEnemys = false;
-            if(buildEnemys)
+            if(buildEnemys && !wumpus)
             {
             	Random rand = new Random();
             	int numberOfEnemys = rand.nextInt(5);
@@ -240,6 +250,10 @@ public class MapBuilder{
             			}
             		}
             	}
+            }
+            if(wumpus)
+            {
+            	entities[size/2][size/2] = new Wumpus(size/2,size/2,0);
             }
             
             return entities;

@@ -1,10 +1,14 @@
 package mc322.game.entitiesCharacters;
 
 import mc322.engine.LinearAlgebra;
+import mc322.engine.Pair;
+import mc322.game.GameBrain;
 import mc322.game.Room;
 
 public abstract class Enemys extends Character{
 
+	protected int range;
+	
       public Enemys(int i, int j,double elevation) {
             super(i, j, elevation);
       }
@@ -67,4 +71,12 @@ public abstract class Enemys extends Character{
             if(room.isAccessible(i,j,this.elevation,this.legSize,this.updateDir,this)) return true;
             return false;
       }
+
+	public Pair<Integer, Integer> choseTarget(Room room) {
+		char map[][] = room.buildMapEnemyTarget();
+		
+		return GameBrain.chooseCloserHero(map,this.j,this.i,range);
+		
+		
+	}
 }

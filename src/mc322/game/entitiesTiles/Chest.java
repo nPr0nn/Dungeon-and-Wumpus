@@ -5,7 +5,9 @@ import java.util.Random;
 
 import mc322.engine.Pair;
 import mc322.engine.Renderer;
+import mc322.engine.sfx.AudioManager;
 import mc322.game.Entity;
+import mc322.game.GameMapTokens;
 import mc322.game.GameRenderer;
 import mc322.game.itens.HealthPotion;
 import mc322.game.itens.Item;
@@ -30,15 +32,15 @@ public class Chest extends Entity{
             this.updateFrame = 0;
             Random rand = new Random();
             int num = rand.nextInt(60);
-            if(num%2==0)//2
+            if(num%1==0)//2
             {
                   insertItem(new HealthPotion());
             }
-            if(num%5==0)//5
+            if(num%1==0)//5
             {
                   insertItem(new StrengthPotion());
             }
-            if(num%6==0)//6
+            if(num%1==0)//6
             {
                   insertItem(new ResistancePotion());
             }
@@ -78,6 +80,8 @@ public class Chest extends Entity{
       }
 
       public ArrayList<Item> getItens() {
+    	  	AudioManager audio = new AudioManager();
+    	  	audio.playMusic(GameMapTokens.getPathSound("Discover"),false);
             ArrayList<Item> removedItens = itens;
             itens = null;
             return removedItens;

@@ -11,18 +11,30 @@ public class Dungeon implements BasicObject{
       private boolean follow = true;
       private Room[][] rooms;
       private Pair <Integer, Integer> pos;
-
-      public Dungeon(){
+      private GameManager game;
+      
+      public Dungeon(GameManager game){
+    	  this.game = game;
             MapBuilder mapBuilder = new MapBuilder();
             this.rooms = mapBuilder.buildRooms(GameMapTokens.getDungeonPATH(),this);
             this.pos   = GameBrain.getOrigin();
       }
 
       @Override
-      public void update(double dt){
+      public void update(double dt) throws GameOver{
     	  getCurrentRoom().update(dt);
       }
 
+      public void setState(String state)
+    	{
+    		this.game.setState(state);
+    	}
+      
+      public String getState()
+  	{
+  		return this.game.getState();
+  	}
+      
       @Override
       public void renderer(Renderer r){
             getCurrentRoom().renderer(r);

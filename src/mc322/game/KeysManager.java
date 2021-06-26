@@ -16,32 +16,41 @@ public abstract class KeysManager {
       protected int jPointer;
 
       public static boolean keys_movement(GameContainer gc, Dungeon dungeon, double timing_keys_move){
+    	  
             if(gc.getInput().isKey('W') || gc.getInput().isKey(38)){
+//            	if(dungeon.getState().equals("Combat"))
+//          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('W',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
-                  GameBrain.walk(dungeon, timing_keys_move);
-                  return false;
+                  GameBrain.walk(dungeon, timing_keys_move,false);
+                  return true;
             }
             if(gc.getInput().isKey('A') || gc.getInput().isKey(37)){
+//            	if(dungeon.getState().equals("Combat"))
+//          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('A',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
-                  GameBrain.walk(dungeon, timing_keys_move);
-                  return false;
+                  GameBrain.walk(dungeon, timing_keys_move,false);
+                  return true;
             }
             if(gc.getInput().isKey('S') || gc.getInput().isKey(40)){
+//            	if(dungeon.getState().equals("Combat"))
+//          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('S',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
-                  GameBrain.walk(dungeon, timing_keys_move);
-                  return false;
+                  GameBrain.walk(dungeon, timing_keys_move,false);
+                  return true;
             }
             if(gc.getInput().isKey('D') || gc.getInput().isKey(39)){
+//            	if(dungeon.getState().equals("Combat"))
+//          		  return false;
                   dungeon.getCurrentRoom().getPlayer().move('D',dungeon.getCurrentRoom(), timing_keys_move);
                   GameRenderer.change_animation_state("moving", dungeon);
-                  GameBrain.walk(dungeon, timing_keys_move);
-                  return false;
+                  GameBrain.walk(dungeon, timing_keys_move,false);
+                  return true;
             }
             GameRenderer.change_animation_state("idle", dungeon);
-            return true;
+            return false;
       }
 
 
@@ -101,6 +110,7 @@ public abstract class KeysManager {
 
             if(gc.getInput().isKeyDown('I')){
                   System.out.println("Bag: "+bag);
+                  dungeon.getCurrentRoom().getPlayer().printStatus();
             }
             if(gc.getInput().isKeyDown('G')){
             	dungeon.getCurrentRoom().getPlayer().hurt(20);
@@ -117,14 +127,19 @@ public abstract class KeysManager {
                   else
                         menu.setState("game");
             }
+            
+            
+            if(gc.getInput().isKeyDown('K')){
+            	System.out.println(game.dungeon.getCurrentRoom().getPlayer().getPos());
+          }
       }
 
-      public static Pair<Integer, Pair<Integer, Integer>> verifyMouseClick(GameContainer gc, Dungeon dungeon){
-            int clicked = 0;
+      public static Pair<Integer, Integer> verifyMouseClick(GameContainer gc, Dungeon dungeon,Bag bag,boolean seeEnemy){
 
             if(gc.getInput().wasClicked()){
-                  clicked = 1;
                   Pair<Integer, Integer> posClick = gc.getInput().getClick();
+                  
+                  
                   //System.out.println("x: "+posClick.getFirst()+" y: "+posClick.getSecond());
                   posClick = LinearAlgebra.toCartesianas(posClick);
 
@@ -133,42 +148,36 @@ public abstract class KeysManager {
                   i /= 32;
                   j /= 32;
 
-                  if( i > 14 || i < 0 || j < 0 || j > 14 ) return null;
+                  if( i > 14 || i < 0 || j < 0 || j > 14 )
+            	  {
+                	  posClick = LinearAlgebra.toIsometrica(posClick);
+                	  if(bag!=null)
+                		  bag.click(posClick.getSecond(),posClick.getFirst(),dungeon);
+                	  return null;
+            	  }
 
-                  char map[][] = dungeon.getCurrentRoom().builCharMap();
+                  char map[][] = dungeon.getCurrentRoom().builCharMap(seeEnemy);
                   
                   if(".MN".indexOf(map[i][j]) != 1) {
+                	  if(j>0 && i<14)
                         if(map[i+1][j-1] == 'U'){
-                              System.out.print("palanque: ");
+                              //System.out.print("palanque: ");
                               i += 1;
                               j -= 1;
                         }
-                        else System.out.print("chao: ");
+                        //else System.out.print("chao: ");
                   }
                   else if(map[i][j] == 'U'){
-                        System.out.print("palanque: ");
+                        //System.out.print("palanque: ");
                         i += 1;
                         j -= 1;
 
                   }
 
-                  System.out.println("i: " + i + ", j: " + j);
-                  return Pair.of(clicked, Pair.of(i, j));
+                  //System.out.println("i: " + i + ", j: " + j);
+                  return Pair.of(i, j);
             }
 
-            return Pair.of(clicked, null);
+            return null;
       }
-
-      public static boolean mouse_action(GameContainer gc, Dungeon dungeon, double timing_keys_move, 
-                  boolean movingToPointer, Pair<Integer, Integer> p){
-
-            Room cRoom = dungeon.getCurrentRoom();
-            Heroes player = cRoom.getPlayer();
-            boolean mov = player.followPointer(p.getFirst(),p.getSecond(),cRoom,true,timing_keys_move,movingToPointer);
-
-            GameBrain.walk(dungeon, timing_keys_move);
-            return mov;
-      }
-
-
 }

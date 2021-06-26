@@ -1,7 +1,10 @@
 package mc322.game.entitiesCharacters;
 
+import mc322.engine.LinearAlgebra;
 import mc322.engine.Renderer;
 import mc322.game.GameRenderer;
+import mc322.game.Room;
+import mc322.game.Victory;
 
 public class Eye extends Enemys{
 
@@ -23,19 +26,24 @@ public class Eye extends Enemys{
             hpMax = 100;
             hp = hpMax;
             armor = 5;
+            range = 5;
+            damage = 40;
 	}
 	
 
-	public void attack(int i, int j) {
-		
+	public void attack(int i,int j, Room room) {
+		if(LinearAlgebra.getModulo(i-this.i)>range || LinearAlgebra.getModulo(j-this.j)>range)
+			return;
+		else
+			room.atack(i,j,this.damage);
 	}
 
-	public void die() {
-		
-	}
 
-	public void update(double dt) {
+	public void update(double dt) throws Victory {
+		if(hp<=0)
+			this.die();
             this.updateFrame += this.velocityAnim*dt;
+            
 	}
 
 	public void renderer(Renderer r) {

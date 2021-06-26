@@ -56,8 +56,8 @@ public class GameRenderer {
     	  
     	  int horixontalDistance = 40;
     	  int verticalDistance = 10;
-    	  r.fillRect(verticalDistance+j,horixontalDistance+i,verticalDistance+j+10,horixontalDistance+i+((int)hpMax),50,50,50);
-    	  r.fillRect(verticalDistance+j,horixontalDistance+i,verticalDistance+j+10,horixontalDistance+i+((int)hp),red,green,100);
+    	  r.fillRect(verticalDistance+j,horixontalDistance+i,verticalDistance+j+7,horixontalDistance+i+((int)hpMax),50,50,50);
+    	  r.fillRect(verticalDistance+j,horixontalDistance+i,verticalDistance+j+7,horixontalDistance+i+((int)hp),red,green,100);
     	  
       }
       
@@ -91,9 +91,13 @@ public class GameRenderer {
       public static void change_animation_state(String state, Dungeon dungeon){
             Room cRoom = dungeon.getCurrentRoom();
 
+            if(cRoom.getMilo()!=null)
             cRoom.getMilo().change_state(state);
+            if(cRoom.getLuna()!=null)
             cRoom.getLuna().change_state(state);
+            if(cRoom.getRaju()!=null)
             cRoom.getRaju().change_state(state);
+            if(cRoom.getZe()!=null)
             cRoom.getZe().change_state(state);
 
             return;

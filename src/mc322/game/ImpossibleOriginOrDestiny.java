@@ -1,6 +1,6 @@
 package mc322.game;
 
-public class ImpossibleOriginOrDestiny extends RuntimeException{
+public class ImpossibleOriginOrDestiny extends Exception{
 
       private static final long serialVersionUID = 4251364228306816660L;
 
