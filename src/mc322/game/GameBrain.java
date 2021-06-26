@@ -20,7 +20,7 @@ public abstract class GameBrain{
 
       public static Pair<Integer, Integer> getOrigin(){
             //Purple:
-            Pair <Integer, Integer> origin = Pair.of(11, 1);
+            //Pair <Integer, Integer> origin = Pair.of(11, 1);
 
             //Green:
             //Pair <Integer, Integer> origin = Pair.of(8, 12);
@@ -35,7 +35,7 @@ public abstract class GameBrain{
             //Pair <Integer, Integer> origin = Pair.of(13, 12);
 
             //Black
-            //Pair <Integer, Integer> origin = Pair.of(3, 14);
+            Pair <Integer, Integer> origin = Pair.of(3, 14);
             return origin;
       }
 

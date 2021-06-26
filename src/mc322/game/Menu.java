@@ -26,10 +26,15 @@ public class Menu implements BasicObject{
 		{
 		case "map":
 			this.game.pause();
-			
 			break;
 		case "game":
 			this.game.unpause();
+			break;
+		case "victory":
+			this.game.pause();
+			break;
+		case "defeat":
+			this.game.pause();
 			break;
 		default:
 			break;
@@ -46,8 +51,13 @@ public class Menu implements BasicObject{
 		switch(this.STATE)
 		{
 		case "map":
-			GameRenderer.drawMenu(-70,-140,"DungeonMap",r);
-			
+			GameRenderer.drawMenu(100,0,"DungeonMap",r);
+			break;
+		case "victory":
+			GameRenderer.drawMenu(100,0,"Victory",r);
+			break;
+		case "defeat":
+			GameRenderer.drawMenu(100,0,"Defeat",r);
 			break;
 		default:
 			break;

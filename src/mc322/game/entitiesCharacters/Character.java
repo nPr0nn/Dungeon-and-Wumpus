@@ -11,6 +11,7 @@ import mc322.game.ImpossibleOriginOrDestiny;
 import mc322.game.DoorSelected;
 import mc322.game.Entity;
 import mc322.game.Room;
+import mc322.game.Victory;
 
 public abstract class Character extends Entity{
 
@@ -36,7 +37,7 @@ public abstract class Character extends Entity{
       //public abstract void change_state(String state);
       public abstract void attack(int i,int j, Room room);
 
-  	public void die() {
+  	public void die() throws Victory {
   		//System.out.println(this+ " morreu");
   		dead = true;
   	}

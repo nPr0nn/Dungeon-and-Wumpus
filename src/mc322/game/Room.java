@@ -56,10 +56,10 @@ public class Room implements BasicObject {
             boolean hasEnemys = true;
             
             
-            numberRoom = "5";
-//            hasEnemys = false;
+//            numberRoom = "5";
+            hasEnemys = false;
             
-            
+            boolean wumpus = false;
             if(color.equals("Origin"))
             {
             	numberRoom="0";
@@ -67,10 +67,18 @@ public class Room implements BasicObject {
             	this.color = "Purple";
             }
             
+            if(color.equals("Wumpus"))
+            {
+            	numberRoom="wumpus";
+            	hasEnemys = false;
+            	this.color = "Black";
+            	wumpus = true;
+            }
+            
             this.blocked = true;
 
             tiles = mapBuilder.buildTiles(size, pos, rooms_around,numberRoom,this);
-            entities = mapBuilder.buildEntities(size, pos, numberRoom,this,hasEnemys);
+            entities = mapBuilder.buildEntities(size, pos, numberRoom,this,hasEnemys,wumpus);
             this.updateHerosAtRoom();
             if(hasKey)
             {

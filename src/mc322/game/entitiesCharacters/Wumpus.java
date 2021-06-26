@@ -6,12 +6,12 @@ import mc322.game.GameRenderer;
 import mc322.game.Room;
 import mc322.game.Victory;
 
-public class Eye extends Enemys{
+public class Wumpus extends Enemys{
 
-	public Eye(int i, int j,double elevation)
+	public Wumpus(int i, int j,double elevation)
 	{
 		super(i,j,elevation);
-		this.name = "Eye";
+		this.name = "Wumpus";
             this.state = "idle";
 
             this.updateDir = 0;
@@ -23,10 +23,10 @@ public class Eye extends Enemys{
 
             this.nFrames = this.nFramesIdle = 4;
             this.nFramesMoving = 4;
-            hpMax = 100;
+            hpMax = 200;
             hp = hpMax;
-            armor = 5;
-            range = 5;
+            armor = 10;
+            range = 15;
             damage = 40;
 	}
 	
@@ -39,13 +39,19 @@ public class Eye extends Enemys{
 	}
 
 
-	public void update(double dt) throws Victory {
+	public void update(double dt){
 		if(hp<=0)
 			this.die();
             this.updateFrame += this.velocityAnim*dt;
             
 	}
 
+ 	public void die() throws Victory {
+ 		dead = true;
+  		throw new Victory();
+  		
+  	}
+	
 	public void renderer(Renderer r) {
 		GameRenderer.drawEnemy(i,j,elevation,name,r, (int)updateFrame%nFrames,this.updateDir,this.state);
 		GameRenderer.drawLifeEnemy(i,j,elevation,this.hpMax,this.hp,r);

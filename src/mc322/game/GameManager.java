@@ -102,8 +102,11 @@ public class GameManager implements AbstractGame{
                   try {
 					dungeon.update(dt);
 				} catch (GameOver e) {
-					e.printStackTrace();
-				}
+					menu.setState("defeat") ;
+				} catch (Victory v)
+                  {
+					menu.setState("victory") ;
+                  }
                   timing_keys_move += dt;
             }
             menu.update(dt);
