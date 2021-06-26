@@ -16,6 +16,7 @@ public class EnemyAction {
 	private MovingControl mc;
 	private boolean firstStep;
 	private boolean finished;
+	private int counter;
 	
 	public EnemyAction(Dungeon dg)
 	{
@@ -30,7 +31,7 @@ public class EnemyAction {
 	}
 
 	public void act(double dt,double timing_keys_move) {
-		System.out.println("acao sobre inimigo: "+enemy);
+		//System.out.println("acao sobre inimigo: "+enemy);
 		switch(action)
 		{
 		case "walk":
@@ -47,10 +48,15 @@ public class EnemyAction {
 				
 				finished = true;
 			}
-			System.out.println("andando");
+			counter++;
+			if(counter > 100)
+			{
+				finished = true;
+			}
+			//System.out.println("andando");
 			break;
 		case "attack":
-			System.out.println("atacando "+target);
+			//System.out.println("atacando "+target);
 			enemy.attack(target.getFirst(),target.getSecond(),dg.getCurrentRoom());
 			finished = true;
 			break;
@@ -68,25 +74,26 @@ public class EnemyAction {
 		enemy = null;
 		firstStep = false;
 		finished = false;
+		counter = 0;
 		
 	}
 
 	public void getInfo(GameContainer gc,Room room) throws NoEnemyHere {
 		if(enemy == null)
 		{	
-			System.out.println("escolhendo inimigo");
+//			System.out.println("escolhendo inimigo");
 			enemy = selectEnemy(room);
 			return;
 		}
 		if(target == null)
 		{
-			System.out.println("escolhendo alvo");
+//			System.out.println("escolhendo alvo");
 			target = selectTarget(room);
 			return;
 		}
 		if(action == "")
 		{
-			System.out.println("inimigo quer ir para "+target);
+//			System.out.println("inimigo quer ir para "+target);
 			action = decideAction(room);
 		}
 		

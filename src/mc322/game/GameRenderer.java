@@ -91,9 +91,13 @@ public class GameRenderer {
       public static void change_animation_state(String state, Dungeon dungeon){
             Room cRoom = dungeon.getCurrentRoom();
 
+            if(cRoom.getMilo()!=null)
             cRoom.getMilo().change_state(state);
+            if(cRoom.getLuna()!=null)
             cRoom.getLuna().change_state(state);
+            if(cRoom.getRaju()!=null)
             cRoom.getRaju().change_state(state);
+            if(cRoom.getZe()!=null)
             cRoom.getZe().change_state(state);
 
             return;

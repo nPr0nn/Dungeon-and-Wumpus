@@ -37,7 +37,7 @@ public abstract class Character extends Entity{
       public abstract void attack(int i,int j, Room room);
 
   	public void die() {
-  		System.out.println(this+ " morreu");
+  		//System.out.println(this+ " morreu");
   		dead = true;
   	}
       public void hurt(int damage)
@@ -74,7 +74,7 @@ public abstract class Character extends Entity{
 
       public boolean followPointer(int i, int j, Room room, boolean ignoreHeroes, double timing_keys_move, 
                   boolean movingToPointer,boolean enemy){ // false: para de mover; true se ainda movendo;
-    	  System.out.println("estou em "+this.i+" "+this.j+" vou para "+i+" "+j);
+//    	  System.out.println("estou em "+this.i+" "+this.j+" vou para "+i+" "+j);
             if(i == this.j && j == this.i) // o j dado eh o i atual e vice versa, ha uma inversao
             	{
             	//System.err.println("quero me mover pra onde eu ja estou");
@@ -86,9 +86,9 @@ public abstract class Character extends Entity{
 //            	System.err.println("solution: "+ solution+"  movingToPointer: "+movingToPointer+" solutionIndex : "+solutionIndex);
 //            	if(solution!=null)
 //            		System.err.println(" solution.length() "+solution.length());
-            	System.out.println("solucao "+ solution + " moving: "+movingToPointer);
+//            	System.out.println("solucao "+ solution + " moving: "+movingToPointer);
                   if(solution != null && movingToPointer) {
-                	  System.out.println("resolvendo solucao");
+//                	  System.out.println("resolvendo solucao");
                         if(this.move(solution.charAt(solutionIndex), room, timing_keys_move))
                               solutionIndex += 1;
                         if(solutionIndex == solution.length()) {
@@ -96,20 +96,20 @@ public abstract class Character extends Entity{
                               return false;
                         }
                   }
-                  System.out.println("to tentando1");
+//                  System.out.println("to tentando1");
                   if(!movingToPointer){
-                	  System.out.println("pedindo nova solucao");
+//                	  System.out.println("pedindo nova solucao");
                         this.solution = requestSolution(room, i, j, ignoreHeroes,enemy);
                         this.solutionIndex = 0;
                   }
-                  System.out.println("to tentando2");
+//                  System.out.println("to tentando2");
             }
             catch(ImpossibleOriginOrDestiny e){
-                  System.out.println("This place is inaccessable");
+//                  System.out.println("This place is inaccessable");
                   return false;
             }
             catch(DoorSelected e){
-                  System.out.println("Tentei entrar na porta");
+//                  System.out.println("Tentei entrar na porta");
                   if(i==0) followPointer(i+1, j, room, ignoreHeroes, timing_keys_move, movingToPointer,enemy);
                   if(j==0) followPointer(i, j+1, room, ignoreHeroes, timing_keys_move, movingToPointer,enemy);
                   if(i==14)followPointer(i-1, j, room, ignoreHeroes, timing_keys_move, movingToPointer,enemy);

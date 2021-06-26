@@ -210,7 +210,7 @@ public abstract class GameBrain{
 //            return null;
 //      }
 
-      private static String generateCommands(char map[][],int j,int i) throws UnexpectedError
+      private static String generateCommands(char map[][],int j,int i) throws ImpossibleOriginOrDestiny
       {
     	i +=j;
   		j = i-j;
@@ -245,7 +245,7 @@ public abstract class GameBrain{
     			  break;
     		  default:
     			  //System.out.println("vendo: "+map[i][j]+" commands: "+commands);
-    			  throw new UnexpectedError();
+    			  throw new ImpossibleOriginOrDestiny();
     			  
     		  }
     	  }
@@ -425,38 +425,46 @@ public abstract class GameBrain{
             Room cRoom = dungeon.getCurrentRoom();
             Random rand = new Random();
 
-            if(!cRoom.getMilo().getSelected()){
+            if(cRoom.getMilo()!=null && !cRoom.getMilo().getSelected()){
                   cRoom.getMilo().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
 
-                  if(rand.nextInt(9)<7) 
+                  if(rand.nextInt(9)<7 && cRoom.getLuna()!=null)
                       cRoom.getMilo().followHero(cRoom.getLuna(),cRoom,false,timing_keys_move);
-                      else 
+                      else if(cRoom.getLuna()!=null)
                       cRoom.getMilo().followHero(cRoom.getRaju(),cRoom,false,timing_keys_move);
+                      else
+                      cRoom.getMilo().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
                 }
 
-                if(!cRoom.getLuna().getSelected()){
+                if(cRoom.getLuna()!=null && !cRoom.getLuna().getSelected()){
                       if(rand.nextInt(13)<9) 
                       cRoom.getLuna().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
-                      else 
+                      else if(cRoom.getLuna()!=null)
                       cRoom.getLuna().followHero(cRoom.getZe(),cRoom,false,timing_keys_move);
+                      else
+                          cRoom.getLuna().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
                 }
 
-                if(!cRoom.getZe().getSelected()) {
+                if(cRoom.getZe()!=null && !cRoom.getZe().getSelected()) {
                       cRoom.getZe().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
 
-                      if(rand.nextInt(15)<8) 
+                      if(rand.nextInt(15)<8 && cRoom.getRaju()!=null) 
                       cRoom.getZe().followHero(cRoom.getRaju(),cRoom,false,timing_keys_move);
-                      else
+                      else if(cRoom.getLuna()!=null)
                       cRoom.getZe().followHero(cRoom.getLuna(),cRoom,false,timing_keys_move);
+                      else
+                          cRoom.getZe().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
                 }
 
-                if(!cRoom.getRaju().getSelected()){
+                if(cRoom.getRaju()!=null && !cRoom.getRaju().getSelected()){
                       cRoom.getRaju().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
 
-                      if(rand.nextInt(8)<5)
+                      if(rand.nextInt(8)<5 && cRoom.getMilo()!=null)
                       cRoom.getRaju().followHero(cRoom.getMilo(),cRoom,false,timing_keys_move);
-                      else 
+                      else if(cRoom.getLuna()!=null)
                       cRoom.getRaju().followHero(cRoom.getLuna(),cRoom,false,timing_keys_move);
+                      else
+                          cRoom.getRaju().followHero(cRoom.getPlayer(),cRoom,false,timing_keys_move);
                 }
       }
       
@@ -489,23 +497,23 @@ public abstract class GameBrain{
 		
 		while(distance<range)
 		{
-			for(int i0 = 0;i0<map.length;i0++,System.out.println())
-			{
-				for(int j0 = 0;j0<map.length;j0++)
-				{
-					if(i0==iBeg && j0 == jBeg)
-						System.out.print('B');
-					else
-					System.out.print(map[i0][j0]);
-				}
-			}
-			for(int i0 = 0;i0<map.length;i0++,System.out.println())
-			{
-				for(int j0 = 0;j0<map.length;j0++)
-				{
-					System.out.print((distances[i0][j0]+1)%9);
-				}
-			}
+//			for(int i0 = 0;i0<map.length;i0++,System.out.println())
+//			{
+//				for(int j0 = 0;j0<map.length;j0++)
+//				{
+//					if(i0==iBeg && j0 == jBeg)
+//						System.out.print('B');
+//					else
+//					System.out.print(map[i0][j0]);
+//				}
+//			}
+//			for(int i0 = 0;i0<map.length;i0++,System.out.println())
+//			{
+//				for(int j0 = 0;j0<map.length;j0++)
+//				{
+//					System.out.print((distances[i0][j0]+1)%9);
+//				}
+//			}
 			
 			
 			int nElements = news.size();
@@ -531,7 +539,7 @@ public abstract class GameBrain{
 		Random rand= new Random();
 		while(true)
 		{
-			System.out.println("decidinfo onde ir");
+			//System.out.println("decidinfo onde ir");
 			
 			int k = rand.nextInt(map.length);
 			int l = rand.nextInt(map.length);

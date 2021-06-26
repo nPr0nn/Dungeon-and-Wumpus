@@ -9,6 +9,10 @@ import mc322.engine.Renderer;
 import mc322.game.entitiesCharacters.Character;
 import mc322.game.entitiesCharacters.Enemys;
 import mc322.game.entitiesCharacters.Heroes;
+import mc322.game.entitiesCharacters.Luna;
+import mc322.game.entitiesCharacters.Milo;
+import mc322.game.entitiesCharacters.Raju;
+import mc322.game.entitiesCharacters.Ze;
 import mc322.game.entitiesTiles.Chest;
 import mc322.game.entitiesTiles.Door;
 import mc322.game.entitiesTiles.Ladder;
@@ -98,7 +102,7 @@ public class Room implements BasicObject {
 
       }
 
-      public void update(double dt) {
+      public void update(double dt) throws GameOver {
     	  boolean isEnemys = false;
             for(int i = size-1; i >= 0; i--){
                   for(int j=0;j<size;j++){
@@ -117,6 +121,31 @@ public class Room implements BasicObject {
                     		entities[i][j].update(dt);
                     		if(entities[i][j].getDead())
                     		{
+                    			
+                    			if(entities[i][j] instanceof Raju)
+                    			{
+                    				this.raju = null;
+                    				updatePlayer();
+                    			}
+                    				
+                    			if(entities[i][j] instanceof Ze)
+                    			{
+                    				this.ze = null;
+                    				updatePlayer();
+                    			}
+                    				
+                    			if(entities[i][j] instanceof Milo)
+                    			{
+                    				this.milo = null;
+                    				updatePlayer();
+                    			}
+                    				
+                    			if(entities[i][j] instanceof Luna)
+                    			{
+                    				this.luna = null;
+                    				updatePlayer();
+                    			}
+                    				
                     			entities[i][j]=null;
                     		}
                     		
@@ -128,7 +157,29 @@ public class Room implements BasicObject {
             	dungeon.setState("Exploration");
       }
 
-      public void renderer(Renderer r) {
+      private void updatePlayer() throws GameOver {
+		if(luna != null && !luna.getDead())
+		{
+			player = luna;
+		}
+		else if(milo != null && !milo.getDead())
+		{
+			player = milo;
+		}
+		else if(raju != null && !raju.getDead())
+		{
+			player = raju;
+		}
+		else if(ze != null && !ze.getDead())
+		{
+			player = ze;
+		}
+		else throw new GameOver();
+			
+		
+	}
+
+	public void renderer(Renderer r) {
 
             renderTerrain(r);
             for(int i = size-1; i >= 0; i--){
@@ -208,7 +259,17 @@ public class Room implements BasicObject {
 
       public boolean isAccessible(int i, int j,double elevation, double legSize,int dir,Character charac){
 
-            if(this.entities[i][j] == null || (this.entities[i][j] instanceof Heroes && charac ==this.player)){
+    	  	boolean cond2 = false;
+    	  	if(this.entities[i][j] instanceof Heroes)
+    	  	{
+    	  		if(charac instanceof Heroes)
+    	  		{
+	    	  		if(((Heroes)charac).getSelected())
+	    	  			cond2 = true;
+    	  		}
+    	  	}
+    	  
+            if(this.entities[i][j] == null || cond2){
 
                   if(tiles.get(i).get(j) == null || tiles.get(i).get(j).getFirst() instanceof SafeZone){
                         if(elevation < legSize) return true;
@@ -260,8 +321,9 @@ public class Room implements BasicObject {
       public void move(int i0,int j0,int i,int j,Character charac){
 
     	  Character removedEntity = null;
+//    	  System.out.println("movendo");
             if(entities[i][j] instanceof Heroes ) {
-            	System.out.println("estou tentnando me mover pra onde tem um cara");
+//            	System.out.println("estou tentnando me mover pra onde tem um cara");
                   if(charac instanceof Heroes && ((Heroes)charac).getSelected())
                   {
                         removedEntity  = this.entities[i][j];
@@ -347,9 +409,13 @@ public class Room implements BasicObject {
       private void changeRoom(int iSala, int jSala, char dir){
     	  dungeon.setState("Combat");
             // remover suas posicoes da sala antiga
+    	  	if(luna != null)
             entities[luna.getPos().getFirst()][luna.getPos().getSecond()] = null;
+    	  	if(raju != null)
             entities[raju.getPos().getFirst()][raju.getPos().getSecond()] = null;
+    	  	if(milo != null)
             entities[milo.getPos().getFirst()][milo.getPos().getSecond()] = null;
+    	  	if(ze != null)
             entities[ze.getPos().getFirst()][ze.getPos().getSecond()] = null;
 
 
@@ -409,9 +475,13 @@ public class Room implements BasicObject {
                   default:
                         throw new ChangeRoomInvalidChar();
             }
+            if(luna != null)
             luna.setPos(li,lj);
+            if(raju != null)
             raju.setPos(ri,rj);
+            if(milo != null)
             milo.setPos(mi,mj);
+            if(ze != null)
             ze.setPos(zi,zj);
 
 

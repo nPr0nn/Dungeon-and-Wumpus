@@ -99,7 +99,11 @@ public class GameManager implements AbstractGame{
 	                  if(KeysManager.keys_movement(gc,dungeon, timing_keys_move)) mouseClickPoint = null;
 	                  mv.update(dt,mouseClickPoint,timing_keys_move,dungeon.getCurrentRoom().getPlayer(),false);
                   }
-                  dungeon.update(dt);
+                  try {
+					dungeon.update(dt);
+				} catch (GameOver e) {
+					e.printStackTrace();
+				}
                   timing_keys_move += dt;
             }
             menu.update(dt);

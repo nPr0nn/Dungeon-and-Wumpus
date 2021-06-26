@@ -21,7 +21,7 @@ public class Dungeon implements BasicObject{
       }
 
       @Override
-      public void update(double dt){
+      public void update(double dt) throws GameOver{
     	  getCurrentRoom().update(dt);
       }
 

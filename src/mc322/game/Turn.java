@@ -34,7 +34,7 @@ public class Turn {
 				heroAction.act(dt,timing_keys_move);
 				if(heroAction.finished())
 				{
-					System.out.println("cabou");
+					//System.out.println("cabou");
 					heroAction.reset();
 					playerTurn = !playerTurn;
 				}
@@ -92,9 +92,13 @@ public class Turn {
 	
 	private void disselectAll()
 	{
+		if(dg.getCurrentRoom().getLuna()!=null)
 		dg.getCurrentRoom().getLuna().disselect();
+		if(dg.getCurrentRoom().getZe()!=null)
 		dg.getCurrentRoom().getZe().disselect();
+		if(dg.getCurrentRoom().getRaju()!=null)
 		dg.getCurrentRoom().getRaju().disselect();
+		if(dg.getCurrentRoom().getMilo()!=null)
 		dg.getCurrentRoom().getMilo().disselect();
 	}
 
