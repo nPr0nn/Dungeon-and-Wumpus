@@ -52,7 +52,7 @@ public class Room implements BasicObject {
             boolean hasEnemys = true;
             
             
-//            numberRoom = "7";
+            numberRoom = "5";
 //            hasEnemys = false;
             
             
@@ -261,6 +261,7 @@ public class Room implements BasicObject {
 
     	  Character removedEntity = null;
             if(entities[i][j] instanceof Heroes ) {
+            	System.out.println("estou tentnando me mover pra onde tem um cara");
                   if(charac instanceof Heroes && ((Heroes)charac).getSelected())
                   {
                         removedEntity  = this.entities[i][j];

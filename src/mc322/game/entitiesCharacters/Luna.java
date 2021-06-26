@@ -39,9 +39,6 @@ public class Luna extends Heroes{
 			room.atack(i,j,this.damage);
 	}
 
-	public void die() {
-		//System.out.println("Morri");
-	}
 
 	public void update(double dt) {
 		if(hp<=0)

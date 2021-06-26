@@ -75,7 +75,7 @@ public abstract class Enemys extends Character{
 	public Pair<Integer, Integer> choseTarget(Room room) {
 		char map[][] = room.buildMapEnemyTarget();
 		
-		return GameBrain.chooseCloserHero(map,this.i,this.j,range);
+		return GameBrain.chooseCloserHero(map,this.j,this.i,range);
 		
 		
 	}

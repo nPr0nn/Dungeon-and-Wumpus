@@ -489,6 +489,25 @@ public abstract class GameBrain{
 		
 		while(distance<range)
 		{
+			for(int i0 = 0;i0<map.length;i0++,System.out.println())
+			{
+				for(int j0 = 0;j0<map.length;j0++)
+				{
+					if(i0==iBeg && j0 == jBeg)
+						System.out.print('B');
+					else
+					System.out.print(map[i0][j0]);
+				}
+			}
+			for(int i0 = 0;i0<map.length;i0++,System.out.println())
+			{
+				for(int j0 = 0;j0<map.length;j0++)
+				{
+					System.out.print((distances[i0][j0]+1)%9);
+				}
+			}
+			
+			
 			int nElements = news.size();
 			for(int n = 0;n<nElements;n++)
 			{

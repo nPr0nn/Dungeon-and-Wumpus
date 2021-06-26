@@ -35,11 +35,6 @@ public class Milo extends Heroes{
 			room.atack(i,j,this.damage);
 	}
 
-	@Override
-	public void die() {
-		// TODO Auto-generated method stub
-		
-	}
 
       public void change_state(String state){
             this.state = state;

@@ -104,11 +104,7 @@ public class EnemyAction {
 
 	private Pair<Integer, Integer> selectTarget(Room room) {
 		Pair<Integer, Integer> alvo =enemy.choseTarget(room);
-		if(alvo==null)
-		{
-			
-		}
-		return alvo;
+		return Pair.of(alvo.getSecond(),alvo.getFirst());
 	}
 
 	private Enemys selectEnemy(Room room) throws NoEnemyHere {

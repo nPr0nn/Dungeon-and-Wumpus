@@ -95,7 +95,7 @@ public class GameManager implements AbstractGame{
                   if(!this.STATE.equals("Combat"))
                   {
 	                  KeysManager.keys_action(gc,dungeon, bag);
-	                  mouseClickPoint = KeysManager.verifyMouseClick(gc,dungeon,bag);
+	                  mouseClickPoint = KeysManager.verifyMouseClick(gc,dungeon,bag,false);
 	                  if(KeysManager.keys_movement(gc,dungeon, timing_keys_move)) mouseClickPoint = null;
 	                  mv.update(dt,mouseClickPoint,timing_keys_move,dungeon.getCurrentRoom().getPlayer(),false);
                   }

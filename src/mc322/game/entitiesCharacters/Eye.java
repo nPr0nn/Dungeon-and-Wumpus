@@ -26,6 +26,7 @@ public class Eye extends Enemys{
             hp = hpMax;
             armor = 5;
             range = 5;
+            damage = 40;
 	}
 	
 
@@ -36,9 +37,6 @@ public class Eye extends Enemys{
 			room.atack(i,j,this.damage);
 	}
 
-	public void die() {
-		dead = true;
-	}
 
 	public void update(double dt) {
 		if(hp<=0)

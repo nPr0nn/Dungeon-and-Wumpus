@@ -35,11 +35,16 @@ public abstract class Character extends Entity{
       
       //public abstract void change_state(String state);
       public abstract void attack(int i,int j, Room room);
-      public abstract void die();
+
+  	public void die() {
+  		System.out.println(this+ " morreu");
+  		dead = true;
+  	}
       public void hurt(int damage)
       {
     	  //System.out.println("hp antes: " + hp+ " damage: "+ damage + " armor "+ armor);
-    	  hp -= (damage - ( damage * armor / 100 ));
+    	  //System.out.println(this+" say \"ai\"");
+    	  hp = LinearAlgebra.clamp(hp-(damage - ( damage * armor / 100 )),0,hpMax);
     	  //System.out.println("hp: " + hp);
       }
 
@@ -214,6 +219,7 @@ public abstract class Character extends Entity{
     
     public boolean getDead()
     {
+    	
     	return dead;
     }
 

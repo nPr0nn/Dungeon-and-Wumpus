@@ -134,7 +134,7 @@ public abstract class KeysManager {
           }
       }
 
-      public static Pair<Integer, Integer> verifyMouseClick(GameContainer gc, Dungeon dungeon,Bag bag){
+      public static Pair<Integer, Integer> verifyMouseClick(GameContainer gc, Dungeon dungeon,Bag bag,boolean seeEnemy){
 
             if(gc.getInput().wasClicked()){
                   Pair<Integer, Integer> posClick = gc.getInput().getClick();
@@ -156,7 +156,7 @@ public abstract class KeysManager {
                 	  return null;
             	  }
 
-                  char map[][] = dungeon.getCurrentRoom().builCharMap(false);
+                  char map[][] = dungeon.getCurrentRoom().builCharMap(seeEnemy);
                   
                   if(".MN".indexOf(map[i][j]) != 1) {
                 	  if(j>0 && i<14)

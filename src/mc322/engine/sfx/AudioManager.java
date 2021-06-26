@@ -12,7 +12,7 @@ public class AudioManager{
             this.musics = new AudioPlayer[5];
       }
       
-      private boolean muted = false;
+      private boolean muted = true;
       
       public void playMusic(String path, boolean loop){
     	  if(muted)

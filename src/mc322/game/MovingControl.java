@@ -21,7 +21,7 @@ public class MovingControl {
 	
 	public void update(double dt,Pair<Integer, Integer> destiny, double timing_keys_move,Character charac,boolean combat)
 	{
-		System.out.println("hola");
+		//System.out.println(timing_keys_move);
 		if(destiny != null)
 			startWalk(destiny);
 		
@@ -30,7 +30,7 @@ public class MovingControl {
               movingToPointer = GameBrain.mouse_action(dg,timing_keys_move,movingToPointer,lastDestiny,charac,combat,enemy);
               if(!movingToPointer)
               {
-            	  System.out.println("parar de andar");
+            	  //System.out.println("parar de andar");
             	  lastDestiny = null;
               }
         }
@@ -40,10 +40,10 @@ public class MovingControl {
 	{
 		if(lastDestiny==null)
 		{
-			System.out.println("nao ando");
+			//System.out.println("nao ando");
 			return false;
 		}
-		System.out.println("ando");
+		//System.out.println("ando");
 		return true;
 	}
 	

@@ -41,10 +41,10 @@ public class HeroAction {
 				mc.update(dt,null,timing_keys_move,player,true);
 			if(!mc.walking())
 				finished = true;
-			System.out.println("andando");
+			//System.out.println("andando");
 			break;
 		case "attack":
-			System.out.println("atacando");
+			//System.out.println("atacando");
 			player.attack(target.getFirst(),target.getSecond(),dg.getCurrentRoom());
 			finished = true;
 			break;
@@ -94,7 +94,7 @@ public class HeroAction {
 	}
 
 	private Pair<Integer, Integer> selectTarget(GameContainer gc) {
-		Pair<Integer,Integer> click = KeysManager.verifyMouseClick(gc,dg,null);
+		Pair<Integer,Integer> click = KeysManager.verifyMouseClick(gc,dg,null,true);
 		if(click != null)
 		{
 			click = Pair.of(click.getSecond(),click.getFirst());
@@ -106,7 +106,7 @@ public class HeroAction {
 
 	private Heroes selectPlayer(GameContainer gc,Room room) {
 		Heroes hero = null;
-		Pair<Integer,Integer> click = KeysManager.verifyMouseClick(gc,dg,null);
+		Pair<Integer,Integer> click = KeysManager.verifyMouseClick(gc,dg,null,false);
 		if(click != null)
 		{
 			Entity entity = room.getEntityAt(click.getSecond(),click.getFirst());
