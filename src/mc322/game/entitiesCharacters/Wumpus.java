@@ -27,7 +27,7 @@ public class Wumpus extends Enemys{
             hp = hpMax;
             armor = 10;
             range = 15;
-            damage = 40;
+            damage = 60;
 	}
 	
 

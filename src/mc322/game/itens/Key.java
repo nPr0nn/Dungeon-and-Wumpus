@@ -57,4 +57,9 @@ public class Key extends Item{
 	{
 		return ""+this.Color+" key";
 	}
+	
+	public String getColor()
+	{
+		return this.Color;
+	}
 }

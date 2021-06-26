@@ -59,6 +59,11 @@ public class Dungeon implements BasicObject{
       public boolean getFollow(){
             return follow;
       }
+
+	public Bag getBag() {
+		return game.getBag();
+		
+	}
       
       
 

@@ -19,6 +19,12 @@ public class Bag implements BasicObject{
 	public Bag()
 	{
 		itens = new ArrayList<Pair<Item,Integer>>();
+//		addItem(new Key("Purple"));
+//		addItem(new Key("Black"));
+//		addItem(new Key("Yellow"));
+//		addItem(new Key("Green"));
+//		addItem(new Key("Blue"));
+//		addItem(new Key("Red"));
 	}
 	
 	public void addItem(Item item)
@@ -150,6 +156,27 @@ public class Bag implements BasicObject{
 //		j -=larg;
 //		r.fillRect(i,j, i+altura, j+larg, 0,255,0);
 //		
+	}
+	
+	public boolean hasAllKeys()
+	{
+		int numberOfKeys =5;
+		for(int i =0;i<itens.size();i++)
+		{
+			if(itens.get(i).getFirst() instanceof Key)
+			{
+				if(!((Key)itens.get(i).getFirst()).getColor().equals("Black"))
+				{
+					numberOfKeys--;
+				}
+			}
+
+		}
+		if(numberOfKeys == 0)
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	

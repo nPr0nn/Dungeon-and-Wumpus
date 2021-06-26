@@ -58,7 +58,7 @@ public class Room implements BasicObject {
             
             
 //            numberRoom = "5";
-            hasEnemys = false;
+//            hasEnemys = false;
             
             boolean wumpus = false;
             if(color.equals("Origin"))
@@ -112,6 +112,8 @@ public class Room implements BasicObject {
       }
 
       public void update(double dt) throws GameOver {
+    	  if(player == null)
+    		  updatePlayer();
     	  boolean isEnemys = false;
             for(int i = size-1; i >= 0; i--){
                   for(int j=0;j<size;j++){
@@ -172,18 +174,22 @@ public class Room implements BasicObject {
       private void updatePlayer() throws GameOver {
 		if(luna != null && !luna.getDead())
 		{
+			luna.select();
 			player = luna;
 		}
 		else if(milo != null && !milo.getDead())
 		{
+			milo.select();
 			player = milo;
 		}
 		else if(raju != null && !raju.getDead())
 		{
+			raju.select();
 			player = raju;
 		}
 		else if(ze != null && !ze.getDead())
 		{
+			ze.select();
 			player = ze;
 		}
 		else throw new GameOver();
@@ -296,7 +302,7 @@ public class Room implements BasicObject {
                         if(tiles.get(i).get(j).getSecond() == null && elevation > (1-legSize))
                               return true;
 
-                  if(tiles.get(i).get(j).getFirst() instanceof Door && !this.blocked){
+                  if(tiles.get(i).get(j).getFirst() instanceof Door && !this.blocked && !((Door)tiles.get(i).get(j).getFirst()).getClosed()){
                         if(i==0){
                               if(dungeon.getRoom(this.i,this.j-1) !=null) //south
                                     return true;
@@ -649,7 +655,7 @@ public class Room implements BasicObject {
 	
 	public boolean hasAllKeys()
 	{
-		return false;
+		return dungeon.getBag().hasAllKeys();
 	}
 
 }

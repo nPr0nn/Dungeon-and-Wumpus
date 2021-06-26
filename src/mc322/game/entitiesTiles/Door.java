@@ -74,6 +74,11 @@ public class Door extends Entity{
 		closed = false;
       }
       
+      public boolean getClosed()
+      {
+    	  return closed;
+      }
+      
 	public void setWumpusDoor() {
 		name = "wumpus_door";
 		this.color = "Black";

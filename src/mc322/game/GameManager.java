@@ -127,4 +127,8 @@ public class GameManager implements AbstractGame{
             gc.start();
       }
 
+	public Bag getBag() {
+		return bag;
+	}
+
 }
