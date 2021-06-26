@@ -18,6 +18,7 @@ import mc322.game.entitiesTiles.Door;
 import mc322.game.entitiesTiles.Ladder;
 import mc322.game.entitiesTiles.Platform;
 import mc322.game.entitiesTiles.SafeZone;
+import mc322.game.entitiesTiles.Wall;
 import mc322.game.itens.Key;
 
 public class Room implements BasicObject {
@@ -57,7 +58,7 @@ public class Room implements BasicObject {
             
             
 //            numberRoom = "5";
-//            hasEnemys = false;
+            hasEnemys = false;
             
             boolean wumpus = false;
             if(color.equals("Origin"))
@@ -635,6 +636,20 @@ public class Room implements BasicObject {
       }
 
       return map;
+	}
+
+	public void setWumpusDoor() {
+		if(tiles.get(size-1).get(size/2).getFirst() instanceof Door)
+		{
+			((Door)tiles.get(size-1).get(size/2).getFirst()).setWumpusDoor();
+		}
+		((Wall)tiles.get(size-1).get(size/2-1).getFirst()).toggleVisible();
+		
+	}
+	
+	public boolean hasAllKeys()
+	{
+		return false;
 	}
 
 }

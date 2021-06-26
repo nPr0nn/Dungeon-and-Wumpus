@@ -29,7 +29,7 @@ public class Bag implements BasicObject{
 			{
 				if(!(item instanceof Key))
 				{
-					itens.add(Pair.of(itens.get(i).getFirst(),itens.get(i).getSecond()+1));
+					itens.add(Pair.of(itens.get(i).getFirst(),LinearAlgebra.clamp(itens.get(i).getSecond()+1,0,1)));
 					itens.remove(i);
 					return;
 				}

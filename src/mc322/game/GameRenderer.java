@@ -13,6 +13,7 @@ import mc322.engine.gfx.ImageTile;
 public class GameRenderer {
 
       public static void drawTile(int i,int j,double elevation, String name, Renderer r, int updateX, int updateY, String color){
+    	  //System.out.println(name);
             ImageTile image = GameMapTokens.getImageTile(name, color);
             //elevation+=0.5;
             r.drawIsometricImage(i+(int)elevation, j-(int)elevation, image, updateX, updateY);
@@ -67,7 +68,33 @@ public class GameRenderer {
 
           Pair <Integer, Integer> b = Pair.of(i*16, j*16);
           b = LinearAlgebra.toIsometrica(b);
-    	  i = b.getFirst() + 22;
+    	  i = b.getFirst() + 72-((int)hpMax/2);
+    	  j = b.getSecond() + 162;
+    	  
+    	  //ImageTile image = GameMapTokens.getImageItem("charctersFace");
+    	  //r.drawImage(i, j, image, 0, charact);
+          
+    	  double porcentHpMax = hp/hpMax;
+    	  int red = LinearAlgebra.clamp((int)(255 -(255*porcentHpMax)),0,255);
+    	  int green = LinearAlgebra.clamp((int)(255*porcentHpMax*2),0,255);
+//    	  green = 0;
+//    	  red = 255;
+    	  
+    	  int horixontalDistance = 8;
+    	  int verticalDistance = 0;
+    	  //System.out.println("i: "+i+" j: "+j);
+    	  r.fillRect(verticalDistance+j,horixontalDistance+i,verticalDistance+j+4,horixontalDistance+i+((int)hpMax/2),50,50,50);
+    	  r.fillRect(verticalDistance+j,horixontalDistance+i,verticalDistance+j+4,horixontalDistance+i+((int)hp/2),red,green,100);
+    	  
+      }
+      
+      public static void drawLifeWumpus(int i,int j,double elevation,double hpMax,double hp,Renderer r)
+      {
+    	  elevation +=0.5;
+
+          Pair <Integer, Integer> b = Pair.of(i*16, j*16);
+          b = LinearAlgebra.toIsometrica(b);
+    	  i = b.getFirst() + 72-((int)hpMax/5*2);
     	  j = b.getSecond() + 162;
     	  
     	  //ImageTile image = GameMapTokens.getImageItem("charctersFace");

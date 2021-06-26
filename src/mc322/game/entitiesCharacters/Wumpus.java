@@ -54,7 +54,7 @@ public class Wumpus extends Enemys{
 	
 	public void renderer(Renderer r) {
 		GameRenderer.drawEnemy(i,j,elevation,name,r, (int)updateFrame%nFrames,this.updateDir,this.state);
-		GameRenderer.drawLifeEnemy(i,j,elevation,this.hpMax,this.hp,r);
+		GameRenderer.drawLifeWumpus(i,j,elevation,this.hpMax,this.hp,r);
 		
 	}
 	public void toggleAnimation() {

@@ -126,12 +126,13 @@ public class MapBuilder{
                                     break;
                               case 'o':
                                   rooms[i][j] = new Room(this, pi, rooms_around,"Origin", dungeon,false);
-                                  selectedRoom[1]--;
                                   break;
                                   
                               case 'w':
                                   rooms[i][j] = new Room(this, pi, rooms_around,"Wumpus", dungeon,false);
-                                  selectedRoom[1]--;
+                                  rooms[i][j-1].setWumpusDoor();
+                                  
+                                  
                                   break;
                               case '0':
                               default:
