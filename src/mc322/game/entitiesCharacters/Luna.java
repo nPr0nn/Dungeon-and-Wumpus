@@ -33,7 +33,7 @@ public class Luna extends Heroes{
 	
 
 	public void attack(int i, int j, Room room) {
-		if(LinearAlgebra.getModulo(i-this.i)!=1 || LinearAlgebra.getModulo(j-this.j)!=1)
+		if(LinearAlgebra.getModulo(i-this.i)>1 || LinearAlgebra.getModulo(j-this.j)>1)
 			return;
 		else
 			room.atack(i,j,this.damage);

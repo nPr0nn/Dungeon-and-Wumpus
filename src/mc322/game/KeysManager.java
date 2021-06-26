@@ -100,10 +100,6 @@ public abstract class KeysManager {
                   dungeon.toggleFollow();
             }
 
-            if(gc.getInput().isKeyDown('O')){
-                  dungeon.getCurrentRoom().open();
-            }
-
             if(gc.getInput().isKeyDown(' ')){
                   dungeon.getCurrentRoom().getPlayer().use(dungeon.getCurrentRoom(),bag);
             }

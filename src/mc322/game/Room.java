@@ -57,7 +57,7 @@ public class Room implements BasicObject {
             
             
 //            numberRoom = "5";
-            hasEnemys = false;
+//            hasEnemys = false;
             
             boolean wumpus = false;
             if(color.equals("Origin"))
@@ -162,7 +162,10 @@ public class Room implements BasicObject {
                   }
             }
             if(!isEnemys)
+            {
+            	open();
             	dungeon.setState("Exploration");
+            }
       }
 
       private void updatePlayer() throws GameOver {

@@ -20,7 +20,7 @@ public abstract class GameBrain{
 
       public static Pair<Integer, Integer> getOrigin(){
             //Purple:
-            //Pair <Integer, Integer> origin = Pair.of(11, 1);
+            Pair <Integer, Integer> origin = Pair.of(11, 1);
 
             //Green:
             //Pair <Integer, Integer> origin = Pair.of(8, 12);
@@ -35,47 +35,47 @@ public abstract class GameBrain{
             //Pair <Integer, Integer> origin = Pair.of(13, 12);
 
             //Black
-            Pair <Integer, Integer> origin = Pair.of(3, 14);
+            //Pair <Integer, Integer> origin = Pair.of(3, 14);
             return origin;
       }
 
 
-      // Solve Maze with BFS
-      static class Node{
-            Pair <Integer, Integer> pt;
-            int dist;
-
-            Node(Pair <Integer, Integer> p, int dist){
-                  this.pt = p;
-                  this.dist = dist;
-            }
-      }
-      public static boolean isSafe(int i, int j, int n){
-            return (i >= 0) && (j >= 0) && (i < n) && (j < n); 
-      }
-      
-      public static boolean isPossible(char mat[][], int i, int j, int dirI[], int dirJ[], int k){
-          int ni = i + dirI[k];
-          int nj = j + dirJ[k];
-
-          boolean cond1 = (".D".indexOf(mat[ni][nj]) != -1 && ".MN".indexOf(mat[i][j]) != -1);
-
-          
-          boolean cond02 = mat[i][j] == 'N' && (k == 3 || k == 0);
-          boolean cond03 = mat[i][j] == 'M' && (k == 1 || k == 2);
-          boolean cond2 = mat[ni][nj] == 'N' && (k == 3 || k == 0);
-          boolean cond3 = mat[ni][nj] == 'M' && (k == 1 || k == 2);
-
-          boolean cond4 = mat[ni][nj] == 'U' && ("UMN".indexOf(mat[i][j]) != -1 );
-          
-          if(mat[i][j]=='N'||mat[i][j]=='M')
-          {
-        	  //cond1=cond1&&(cond02||cond03);
-          //cond4=cond4&&(cond02||cond03);
-          }
-
-          return (cond1 || cond2 || cond3 || cond4);
-    }
+//      // Solve Maze with BFS
+//      static class Node{
+//            Pair <Integer, Integer> pt;
+//            int dist;
+//
+//            Node(Pair <Integer, Integer> p, int dist){
+//                  this.pt = p;
+//                  this.dist = dist;
+//            }
+//      }
+//      public static boolean isSafe(int i, int j, int n){
+//            return (i >= 0) && (j >= 0) && (i < n) && (j < n); 
+//      }
+//      
+//      public static boolean isPossible(char mat[][], int i, int j, int dirI[], int dirJ[], int k){
+//          int ni = i + dirI[k];
+//          int nj = j + dirJ[k];
+//
+//          boolean cond1 = (".D".indexOf(mat[ni][nj]) != -1 && ".MN".indexOf(mat[i][j]) != -1);
+//
+//          
+//          boolean cond02 = mat[i][j] == 'N' && (k == 3 || k == 0);
+//          boolean cond03 = mat[i][j] == 'M' && (k == 1 || k == 2);
+//          boolean cond2 = mat[ni][nj] == 'N' && (k == 3 || k == 0);
+//          boolean cond3 = mat[ni][nj] == 'M' && (k == 1 || k == 2);
+//
+//          boolean cond4 = mat[ni][nj] == 'U' && ("UMN".indexOf(mat[i][j]) != -1 );
+//          
+//          if(mat[i][j]=='N'||mat[i][j]=='M')
+//          {
+//        	  //cond1=cond1&&(cond02||cond03);
+//          //cond4=cond4&&(cond02||cond03);
+//          }
+//
+//          return (cond1 || cond2 || cond3 || cond4);
+//    }
       
 //      public static String solveMaze(char mat[][],int iBeg, int jBeg, int iEnd, int jEnd){
 //
