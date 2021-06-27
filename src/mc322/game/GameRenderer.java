@@ -18,6 +18,12 @@ public class GameRenderer {
             r.drawIsometricImage(i+(int)elevation, j-(int)elevation, image, updateX, updateY);
       }
 
+      public static void drawAttack(int i,int j,double elevation, String name, Renderer r, int updateX, int updateY){
+            ImageTile image = GameMapTokens.getImageAttack(name);
+            //elevation+=0.5;
+            r.drawIsometricImage(i+(int)elevation, j-(int)elevation, image, updateX, updateY);
+      }
+
       public static void drawItem(int i,int j,double elevation, String name, Renderer r, int updateX, int updateY){
             ImageTile image = GameMapTokens.getImageItem(name);
             r.drawIsometricImage(i+(int)elevation, j-(int)elevation, image, updateX, updateY);

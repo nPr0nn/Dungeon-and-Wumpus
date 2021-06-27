@@ -7,14 +7,15 @@ import mc322.engine.Renderer;
 import mc322.game.GameRenderer;
 import mc322.game.Room;
 import mc322.game.itens.Item;
+import mc322.game.Attack;
 
 public class Luna extends Heroes{
 
-      public Luna(int i, int j,double elevation)
-      {
+      public Luna(int i, int j,double elevation){
             super(i,j,elevation);
             this.name = "Luna";
             this.state = "idle";
+            this.typeOfattack = "hit2";
 
             this.updateDir = 3;
             this.updateFrame = 0;
@@ -25,6 +26,9 @@ public class Luna extends Heroes{
 
             this.nFrames = this.nFramesIdle = 6;
             this.nFramesMoving = 4;
+            this.nFramesAttacking = 11;
+
+            range = 2;
             hpMax = 110;
             hp = hpMax;
             armor = 50;
@@ -33,25 +37,27 @@ public class Luna extends Heroes{
 
 
       public void attack(int i, int j, Room room) {
-            if(LinearAlgebra.getModulo(i-this.i)>1 || LinearAlgebra.getModulo(j-this.j)>1)
+            if(LinearAlgebra.getModulo(i-this.i)>range || LinearAlgebra.getModulo(j-this.j)>range)
                   return;
-            else
-                  room.atack(i,j,this.damage);
+            else{
+                  room.attack(i,j,this.damage, this.typeOfattack);
+                  this.change_state("attacking");
+            }
       }
 
-
       public void update(double dt) {
-            if(hp<=0)
-                  this.die();
             this.updateFrame += this.velocityAnim*dt;
+            super.update(dt);
       }
 
       @Override
       public void renderer(Renderer r) {
-            if(this.selected == 1) super.renderer(r);
-            GameRenderer.drawCharacter(i,j,elevation,name,r, (int)updateFrame%nFrames,this.updateDir,this.state);
-            //GameRenderer.drawLife(0,0,this.hpMax,this.hp,name,r);
-
+            int rendered_frame = (int)updateFrame%nFrames;
+            if(rendered_frame == nFrames-1 && state == "attacking"){
+                  change_state("idle");
+            }
+            GameRenderer.drawCharacter(i,j,elevation,name,r, rendered_frame,this.updateDir,this.state);
+            super.renderer(r);
       }
 
       @Override

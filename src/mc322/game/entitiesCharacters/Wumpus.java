@@ -13,6 +13,7 @@ public class Wumpus extends Enemys{
             super(i,j,elevation);
             this.name = "Wumpus";
             this.state = "idle";
+            this.typeOfattack = "spell6";
 
             this.updateDir = 0;
             this.updateFrame = 0;
@@ -23,6 +24,8 @@ public class Wumpus extends Enemys{
 
             this.nFrames = this.nFramesIdle = 4;
             this.nFramesMoving = 4;
+            this.nFramesAttacking = 11;
+
             hpMax = 200;
             hp = hpMax;
             armor = 10;
@@ -34,16 +37,18 @@ public class Wumpus extends Enemys{
       public void attack(int i,int j, Room room) {
             if(LinearAlgebra.getModulo(i-this.i)>range || LinearAlgebra.getModulo(j-this.j)>range)
                   return;
-            else
-                  room.atack(i,j,this.damage);
+            else{
+                  room.attack(i,j,this.damage, this.typeOfattack);
+                  this.change_state("attacking");
+
+            }
+
       }
 
 
       public void update(double dt){
-            if(hp<=0)
-                  this.die();
             this.updateFrame += this.velocityAnim*dt;
-
+            super.update(dt);
       }
 
       public void die() throws Victory {
@@ -52,10 +57,18 @@ public class Wumpus extends Enemys{
 
       }
 
+      @Override
       public void renderer(Renderer r) {
+            int rendered_frame = (int)updateFrame%nFrames;
+            if(rendered_frame == nFrames-1 && state == "attacking"){
+                  change_state("idle");
+            }
             GameRenderer.drawEnemy(i,j,elevation,name,r, (int)updateFrame%nFrames,this.updateDir,this.state);
             GameRenderer.drawLifeWumpus(i,j,elevation,this.hpMax,this.hp,r);
+            super.renderer(r);
       }
+
+
       public void toggleAnimation() {
 
       }

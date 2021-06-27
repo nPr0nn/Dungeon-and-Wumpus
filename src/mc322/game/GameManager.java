@@ -18,6 +18,7 @@ import mc322.engine.Input;
 import mc322.game.entitiesTiles.*;
 
 public class GameManager implements AbstractGame{
+
       public Dungeon dungeon;
       private LifeBar lifebar;
       private Menu menu;
@@ -38,7 +39,6 @@ public class GameManager implements AbstractGame{
             dungeon = new Dungeon(this);
             audio = new AudioManager();
             menu = new Menu(this);
-            turn = new Turn(dungeon);
             lifebar = new LifeBar();
             this.pause =false;
             this.timing_keys_move = 0;
@@ -46,10 +46,11 @@ public class GameManager implements AbstractGame{
             this.mv = new MovingControl(dungeon,false);
             this.mouseClickPoint = null;
             bag = new Bag();
+            turn = new Turn(dungeon, bag);
       }
 
       public void reset(){
-            System.out.println("Reinicia");
+            //System.out.println("Reinicia");
             dungeon = new Dungeon(this);
             bag = new Bag();
             menu = new Menu(this);
@@ -101,10 +102,10 @@ public class GameManager implements AbstractGame{
 
                   }
                   turn.update(gc,dt,timing_keys_move);
-                  if(!this.STATE.equals("Combat"))
-                  {
-                        KeysManager.keys_action(gc,dungeon, bag);
-                        mouseClickPoint = KeysManager.verifyMouseClick(gc,dungeon,bag,false);
+                  mouseClickPoint = KeysManager.verifyMouseClick(gc,dungeon,bag,false);
+                  KeysManager.keys_action(gc,dungeon, bag);
+
+                  if(!this.STATE.equals("Combat")){
                         boolean keyPressed = KeysManager.keys_movement(gc,dungeon, timing_keys_move);
                         if(keyPressed) mouseClickPoint = null;
                         mv.update(dt,mouseClickPoint,timing_keys_move,dungeon.getCurrentRoom().getPlayer(),false,keyPressed);
@@ -122,6 +123,7 @@ public class GameManager implements AbstractGame{
             }
             menu.update(dt);
             bag.update(dt);
+      
             timing_background_light += dt;
             KeysManager.keys_game_flow(gc,this, menu);
       }

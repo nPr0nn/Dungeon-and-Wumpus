@@ -14,11 +14,10 @@ public class Turn {
 	private EnemyAction enemyAction;
 	
 	
-	public Turn(Dungeon dg)
-	{
+	public Turn(Dungeon dg, Bag bag){
 		combat = false;
 		this.dg = dg;
-		heroAction =new HeroAction(dg);
+		heroAction =new HeroAction(dg, bag);
 		heroAction.reset();
 		enemyAction =new EnemyAction(dg);
 		enemyAction.reset();

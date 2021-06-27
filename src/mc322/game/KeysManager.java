@@ -1,5 +1,7 @@
 package mc322.game;
 
+import mc322.engine.sfx.AudioManager;
+import mc322.game.GameMapTokens;
 import mc322.engine.GameContainer;
 import mc322.engine.LinearAlgebra;
 import mc322.engine.Pair;
@@ -56,10 +58,11 @@ public abstract class KeysManager {
 
       public static void keys_action(GameContainer gc, Dungeon dungeon, Bag bag){
 
+            AudioManager audio = new AudioManager();
             if(gc.getInput().isKeyDown('E')){
+                  audio.playMusic(GameMapTokens.getPathSound("changeCharac"),false);
                   Room cRoom = dungeon.getCurrentRoom();
                   Heroes player = cRoom.getPlayer();
-                  player.toggleSelect();
 
                   if(player instanceof Luna || player == null){
                         if(cRoom.getMilo()!=null) player = cRoom.getMilo();
@@ -84,13 +87,12 @@ public abstract class KeysManager {
                   else System.out.println("Player error while changing character");
 
                   cRoom.setPlayer(player);
-                  if(player != null) player.toggleSelect();
             }
 
             if(gc.getInput().isKeyDown('Q')){
+                  audio.playMusic(GameMapTokens.getPathSound("changeCharac"),false);
                   Room cRoom = dungeon.getCurrentRoom();
                   Heroes player = cRoom.getPlayer();
-                  player.toggleSelect();
                   if(player instanceof Luna || player == null){
                         if(cRoom.getZe()!=null) player = cRoom.getZe();
                         else if(cRoom.getRaju()!=null) player = cRoom.getRaju();
@@ -113,28 +115,28 @@ public abstract class KeysManager {
                   }
                   else System.out.println("Player error while changing character");
                   dungeon.getCurrentRoom().setPlayer(player);
-                  if(player != null) player.toggleSelect();
             }
 
-            if(gc.getInput().isKeyDown('T')){
-                  dungeon.toggleFollow();
-            }
+            //if(gc.getInput().isKeyDown('T')){
+                  //dungeon.toggleFollow();
+            //}
 
-            if(gc.getInput().isKeyDown('O')){
-                  dungeon.getCurrentRoom().open();
-            }
+            //if(gc.getInput().isKeyDown('O')){
+                  //dungeon.getCurrentRoom().open();
+            //}
 
             if(gc.getInput().isKeyDown(' ')){
                   dungeon.getCurrentRoom().getPlayer().use(dungeon.getCurrentRoom(),bag);
+                  System.out.println(dungeon.getCurrentRoom().getPlayer());
             }
 
-            if(gc.getInput().isKeyDown('I')){
-                  System.out.println("Bag: "+bag);
-                  dungeon.getCurrentRoom().getPlayer().printStatus();
-            }
-            if(gc.getInput().isKeyDown('G')){
-                  dungeon.getCurrentRoom().getPlayer().hurt(20);
-            }
+            //if(gc.getInput().isKeyDown('I')){
+                  //System.out.println("Bag: "+bag);
+                  //dungeon.getCurrentRoom().getPlayer().printStatus();
+            //}
+            //if(gc.getInput().isKeyDown('G')){
+                  //dungeon.getCurrentRoom().getPlayer().hurt(20, "spell6");
+            //}
       }
 
       public static void keys_game_flow(GameContainer gc, GameManager game, Menu menu){
@@ -156,9 +158,9 @@ public abstract class KeysManager {
             }
 
 
-            if(gc.getInput().isKeyDown('K')){
-                  System.out.println(game.dungeon.getCurrentRoom().getPlayer().getPos());
-            }
+            //if(gc.getInput().isKeyDown('K')){
+                  //System.out.println(game.dungeon.getCurrentRoom().getPlayer().getPos());
+            //}
       }
 
       public static Pair<Integer, Integer> verifyMouseClick(GameContainer gc, Dungeon dungeon,Bag bag,boolean seeEnemy){
@@ -167,7 +169,7 @@ public abstract class KeysManager {
                   Pair<Integer, Integer> posClick = gc.getInput().getClick();
 
 
-                  System.out.println("x: "+posClick.getFirst()+" y: "+posClick.getSecond());
+                  //System.out.println("x: "+posClick.getFirst()+" y: "+posClick.getSecond());
                   posClick = LinearAlgebra.toCartesianas(posClick);
 
                   int i = posClick.getSecond() - 475+32;
@@ -200,7 +202,6 @@ public abstract class KeysManager {
                         j -= 1;
 
                   }
-
                   return Pair.of(i, j);
             }
 

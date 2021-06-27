@@ -20,7 +20,7 @@ public abstract class GameMapTokens{
 
       private static Map<String, ImageTile> mapTokens = new HashMap<>();
 
-      private static String DIR_BOSSES     = ASSETS + "/bosses/";
+      private static String DIR_ATTACKS     = ASSETS + "/attacks/";
       private static String DIR_CHARACTERS = ASSETS + "/characters/";
       private static String DIR_ENEMIES    = ASSETS + "/enemies/";
       private static String DIR_ITENS      = ASSETS + "/itens/";
@@ -79,6 +79,15 @@ public abstract class GameMapTokens{
                   mapTokens.put(object+state, image);
             }
             return mapTokens.get(object+state);
+      }
+
+      public static ImageTile getImageAttack(String attack){
+            if(mapTokens.get(attack) == null){
+                  String path = DIR_ATTACKS + attack + PNG;
+                  image = new ImageTile(path, tileWidth, tileHeight);
+                  mapTokens.put(attack, image);
+            }
+            return mapTokens.get(attack);
       }
 
       public static ImageTile getImageEnemies(String object, String state){

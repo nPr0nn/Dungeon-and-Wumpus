@@ -36,9 +36,8 @@ public class Room implements BasicObject {
       private String color;
       private Dungeon dungeon;
       private boolean blocked;
-      public int i;
-      public int j;
-
+      private int i;
+      private int j;
 
 
       public Room(MapBuilder mapBuilder,Pair<Integer,Integer>pos,String rooms_around,
@@ -60,7 +59,7 @@ public class Room implements BasicObject {
 
 
             //            numberRoom = "5";
-            hasEnemys = false;
+            //hasEnemys = false;
 
             boolean wumpus = false;
             if(color.equals("Origin"))
@@ -141,6 +140,7 @@ public class Room implements BasicObject {
             if(player == null){
                   updatePlayer();
             }
+            updatePlayerSelected();
             for(int i = size-1; i >= 0; i--){
                   for(int j=0;j<size;j++){
                         if(tiles.get(i).get(j) != null){
@@ -217,8 +217,22 @@ public class Room implements BasicObject {
                   setPlayer(ze);
             }
             else throw new GameOver();
+      }
 
-
+      private void updatePlayerSelected(){
+            if(luna != null && !luna.getDead()){
+                  if(luna.getSelected()) setPlayer(luna);
+            }
+            else if(milo != null && !milo.getDead()){
+                  if(milo.getSelected()) setPlayer(milo);
+            }
+            else if(raju != null && !raju.getDead()){
+                  if(raju.getSelected()) setPlayer(raju);
+            }
+            else if(ze != null && !ze.getDead()){
+                  if(ze.getSelected()) setPlayer(ze);
+            }
+            else throw new GameOver();
       }
 
       public void renderer(Renderer r) {
@@ -271,7 +285,12 @@ public class Room implements BasicObject {
             return raju;
       }
       public void setPlayer(Heroes player){
+            if(milo != null) milo.disselect();
+            if(luna != null) luna.disselect();
+            if(raju != null) raju.disselect();
+            if(ze != null) ze.disselect();
             this.player = player;
+            player.toggleSelect();
       }
       public Heroes getPlayer(){
             return this.player;
@@ -290,7 +309,6 @@ public class Room implements BasicObject {
       public void open()
       {
             this.blocked = false;
-
       }
 
       public boolean getBlocked()
@@ -326,7 +344,7 @@ public class Room implements BasicObject {
                         if(tiles.get(i).get(j).getSecond() == null && elevation > (1-legSize))
                               return true;
 
-                   if(tiles.get(i).get(j).getFirst() instanceof Door && !this.blocked && !((Door)tiles.get(i).get(j).getFirst()).getClosed()){
+                  if(tiles.get(i).get(j).getFirst() instanceof Door && !this.blocked && !((Door)tiles.get(i).get(j).getFirst()).getClosed()){
                         if(i==0){
                               if(dungeon.getRoom(this.i,this.j-1) !=null) //south
                                     return true;
@@ -588,10 +606,10 @@ public class Room implements BasicObject {
             return map;
       }
 
-      public void atack(int i, int j, int damage) {
+      public void attack(int i, int j, int damage, String attack) {
             if(this.entities[i][j] == null)
                   return;
-            entities[i][j].hurt(damage);
+            entities[i][j].hurt(damage, attack);
       }
 
       public Character getEntityAt(int i, int j) {

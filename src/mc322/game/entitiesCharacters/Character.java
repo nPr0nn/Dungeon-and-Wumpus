@@ -2,9 +2,13 @@ package mc322.game.entitiesCharacters;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Random;
 
+
+import java.util.Random;
 import mc322.engine.LinearAlgebra;
 import mc322.engine.Pair;
+import mc322.engine.Renderer;
 import mc322.engine.UnexpectedError;
 import mc322.game.GameBrain;
 import mc322.game.ImpossibleOriginOrDestiny;
@@ -12,11 +16,18 @@ import mc322.game.DoorSelected;
 import mc322.game.Entity;
 import mc322.game.Room;
 import mc322.game.Victory;
+import mc322.game.Attack;
 
 public abstract class Character extends Entity{
 
+      Attack attack;
+      Random rand;
+
+      protected int range;
       protected int solutionIndex;
       protected String solution;
+      protected String typeOfattack;
+
       protected int hp;
       protected int hpMax;
       protected int armor;
@@ -25,30 +36,46 @@ public abstract class Character extends Entity{
       protected String name;
       protected boolean dead;
 
-      public Character(int i,int j,double elevation)
-      {
+      public Character(int i,int j,double elevation){
             this.i = i;
             this.j = j;
             this.elevation = elevation;
             this.legSize = 0.7;
             this.solutionIndex = 0;
+            rand = new Random();
       }
 
       //public abstract void change_state(String state);
       public abstract void attack(int i,int j, Room room);
+      //public abstract void hurt(int damage, String typeOfattack);
+      //
+      public void hurt(int damage, String typeOfattack){
+            int num = rand.nextInt(100);
+
+            if(typeOfattack == "spell1" && num%2 == 1) typeOfattack = "spell2";
+            if(typeOfattack == "spell3" && num%2 == 1) typeOfattack = "spell4";
+
+            hp = LinearAlgebra.clamp(hp-(damage - ( damage * armor / 100 )),0,hpMax);
+            attack = new Attack(this.i, this.j, typeOfattack, 0);
+      }
+
+      public void update(double dt){
+            if(attack != null) {
+                  attack.update(dt);
+                  if(attack.ended()) {
+                        attack = null;
+                        if(hp<=0) this.die();
+                  }
+            }
+      }
+      public void renderer(Renderer r){
+            if(attack != null) attack.renderer(r);
+      }
 
       public void die() throws Victory {
             //System.out.println(this+ " morreu");
             dead = true;
       }
-      public void hurt(int damage)
-      {
-            //System.out.println("hp antes: " + hp+ " damage: "+ damage + " armor "+ armor);
-            //System.out.println(this+" say \"ai\"");
-            hp = LinearAlgebra.clamp(hp-(damage - ( damage * armor / 100 )),0,hpMax);
-            //System.out.println("hp: " + hp);
-      }
-
 
       public String toString()
       {
@@ -70,6 +97,10 @@ public abstract class Character extends Entity{
             if(state == "idle"){
                   this.nFrames = this.nFramesIdle;
                   this.velocityAnim = this.velocityAnimIdle;
+            }
+            if(state == "attacking"){
+                  this.nFrames = this.nFramesAttacking;
+                  this.updateDir = 0;
             }
       }
 
