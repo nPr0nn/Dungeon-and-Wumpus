@@ -1,68 +1,61 @@
-# Dungeon-and-Wumpus
-# Modelo de Apresentação do Projeto
+# Projeto Dungeon-and-Wumpus
 
 # Estrutura de Arquivos e Pastas
 
-A estrutura aqui apresentada é uma simplificação daquela proposta pelo [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/). Também será aceito que o projeto adote a estrutura completa do Cookiecutter Data Science e isso será considerado um diferencial. A estrutura geral é a seguinte e será detalhada a seguir:
+ A estrutura geral das pastas é a seguinte e será detalhada a seguir:
 
 ~~~
-├── README.md          <- apresentação do projeto
+├── README.md                               <- apresentação do projeto
 │
-├── data               <- dados usados pelo jogo (se houver)
+├── _data                                   <- dados usados pelo jogo
 │
-├── notebooks          <- Jupyter notebooks ou equivalentes
+├── _assets                                 <- desenhos e imagens usados pelo jogo
 │
-├── src                <- projeto em Java (preferencialmente projeto no Eclipse)
+├── _sounds                                 <- Sons e musicas usadas pelo jogo
+│
+├── src                                     <- arquivos fonte do jogo
 │   │
-│   ├── src            <- arquivos-fonte do projeto (.java)
-│   │
-│   ├── bin            <- arquivos em bytecode (.class)
-│   │
-│   └── README.md      <- instruções básicas de instalação/execução
+│   └──mc322
+│        ├── engine                         <- arquivos relacionados ao funcionamento bruto, com relação a plataforma. arquivos gerais que independem do jogo
+│        │     ├── gfx                      <- classes relacionadas aos graficos e imagens
+│        │     │
+│        │     └── sfx                      <- classes relacionadas aos efeitos sonoros e musicas
+│        │     
+│        └── game                           <- arquivos relacionados ao funcionamento do jogo dungeon and wumpus em específico
+│             ├── entitiesCharacters        <- classes relacionadas a todos os personagens
+│             │
+│             ├── entitiesTiles             <- classes relacionadas a estrutura do mapa (exemplo: paredes, escadas, plataformas)
+│             │
+│             ├── itens                     <- itens do jogo (exemplo: pocoes, chaves, tocha)
+│             │
+│             └── demais classes
 │
-└── assets             <- mídias usadas no projeto
+└── bin                                     <- arquivos binarios gerados
+    │
+    └──mc322
+        └── (...)                           <- estrutura igual a de src
 ~~~
-
-Na raiz deve haver um arquivo de nome `README.md` contendo a apresentação do projeto, como detalhado na seção seguinte.
 
 ## `data`
 
-Arquivos de dados usados no projeto, quando isso ocorrer. Por exemplo, se o jogo lê mapas de labirintos que estão em arquivo-texto, coloque os arquivos aqui (mesmo que você mantenha uma cópia no diretório do código).
-
-## `notebooks`
-
-Testes ou prototipos relacionados ao projeto que tenham sido executados no Jupyter. Por exemplo, coloque aqui uma cópia dos testes feitos nas Exceptions.
-
-## `src`
-
-Projeto em Java, preferencialmente em Eclipse, incluindo todos os arquivos de dados e bibliotecas necessários para a sua execução. Dentro dessa pasta sugerimos que você mantenha uma estrutura equivalente ao Eclipse, com uma subpasta `src` onde estarão os fontes e outra subpasta `bin` onde estarão os bytecodes.
-
- Acrescente na raiz um arquivo `README.md` com as instruções básicas de instalação e execução.
+Todos os arquivos utilizados para contruir o mapa e as salas (dentro de layout) com a extensao csv.
 
 ## `assets`
 
-Qualquer mídia usada no seu projeto: vídeo, imagens, animações, slides etc. Coloque os arquivos aqui (mesmo que você mantenha uma cópia no diretório do código).
+Todas as imagens e animaçoes separadas por pastas que definem as categorias: attacks para animaçoes de ataques e recebimento de dano; characters para as imagens e animacoes dos personagens jogaveis; enemies para as animações e imagens de inimigos; itens para animações e imagens de itens (como tochas, baus e poçoes); menu para animações e imagens do menu como mapa, pause/play e imagens de fim de jogo; tiles para animações e imagens de terrenos do jogo.
 
-# Modelo para Apresentação do Projeto
+## `src`
 
-Este é um guia de como produzir documentação em Markdown. Para entender como criar documentos em Markdown no Github, veja o material/vídeo:
-[Guia de Uso do Markdown](https://github.com/mc-unicamp/oficinas/tree/master/docs).
+Projeto em Java, em Eclipse, incluindo todos os arquivos de dados e bibliotecas necessários para a sua execução.
 
-Vide detalhes sobre o Markdown em: [Mastering Markdown](https://guides.github.com/features/mastering-markdown/).
+## `sounds`
 
-E mais especificamente sobre tabelas em: [Organizing information with tables](https://help.github.com/en/articles/organizing-information-with-tables)
+Qualquer mídia sonora usada no projeto como musicas (na pasta musics) e efeitos sonoros.
 
-Segue abaixo o modelo de como deve ser documentado o projeto e cada componente do projeto. Tudo o que for indicado entre `<...>` indica algo que deve ser substituído pelo indicado. No modelo são colocados exemplos ilustrativos, que serão substituídos pelos do seu projeto.
+# Descrição Resumida do Jogo
 
-Para a construção dos diagramas, devem ser usados modelos disponíveis em: [Diagramas de Classes, Interfaces e Componentes](https://docs.google.com/presentation/d/1ML3WrnDtzh-4wqLmdXN9au1TBIwEqo7TIbMLNOYSMAI/edit?usp=sharing)
-
-# Modelo para Apresentação do Projeto
-
-# Projeto `<Título do Projeto/Jogo>`
-
-# Descrição Resumida do Projeto/Jogo
-
-> <Descreva resumidamente o jogo e seu propósito.>
+> Dungeons and Wumpus é um jogo estilo RPG de exploração, em que um time de quatro personagens explora baús em busca de chaves e itens para torna-los mais fortes; derrota inimigos e finalmente enfrenta o Wumpus em uma sala trancada.
+> Se o wumpus for derrotado o jogo acaba com sua vitória, mas se todos os personagens forem derrotados, você perde
 
 # Equipe
 * `<nome completo>` - `<RA>`
