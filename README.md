@@ -58,23 +58,22 @@ Qualquer mídia sonora usada no projeto como musicas (na pasta musics) e efeitos
 > Se o wumpus for derrotado o jogo acaba com sua vitória, mas se todos os personagens forem derrotados, você perde
 
 # Equipe
-* `<nome completo>` - `<RA>`
-
-# Vídeos do Projeto
+* `Lucas Nogueira Roberto`
+* `Nícolas Hecker Silva` - `186132`
 
 ## Vídeo da Prévia
-> <Coloque um link para o vídeo da prévia do projeto.>
+> [Link](https://www.youtube.com/watch?v=NF305OLXkHI)
 
-## Vídeo do Jogo
-> <Coloque um link para o vídeo em que é demonstrada a versão final do jogo. Esse vídeo deve ter em torno de 5 minutos. Este vídeo não apresenta slides, nem substitui a apresentação final do projeto, que será feita por conferência. Ele mostra apenas o jogo em funcionamento.>
+# Vídeos do Jogo
+>[Link](link)
 
 # Slides do Projeto
 
 ## Slides da Prévia
-`<Coloque um link para os slides da prévia do projeto.>`
+>[Link](link)
 
 ## Slides da Apresentação Final
-`<Coloque um link para os slides da apresentação final do projeto.>`
+>[Link](link)
 
 ## Relatório de Evolução
 
@@ -123,7 +122,7 @@ O vídeo a seguir apresenta um detalhamento de um projeto baseado em componentes
 
 ## Diagrama Geral do Projeto
 
-> <Apresente um diagrama geral de organização da organização do seu sistema. O formato é livre. A escolha de um ou mais estilos arquiteturais será considerado um diferencial.>
+>[Link](link)
 
 > <Faça uma breve descrição do diagrama.>
 
@@ -134,20 +133,6 @@ O vídeo a seguir apresenta um detalhamento de um projeto baseado em componentes
 Este é o diagrama compondo componentes para análise:
 
 ![Diagrama Analise](diagrama-componentes-analise.png)
-
-### Exemplo 2
-
-Este é um diagrama inicial do projeto de jogos:
-
-![Diagrama Jogos](diagrama-componentes-jogos.png)
-
-### Exemplo 3
-
-Este é outro diagrama de um projeto de vendas:
-
-![Diagrama Vendas](diagrama-componentes-vendas.png)
-
-Para cada componente será apresentado um documento conforme o modelo a seguir:
 
 ## Componente `<Nome do Componente>`
 
