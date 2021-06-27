@@ -15,24 +15,26 @@ import mc322.game.itens.StrengthPotion;
 public class Bag implements BasicObject{
 
       private ArrayList<Pair<Item,Integer>> itens;
+      private boolean openedWumpusDoor;
+      int total_number_keys;
 
       public Bag()
       {
             itens = new ArrayList<Pair<Item,Integer>>();
+            total_number_keys = 0;
+            openedWumpusDoor = false;
       }
 	
 	public void addItem(Item item)
 	{
 		for(int i =0;i<itens.size();i++)
 		{
-			if(item.getClass().equals(itens.get(i).getFirst().getClass()))
-			{
-				if(!(item instanceof Key))
-				{
-					itens.add(Pair.of(itens.get(i).getFirst(),itens.get(i).getSecond()+1));
-					itens.remove(i);
-					return;
-				}
+			if(item.getClass().equals(itens.get(i).getFirst().getClass())){
+                        if(!(item instanceof Key)) return;
+                        else{
+                              if(total_number_keys > 15) return;
+                              else total_number_keys++;
+                        }
 			}
 			
 		}
@@ -72,24 +74,23 @@ public class Bag implements BasicObject{
 		}
 	}
 	
-	public void click(int i,int j,Dungeon dg)
-	{
+	public void click(int i,int j,Dungeon dg){
 		int i1 = 10*2;
-		int j1 = 499*2;
-		int width = 33*2;
+		int j1 = 940;
+		int width = 32*2;
 		int hight = 52*2;
-		if(LinearAlgebra.insideRec(i,j,i1,j1,i1+hight,j1+width))
-		{
+
+		if(LinearAlgebra.insideRec(i,j,i1,j1,i1+hight,j1+width)){
 			drinkPosion("Resistance",dg);
 		}
 		j1-=width;
-		if(LinearAlgebra.insideRec(i,j,i1,j1,i1+hight,j1+width))
-		{
+
+		if(LinearAlgebra.insideRec(i,j,i1,j1,i1+hight,j1+width)){
 			drinkPosion("Strength",dg);
 		}
 		j1-=width;
-		if(LinearAlgebra.insideRec(i,j,i1,j1,i1+hight,j1+width))
-		{
+		
+            if(LinearAlgebra.insideRec(i,j,i1,j1,i1+hight,j1+width)){
 			drinkPosion("Life",dg);
 		}
 		
@@ -125,24 +126,46 @@ public class Bag implements BasicObject{
 			{
 				if(seePocket(i).getFirst() instanceof HealthPotion)
 				{
-					getItemAtPocket(i);
-					dg.getCurrentRoom().getPlayer().incrementHP(10);
-				}
-			}
-		}
-		else
-			System.err.println("name of potion invalid!");
-	}
-	
-	public void renderer(Renderer r) {
-		for(int i = 0;i<itens.size();i++)
+                              getItemAtPocket(i);
+                              dg.getCurrentRoom().getPlayer().incrementHP(10);
+                        }
+                  }
+            }
+            else
+                  System.err.println("name of potion invalid!");
+      }
+
+      public void renderer(Renderer r) {
+
+            for(int i = 0;i<itens.size();i++){
+                  if(itens.get(i).getFirst() instanceof Key){
+                        if(!openedWumpusDoor)
+                              itens.get(i).getFirst().renderer(r);
+                  }
+                  else itens.get(i).getFirst().renderer(r);
+            }
+      }
+
+	public boolean hasAllKeys()
+	{
+		int numberOfKeys =6;
+		for(int i =0;i<itens.size();i++)
 		{
-			itens.get(i).getFirst().renderer(r);
+			if(itens.get(i).getFirst() instanceof Key)
+			{
+					numberOfKeys--;
+			}
+
 		}
-	
+		if(numberOfKeys == 0){
+			return true;
+		}
+		return false;
 	}
-	
-	
+
+      public void openWumpusDoor(){
+            this.openedWumpusDoor = true;
+      }
 	
 	
 }

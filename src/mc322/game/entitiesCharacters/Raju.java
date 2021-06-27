@@ -7,16 +7,16 @@ import mc322.game.Room;
 
 public class Raju extends Heroes{
 
-	
-	public Raju(int i, int j,double elevation)
-	{
-		super(i,j,elevation);
-		this.name = "Raju";
+
+      public Raju(int i, int j,double elevation)
+      {
+            super(i,j,elevation);
+            this.name = "Raju";
             this.state = "idle";
 
             this.updateDir = 3;
             this.updateFrame = 0;
-            
+
             this.initAnimation = true;
             this.velocityAnim = this.velocityAnimIdle = 5;
             this.velocityAnimMoving = 1;
@@ -26,16 +26,16 @@ public class Raju extends Heroes{
             hpMax = 100;
             hp = hpMax;
             damage = 100;
-		
-	}
+
+      }
 
 
-	public void attack(int i, int j, Room room) {
-		if(LinearAlgebra.getModulo(i-this.i)!=0 && LinearAlgebra.getModulo(j-this.j)!=0)
-			return;
-		else
-			room.atack(i,j,this.damage);
-	}
+      public void attack(int i, int j, Room room) {
+            if(LinearAlgebra.getModulo(i-this.i)!=0 && LinearAlgebra.getModulo(j-this.j)!=0)
+                  return;
+            else
+                  room.atack(i,j,this.damage);
+      }
 
 
       public void change_state(String state){
@@ -44,23 +44,23 @@ public class Raju extends Heroes{
             if(state == "idle") this.nFrames = 5;
       }
 
-	public void update(double dt) {
-		if(hp<=0)
-			this.die();
-        this.updateFrame += this.velocityAnim*dt;
-	}
+      public void update(double dt) {
+            if(hp<=0)
+                  this.die();
+            this.updateFrame += this.velocityAnim*dt;
+      }
 
-	@Override
-	public void renderer(Renderer r) {
+      @Override
+      public void renderer(Renderer r) {
             if(this.selected == 1) super.renderer(r);
             GameRenderer.drawCharacter(i,j,elevation,name,r,(int)updateFrame%nFrames, this.updateDir,this.state);
-            GameRenderer.drawLife(0,40,2,this.hpMax,this.hp,r);
-	}
+            //GameRenderer.drawLife(0,40,this.hpMax,this.hp,name,r);
+      }
 
-	@Override
-	public void toggleAnimation() {
-		// TODO Auto-generated method stub
-		
-	}
+      @Override
+      public void toggleAnimation() {
+            // TODO Auto-generated method stub
+
+      }
 
 }

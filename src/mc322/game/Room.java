@@ -14,6 +14,7 @@ import mc322.game.entitiesCharacters.Milo;
 import mc322.game.entitiesCharacters.Raju;
 import mc322.game.entitiesCharacters.Ze;
 import mc322.game.entitiesTiles.Chest;
+import mc322.game.entitiesTiles.Wall;
 import mc322.game.entitiesTiles.Door;
 import mc322.game.entitiesTiles.Ladder;
 import mc322.game.entitiesTiles.Platform;
@@ -85,8 +86,9 @@ public class Room implements BasicObject {
 
             if(hasKey){
                   if(this.chest == null) System.out.println(this.numberRoom);
-                  else{
-                        this.chest.insertItem(new Key(this.color));
+                  else if(this.color != "White"){
+                        //this.chest.insertItem(new Key(this.color));
+                        this.chest.insertItem(new Key("Purple"));
                         this.chest.insertItem(new Key("Yellow"));
                         this.chest.insertItem(new Key("Green"));
                         this.chest.insertItem(new Key("Red"));
@@ -98,6 +100,22 @@ public class Room implements BasicObject {
             this.i = pos.getFirst();
             this.j = pos.getSecond();
       }
+
+      public void setWumpusDoor() {
+            if(tiles.get(size-1).get(size/2).getFirst() instanceof Door){
+                  ((Door)tiles.get(size-1).get(size/2).getFirst()).setWumpusDoor();
+            }
+            ((Wall)tiles.get(size-1).get(size/2-1).getFirst()).toggleVisible();
+      }
+
+      public boolean hasAllKeys(){
+            return dungeon.getBag().hasAllKeys();
+      }
+      public void openWumpusDoor(){
+            dungeon.getBag().openWumpusDoor();
+      }
+
+
 
       private void renderTerrain(Renderer r){
 
@@ -120,6 +138,9 @@ public class Room implements BasicObject {
 
       public void update(double dt) throws GameOver {
             boolean isEnemys = false;
+            if(player == null){
+                  updatePlayer();
+            }
             for(int i = size-1; i >= 0; i--){
                   for(int j=0;j<size;j++){
                         if(tiles.get(i).get(j) != null){
@@ -166,29 +187,34 @@ public class Room implements BasicObject {
                               }
 
                         }
-
                   }
             }
-            if(!isEnemys)
+            if(!isEnemys){
+                  open();
                   dungeon.setState("Exploration");
+            }
       }
 
       private void updatePlayer() throws GameOver {
             if(luna != null && !luna.getDead())
             {
-                  player = luna;
+                  luna.select();
+                  setPlayer(luna);
             }
             else if(milo != null && !milo.getDead())
             {
-                  player = milo;
+                  milo.select();
+                  setPlayer(milo);
             }
             else if(raju != null && !raju.getDead())
             {
-                  player = raju;
+                  raju.select();
+                  setPlayer(raju);
             }
             else if(ze != null && !ze.getDead())
             {
-                  player = ze;
+                  ze.select();
+                  setPlayer(ze);
             }
             else throw new GameOver();
 
@@ -300,7 +326,7 @@ public class Room implements BasicObject {
                         if(tiles.get(i).get(j).getSecond() == null && elevation > (1-legSize))
                               return true;
 
-                  if(tiles.get(i).get(j).getFirst() instanceof Door && !this.blocked){
+                   if(tiles.get(i).get(j).getFirst() instanceof Door && !this.blocked && !((Door)tiles.get(i).get(j).getFirst()).getClosed()){
                         if(i==0){
                               if(dungeon.getRoom(this.i,this.j-1) !=null) //south
                                     return true;

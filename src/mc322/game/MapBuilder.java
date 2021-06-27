@@ -27,7 +27,7 @@ public class MapBuilder{
       private Pair <Integer, Integer> origin;
       private Heroes player;
       
-      private int numbersOfColors[] = {0,0,0,0,0,0}; //Black,Purple,Yellow,Red,Green,Blue
+      private int numbersOfColors[] = {0,0,0,0,0,0,0}; //Black,Purple,Yellow,Red,Green,Blue,WHITE
       
 
 
@@ -63,6 +63,9 @@ public class MapBuilder{
 	                    case 'p':
 	                    	numbersOfColors[1]=numbersOfColors[1]+1;
 	                          break;
+	                    case 'f':
+	                    	numbersOfColors[6]=numbersOfColors[6]+1;
+	                          break;
 	                    case '0':
 	                    default:
 	                          break;
@@ -71,7 +74,7 @@ public class MapBuilder{
                 }
             }
             
-            int selectedRoom[] = {0,0,0,0,0,0};
+            int selectedRoom[] = {0,0,0,0,0,0,0};
             Random rand = new Random();
             for(int i = 0;i<selectedRoom.length;i++)
             {
@@ -115,7 +118,7 @@ public class MapBuilder{
                                     selectedRoom[4]--;
                                     break;
                               case 'r':
-                            	  
+
                                     rooms[i][j] = new Room(this, pi, rooms_around,"Red", dungeon,selectedRoom[3]==0);
                                     selectedRoom[3]--;
                                     break;
@@ -124,14 +127,17 @@ public class MapBuilder{
                                     rooms[i][j] = new Room(this, pi, rooms_around,"Purple", dungeon,selectedRoom[1]==0);
                                     selectedRoom[1]--;
                                     break;
+                              case 'f':
+                                    rooms[i][j] = new Room(this, pi, rooms_around,"White", dungeon,selectedRoom[1]==0);
+                                    selectedRoom[6]--;
+                                    break;
                               case 'o':
                                   rooms[i][j] = new Room(this, pi, rooms_around,"Origin", dungeon,false);
-                                  selectedRoom[1]--;
                                   break;
                                   
                               case 'w':
                                   rooms[i][j] = new Room(this, pi, rooms_around,"Wumpus", dungeon,false);
-                                  selectedRoom[1]--;
+                                  rooms[i][j-1].setWumpusDoor();
                                   break;
                               case '0':
                               default:

@@ -8,15 +8,15 @@ import mc322.game.Victory;
 
 public class Wumpus extends Enemys{
 
-	public Wumpus(int i, int j,double elevation)
-	{
-		super(i,j,elevation);
-		this.name = "Wumpus";
+      public Wumpus(int i, int j,double elevation)
+      {
+            super(i,j,elevation);
+            this.name = "Wumpus";
             this.state = "idle";
 
             this.updateDir = 0;
             this.updateFrame = 0;
-            
+
             this.initAnimation = true;
             this.velocityAnim = this.velocityAnimIdle = 8;
             this.velocityAnimMoving = 5;
@@ -28,42 +28,41 @@ public class Wumpus extends Enemys{
             armor = 10;
             range = 15;
             damage = 40;
-	}
-	
-
-	public void attack(int i,int j, Room room) {
-		if(LinearAlgebra.getModulo(i-this.i)>range || LinearAlgebra.getModulo(j-this.j)>range)
-			return;
-		else
-			room.atack(i,j,this.damage);
-	}
+      }
 
 
-	public void update(double dt){
-		if(hp<=0)
-			this.die();
+      public void attack(int i,int j, Room room) {
+            if(LinearAlgebra.getModulo(i-this.i)>range || LinearAlgebra.getModulo(j-this.j)>range)
+                  return;
+            else
+                  room.atack(i,j,this.damage);
+      }
+
+
+      public void update(double dt){
+            if(hp<=0)
+                  this.die();
             this.updateFrame += this.velocityAnim*dt;
-            
-	}
 
- 	public void die() throws Victory {
- 		dead = true;
-  		throw new Victory();
-  		
-  	}
-	
-	public void renderer(Renderer r) {
-		GameRenderer.drawEnemy(i,j,elevation,name,r, (int)updateFrame%nFrames,this.updateDir,this.state);
-		GameRenderer.drawLifeEnemy(i,j,elevation,this.hpMax,this.hp,r);
-		
-	}
-	public void toggleAnimation() {
-		
-	}
+      }
+
+      public void die() throws Victory {
+            dead = true;
+            throw new Victory();
+
+      }
+
+      public void renderer(Renderer r) {
+            GameRenderer.drawEnemy(i,j,elevation,name,r, (int)updateFrame%nFrames,this.updateDir,this.state);
+            GameRenderer.drawLifeWumpus(i,j,elevation,this.hpMax,this.hp,r);
+      }
+      public void toggleAnimation() {
+
+      }
 
 
-	public void brain() {
-		
-	}
+      public void brain() {
+
+      }
 
 }

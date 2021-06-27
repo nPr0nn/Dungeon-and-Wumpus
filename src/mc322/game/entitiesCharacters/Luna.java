@@ -33,7 +33,7 @@ public class Luna extends Heroes{
 
 
       public void attack(int i, int j, Room room) {
-            if(LinearAlgebra.getModulo(i-this.i)!=1 || LinearAlgebra.getModulo(j-this.j)!=1)
+            if(LinearAlgebra.getModulo(i-this.i)>1 || LinearAlgebra.getModulo(j-this.j)>1)
                   return;
             else
                   room.atack(i,j,this.damage);
@@ -50,7 +50,7 @@ public class Luna extends Heroes{
       public void renderer(Renderer r) {
             if(this.selected == 1) super.renderer(r);
             GameRenderer.drawCharacter(i,j,elevation,name,r, (int)updateFrame%nFrames,this.updateDir,this.state);
-            GameRenderer.drawLife(0,0,0,this.hpMax,this.hp,r);
+            //GameRenderer.drawLife(0,0,this.hpMax,this.hp,name,r);
 
       }
 

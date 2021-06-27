@@ -47,13 +47,13 @@ public class Milo extends Heroes{
 			this.die();
             this.updateFrame += this.velocityAnim*dt;
             
-	}
+      }
 
-	@Override
-	public void renderer(Renderer r) {
-        if(this.selected == 1) super.renderer(r);
-		GameRenderer.drawCharacter(i,j,elevation,name,r, (int)updateFrame%nFrames, this.updateDir,this.state);
-		GameRenderer.drawLife(0,20,1,this.hpMax,this.hp,r);
+      @Override
+      public void renderer(Renderer r) {
+            if(this.selected == 1) super.renderer(r);
+            GameRenderer.drawCharacter(i,j,elevation,name,r, (int)updateFrame%nFrames, this.updateDir,this.state);
+            //GameRenderer.drawLife(0,20,this.hpMax,this.hp,name,r);
 	}
 
 	@Override

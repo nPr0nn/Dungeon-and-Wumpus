@@ -53,7 +53,7 @@ public class Ze extends Heroes{
 	public void renderer(Renderer r) {
             if(this.selected == 1) super.renderer(r);
             GameRenderer.drawCharacter(i,j,elevation,name,r, (int)updateFrame%nFrames, this.updateDir,this.state);
-            GameRenderer.drawLife(0,60,3,this.hpMax,this.hp,r);
+            //GameRenderer.drawLife(0,60,this.hpMax,this.hp,name,r);
 	}
 
 	@Override
