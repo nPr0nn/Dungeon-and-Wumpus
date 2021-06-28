@@ -4,7 +4,7 @@ import mc322.engine.LinearAlgebra;
 import mc322.engine.Renderer;
 import mc322.game.GameRenderer;
 import mc322.game.Room;
-import mc322.game.Victory;
+import mc322.game.exceptions.*;
 
 public class Wumpus extends Enemys{
 
@@ -26,11 +26,11 @@ public class Wumpus extends Enemys{
             this.nFramesMoving = 4;
             this.nFramesAttacking = 11;
 
-            hpMax = 200;
+            hpMax = 250;
             hp = hpMax;
-            armor = 10;
-            range = 15;
-            damage = 40;
+            armor = 80;
+            range = 8;
+            damage = 50;
       }
 
 
@@ -51,10 +51,8 @@ public class Wumpus extends Enemys{
             super.update(dt);
       }
 
-      public void die() throws Victory {
+      public void die() {
             dead = true;
-            throw new Victory();
-
       }
 
       @Override
@@ -66,6 +64,10 @@ public class Wumpus extends Enemys{
             GameRenderer.drawEnemy(i,j,elevation,name,r, (int)updateFrame%nFrames,this.updateDir,this.state);
             GameRenderer.drawLifeWumpus(i,j,elevation,this.hpMax,this.hp,r);
             super.renderer(r);
+      }
+
+      public boolean isWumpusDead(){
+            return dead;
       }
 
 

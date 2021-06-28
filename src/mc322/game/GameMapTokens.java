@@ -17,6 +17,7 @@ public abstract class GameMapTokens{
       private static String ASSETS = "../_assets";
       private static String SOUNDS = "../_sounds";
       private static String DATA   = "../_data";
+      private static String MUSICS = "musics";
 
       private static Map<String, ImageTile> mapTokens = new HashMap<>();
 
@@ -25,7 +26,6 @@ public abstract class GameMapTokens{
       private static String DIR_ENEMIES    = ASSETS + "/enemies/";
       private static String DIR_ITENS      = ASSETS + "/itens/";
       private static String DIR_MENU       = ASSETS + "/menu/";
-      private static String DIR_NPCS       = ASSETS + "/NPCs/";
       
       private static String DIR_TILES      = ASSETS + "/tiles/";
 
@@ -104,5 +104,9 @@ public abstract class GameMapTokens{
       public static String getPathSound(String object){
             return SOUNDS + "/" + object + WAV;
       }
+      
+      public static String getPathMusic(String object){
+          return SOUNDS + "/" +MUSICS +"/" + object + WAV;
+    }
 
 }

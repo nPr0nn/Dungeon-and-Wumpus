@@ -74,6 +74,7 @@ public abstract class Heroes extends Character{
       public void incrementHP(int life)
       {
             this.hpMax+=life;
+            this.hp = hpMax;
       }
       public void incrementStrength(int str)
       {

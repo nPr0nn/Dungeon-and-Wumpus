@@ -32,7 +32,7 @@ public class Luna extends Heroes{
             hpMax = 110;
             hp = hpMax;
             armor = 50;
-            damage = 10;
+            damage = 40;
       }
 
 

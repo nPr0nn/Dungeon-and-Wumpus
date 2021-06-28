@@ -4,6 +4,7 @@ import mc322.engine.BasicObject;
 import mc322.engine.Pair;
 import mc322.engine.Renderer;
 import mc322.engine.LinearAlgebra;
+import mc322.game.exceptions.*;
 
 public class Dungeon implements BasicObject{
 

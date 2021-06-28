@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import mc322.engine.BasicObject;
 import mc322.engine.Pair;
 import mc322.engine.Renderer;
+import mc322.engine.sfx.AudioManager;
 import mc322.game.entitiesCharacters.Character;
 import mc322.game.entitiesCharacters.Enemys;
 import mc322.game.entitiesCharacters.Heroes;
@@ -13,6 +14,7 @@ import mc322.game.entitiesCharacters.Luna;
 import mc322.game.entitiesCharacters.Milo;
 import mc322.game.entitiesCharacters.Raju;
 import mc322.game.entitiesCharacters.Ze;
+import mc322.game.entitiesCharacters.Wumpus;
 import mc322.game.entitiesTiles.Chest;
 import mc322.game.entitiesTiles.Wall;
 import mc322.game.entitiesTiles.Door;
@@ -20,6 +22,7 @@ import mc322.game.entitiesTiles.Ladder;
 import mc322.game.entitiesTiles.Platform;
 import mc322.game.entitiesTiles.SafeZone;
 import mc322.game.itens.Key;
+import mc322.game.exceptions.*;
 
 public class Room implements BasicObject {
       private final int size = 15;
@@ -35,9 +38,12 @@ public class Room implements BasicObject {
       private Heroes luna;
       private String color;
       private Dungeon dungeon;
+      private Wumpus bosswumpus;
       private boolean blocked;
       private int i;
       private int j;
+      private boolean wumpus;
+      private AudioManager audio = new AudioManager();
 
 
       public Room(MapBuilder mapBuilder,Pair<Integer,Integer>pos,String rooms_around,
@@ -48,7 +54,7 @@ public class Room implements BasicObject {
 
             this.numberRoom = "" + (rnd.nextInt(9)+1);
 
-            hasKey = true;
+            //hasKey = true;
             if(hasKey && (this.numberRoom.equals("1") || this.numberRoom.equals("5") || this.numberRoom.equals("9")))
             {
                   this.numberRoom = "7";
@@ -56,7 +62,7 @@ public class Room implements BasicObject {
             this.color = color;
             this.rooms_around = rooms_around;
             boolean hasEnemys = true;
-
+            wumpus = false;
 
             //            numberRoom = "5";
             //hasEnemys = false;
@@ -71,6 +77,7 @@ public class Room implements BasicObject {
 
             if(color.equals("Wumpus"))
             {
+            	  wumpus = true;
                   numberRoom="wumpus";
                   hasEnemys = false;
                   this.color = "Black";
@@ -81,18 +88,22 @@ public class Room implements BasicObject {
 
             tiles = mapBuilder.buildTiles(size, pos, rooms_around,numberRoom,this);
             entities = mapBuilder.buildEntities(size, pos, numberRoom,this,hasEnemys,wumpus);
+
+            if(wumpus){
+                  bosswumpus = (Wumpus) entities[size/2][size/2];
+            }
             this.updateHerosAtRoom();
 
             if(hasKey){
                   if(this.chest == null) System.out.println(this.numberRoom);
                   else if(this.color != "White"){
-                        //this.chest.insertItem(new Key(this.color));
-                        this.chest.insertItem(new Key("Purple"));
-                        this.chest.insertItem(new Key("Yellow"));
-                        this.chest.insertItem(new Key("Green"));
-                        this.chest.insertItem(new Key("Red"));
-                        this.chest.insertItem(new Key("Blue"));
-                        this.chest.insertItem(new Key("Black"));
+                        this.chest.insertItem(new Key(this.color));
+                        //this.chest.insertItem(new Key("Purple"));
+                        //this.chest.insertItem(new Key("Yellow"));
+                        //this.chest.insertItem(new Key("Green"));
+                        //this.chest.insertItem(new Key("Red"));
+                        //this.chest.insertItem(new Key("Blue"));
+                        //this.chest.insertItem(new Key("Black"));
                   }
             }
             this.dungeon = dungeon;
@@ -135,11 +146,12 @@ public class Room implements BasicObject {
 
       }
 
-      public void update(double dt) throws GameOver {
+      public void update(double dt) throws GameOver, Victory{
             boolean isEnemys = false;
             if(player == null){
                   updatePlayer();
             }
+            if(bosswumpus != null) updateWumpus();
             updatePlayerSelected();
             for(int i = size-1; i >= 0; i--){
                   for(int j=0;j<size;j++){
@@ -192,6 +204,12 @@ public class Room implements BasicObject {
             if(!isEnemys){
                   open();
                   dungeon.setState("Exploration");
+            }
+      }
+
+      private void updateWumpus() throws Victory{
+            if(bosswumpus.isWumpusDead()){
+                  throw new Victory();
             }
       }
 
@@ -468,6 +486,8 @@ public class Room implements BasicObject {
 
       private void changeRoom(int iSala, int jSala, char dir){
             dungeon.setState("Combat");
+
+    	  	audio.playMusic(GameMapTokens.getPathSound("newRoom"),false);
             // remover suas posicoes da sala antiga
             if(luna != null)
                   entities[luna.getPos().getFirst()][luna.getPos().getSecond()] = null;
@@ -684,6 +704,14 @@ public class Room implements BasicObject {
             }
 
             return map;
+      }
+      
+      
+      public String toString()
+      {
+    	  if(wumpus)
+    		  return "Wumpus";
+    	  return color;
       }
 
 }

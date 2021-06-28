@@ -1,19 +1,12 @@
 package mc322.game;
 
 import java.util.ArrayList;
-import java.util.*;  
-
-import mc322.engine.GameContainer;
 import mc322.engine.LinearAlgebra;
 import mc322.engine.Pair;
 import mc322.engine.UnexpectedError;
-import mc322.game.entitiesCharacters.Heroes;
-import mc322.game.entitiesCharacters.Luna;
-import mc322.game.entitiesCharacters.Milo;
-import mc322.game.entitiesCharacters.Raju;
-import mc322.game.entitiesCharacters.Ze;
 import mc322.game.entitiesCharacters.Character;
 import java.util.Random;
+import mc322.game.exceptions.*;
 
 
 public abstract class GameBrain{

@@ -1,28 +1,21 @@
 package mc322.game.entitiesCharacters;
 
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Random;
 
-
-import java.util.Random;
+import mc322.game.exceptions.*;
 import mc322.engine.LinearAlgebra;
-import mc322.engine.Pair;
 import mc322.engine.Renderer;
 import mc322.engine.UnexpectedError;
+import mc322.game.exceptions.*;
 import mc322.game.GameBrain;
-import mc322.game.ImpossibleOriginOrDestiny;
-import mc322.game.DoorSelected;
 import mc322.game.Entity;
 import mc322.game.Room;
-import mc322.game.Victory;
 import mc322.game.Attack;
 
 public abstract class Character extends Entity{
 
-      Attack attack;
-      Random rand;
-
+      protected Attack attack;
+      protected Random rand;
       protected int range;
       protected int solutionIndex;
       protected String solution;
@@ -84,7 +77,13 @@ public abstract class Character extends Entity{
 
       protected String requestSolution(Room room, int iDest, int jDest,boolean ignoreHeroes,boolean enemy) throws ImpossibleOriginOrDestiny, UnexpectedError{
             char map[][] = room.builCharMap(enemy);
-            String solution = GameBrain.solveMaze(map,this.i,this.j,iDest,jDest);
+            String solution = "";
+
+            try{
+                  solution = GameBrain.solveMaze(map,this.i,this.j,iDest,jDest);
+            }
+            catch (Exception ImpossibleOriginOrDestiny){
+            }
             return solution;
       }
 

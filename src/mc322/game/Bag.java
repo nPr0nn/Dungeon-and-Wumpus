@@ -6,6 +6,7 @@ import mc322.engine.BasicObject;
 import mc322.engine.LinearAlgebra;
 import mc322.engine.Pair;
 import mc322.engine.Renderer;
+import mc322.engine.sfx.AudioManager;
 import mc322.game.itens.HealthPotion;
 import mc322.game.itens.Item;
 import mc322.game.itens.Key;
@@ -98,6 +99,7 @@ public class Bag implements BasicObject{
 
 	private void drinkPosion(String type,Dungeon dg)
 	{
+		AudioManager audio = new AudioManager();
 		if(type.equals("Resistance"))
 		{
 			for(int i =0;i<itens.size();i++)
@@ -106,6 +108,7 @@ public class Bag implements BasicObject{
 				{
 					getItemAtPocket(i);
 					dg.getCurrentRoom().getPlayer().incrementDef(5);
+				  	audio.playMusic(GameMapTokens.getPathSound("potion"),false);
 				}
 			}
 		}
@@ -117,6 +120,7 @@ public class Bag implements BasicObject{
 				{
 					getItemAtPocket(i);
 					dg.getCurrentRoom().getPlayer().incrementStrength(5);
+				  	audio.playMusic(GameMapTokens.getPathSound("potion"),false);
 				}
 			}
 		}
@@ -126,11 +130,12 @@ public class Bag implements BasicObject{
 			{
 				if(seePocket(i).getFirst() instanceof HealthPotion)
 				{
-                              getItemAtPocket(i);
-                              dg.getCurrentRoom().getPlayer().incrementHP(10);
-                        }
-                  }
+	                  getItemAtPocket(i);
+	                  dg.getCurrentRoom().getPlayer().incrementHP(10);
+	          	  	  audio.playMusic(GameMapTokens.getPathSound("potion"),false);
+                }
             }
+        }
             else
                   System.err.println("name of potion invalid!");
       }

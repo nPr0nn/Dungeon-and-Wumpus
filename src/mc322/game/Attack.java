@@ -1,6 +1,7 @@
 package mc322.game;
 
 import mc322.engine.Renderer;
+import mc322.engine.sfx.AudioManager;
 import mc322.game.Entity;
 import mc322.game.GameRenderer;
 import mc322.game.Room;
@@ -25,6 +26,9 @@ public class Attack extends Entity{
             if(name.indexOf("spell") != -1) this.nFrames = 11;
             else this.nFrames = 7;
             this.ended = false;
+            AudioManager audio = new AudioManager();
+            
+    	  	audio.playMusic(GameMapTokens.getPathSound(attack),false);
       }
 
       public void update(double dt){

@@ -16,6 +16,7 @@ import mc322.engine.Renderer;
 import mc322.engine.Input;
 
 import mc322.game.entitiesTiles.*;
+import mc322.game.exceptions.*;
 
 public class GameManager implements AbstractGame{
 
@@ -86,7 +87,12 @@ public class GameManager implements AbstractGame{
                   turn.stop();
             }
             audio.stopMusic();
-            audio.playMusic(GameMapTokens.getPathSound(state),true);
+            if(state.equals("Combat"))
+            	audio.playMusic(GameMapTokens.getPathMusic(state),true);
+            else
+            {
+            	audio.playMusic(GameMapTokens.getPathMusic(dungeon.getCurrentRoom().toString()),true);
+            }
       }
 
       public String getState()

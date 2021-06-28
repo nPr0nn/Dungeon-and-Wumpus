@@ -1,9 +1,7 @@
 package mc322.game;
 
 import mc322.engine.GameContainer;
-import mc322.engine.Pair;
-import mc322.game.entitiesCharacters.Enemys;
-import mc322.game.entitiesCharacters.Heroes;
+import mc322.game.exceptions.*;
 
 public class Turn {
 

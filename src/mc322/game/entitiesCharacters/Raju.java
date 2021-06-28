@@ -27,7 +27,7 @@ public class Raju extends Heroes{
             this.nFramesAttacking = 11;
             hpMax = 100;
             hp = hpMax;
-            damage = 100;
+            damage = 90;
 
       }
 

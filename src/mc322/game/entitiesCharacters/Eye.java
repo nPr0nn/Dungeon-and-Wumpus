@@ -4,8 +4,7 @@ import mc322.engine.LinearAlgebra;
 import mc322.engine.Renderer;
 import mc322.game.GameRenderer;
 import mc322.game.Room;
-import mc322.game.Victory;
-import mc322.game.Attack;
+import mc322.game.exceptions.*;
 
 public class Eye extends Enemys{
 
@@ -31,7 +30,7 @@ public class Eye extends Enemys{
             hp = hpMax;
             armor = 5;
             range = 5;
-            damage = 40;
+            damage = 30;
 	}
 	
 

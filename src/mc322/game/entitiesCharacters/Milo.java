@@ -28,7 +28,7 @@ public class Milo extends Heroes{
             range = 5;
             hpMax = 100;
             hp = hpMax;
-            this.damage = 50;
+            this.damage = 60;
 	}
 
 

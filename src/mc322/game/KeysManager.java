@@ -127,7 +127,7 @@ public abstract class KeysManager {
 
             if(gc.getInput().isKeyDown(' ')){
                   dungeon.getCurrentRoom().getPlayer().use(dungeon.getCurrentRoom(),bag);
-                  System.out.println(dungeon.getCurrentRoom().getPlayer());
+                  //System.out.println(dungeon.getCurrentRoom().getPlayer());
             }
 
             //if(gc.getInput().isKeyDown('I')){
@@ -202,6 +202,8 @@ public abstract class KeysManager {
                         j -= 1;
 
                   }
+
+                  if(map[i][j] == '#') return null;
                   return Pair.of(i, j);
             }
 

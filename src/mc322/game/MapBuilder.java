@@ -238,28 +238,28 @@ public class MapBuilder{
             	Random rand = new Random();
             	int numberOfEnemys = rand.nextInt(5);
             	int nGeneratedEnemys = 0;
-            	while(nGeneratedEnemys<numberOfEnemys)
-            	{
-            		int targetI = rand.nextInt(size);
-            		int targetJ = rand.nextInt(size);
-            		char token = scannedRoom[targetJ][0].charAt(targetI);
-            		if(token == '.' || token == 'a')
-            		{
-            			int elevation = 0;
-            			if(token == 'a')
-            				elevation = 1;
-            			
-            			if(entities[targetI][targetJ]==null)
-            			{
-            				entities[targetI][targetJ] = new Eye(targetI, targetJ, elevation);
-            				nGeneratedEnemys++;
-            			}
-            		}
-            	}
+                  while(nGeneratedEnemys<numberOfEnemys)
+                  {
+                        int targetI = rand.nextInt(size);
+                        int targetJ = rand.nextInt(size);
+                        char token = scannedRoom[targetJ][0].charAt(targetI);
+                        if(token == '.' || token == 'a')
+                        {
+                              int elevation = 0;
+                              if(token == 'a')
+                                    elevation = 1;
+
+                              if(entities[targetI][targetJ]==null)
+                              {
+                                    entities[targetI][targetJ] = new Eye(targetI, targetJ, elevation);
+                                    nGeneratedEnemys++;
+                              }
+                        }
+                  }
             }
             if(wumpus)
             {
-            	entities[size/2][size/2] = new Wumpus(size/2,size/2,0);
+                  entities[size/2][size/2] = new Wumpus(size/2,size/2,0);
             }
             
             return entities;
