@@ -2,9 +2,9 @@
 
 # Estrutura de Arquivos e Pastas
 
- A estrutura geral das pastas é a seguinte e será detalhada a seguir:
+ A estrutura geral das pastas em detalhes é a seguinte:
 
-~~~
+```
 ├── README.md                               <- apresentação do projeto
 │
 ├── _data                                   <- dados usados pelo jogo
@@ -33,24 +33,46 @@
 └── bin                                     <- arquivos binarios gerados
     │
     └──mc322
-        └── (...)                           <- estrutura igual a de src
-~~~
+    └── (...)                           <- estrutura igual a de src
+
+```
+
+as
 
 ## `data`
 
 Todos os arquivos utilizados para contruir o mapa e as salas (dentro de layout) com a extensao csv.
 
+> [Arquivos Data](https://github.com/LucasNP/Dungeon-and-Wumpus/tree/main/_data)
+
+
 ## `assets`
 
 Todas as imagens e animaçoes separadas por pastas que definem as categorias: attacks para animaçoes de ataques e recebimento de dano; characters para as imagens e animacoes dos personagens jogaveis; enemies para as animações e imagens de inimigos; itens para animações e imagens de itens (como tochas, baus e poçoes); menu para animações e imagens do menu como mapa, pause/play e imagens de fim de jogo; tiles para animações e imagens de terrenos do jogo.
+
+> [Arquivos Assets](https://github.com/LucasNP/Dungeon-and-Wumpus/tree/main/_assets)
+
+
+
+## `sounds`
+
+Qualquer mídia sonora usada no projeto como musicas (na pasta musics) e efeitos sonoros.
+
+> [Arquivos Sounds](https://github.com/LucasNP/Dungeon-and-Wumpus/tree/main/src)
+
 
 ## `src`
 
 Projeto em Java, em Eclipse, incluindo todos os arquivos de dados e bibliotecas necessários para a sua execução.
 
-## `sounds`
+> [Arquivos Java](https://github.com/LucasNP/Dungeon-and-Wumpus/tree/main/src)
 
-Qualquer mídia sonora usada no projeto como musicas (na pasta musics) e efeitos sonoros.
+
+## `bin`
+
+Arquivos binarios ( Classes ) criados ao executar os códigos em src
+
+> [Arquivos Java](https://github.com/LucasNP/Dungeon-and-Wumpus/tree/main/bin)
 
 # Descrição Resumida do Jogo
 
