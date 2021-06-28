@@ -422,7 +422,7 @@ Método | Objetivo
 
 ## Diagrama da hierarquia de exceções
 
-> [diagrama]
+> ![Diagrama Geral de Componentes](/img/diagramaExec.png)
 
 ## Descrição das classes de exceção
 
