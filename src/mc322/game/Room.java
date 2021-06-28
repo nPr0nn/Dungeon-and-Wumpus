@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import mc322.engine.BasicObject;
 import mc322.engine.Pair;
 import mc322.engine.Renderer;
+import mc322.engine.sfx.AudioManager;
 import mc322.game.entitiesCharacters.Character;
 import mc322.game.entitiesCharacters.Enemys;
 import mc322.game.entitiesCharacters.Heroes;
@@ -14,12 +15,13 @@ import mc322.game.entitiesCharacters.Milo;
 import mc322.game.entitiesCharacters.Raju;
 import mc322.game.entitiesCharacters.Ze;
 import mc322.game.entitiesTiles.Chest;
+import mc322.game.entitiesTiles.Wall;
 import mc322.game.entitiesTiles.Door;
 import mc322.game.entitiesTiles.Ladder;
 import mc322.game.entitiesTiles.Platform;
 import mc322.game.entitiesTiles.SafeZone;
-import mc322.game.entitiesTiles.Wall;
 import mc322.game.itens.Key;
+import mc322.game.exceptions.*;
 
 public class Room implements BasicObject {
       private final int size = 15;
@@ -36,11 +38,12 @@ public class Room implements BasicObject {
       private String color;
       private Dungeon dungeon;
       private boolean blocked;
-      public int i;
-      public int j;
+      private int i;
+      private int j;
+      private boolean wumpus;
+      private AudioManager audio = new AudioManager();
 
-      
-      
+
       public Room(MapBuilder mapBuilder,Pair<Integer,Integer>pos,String rooms_around,
                   String color,
                   Dungeon dungeon, boolean hasKey){
@@ -48,6 +51,8 @@ public class Room implements BasicObject {
             Random rnd = new Random();
 
             this.numberRoom = "" + (rnd.nextInt(9)+1);
+
+            //hasKey = true;
             if(hasKey && (this.numberRoom.equals("1") || this.numberRoom.equals("5") || this.numberRoom.equals("9")))
             {
                   this.numberRoom = "7";
@@ -55,42 +60,66 @@ public class Room implements BasicObject {
             this.color = color;
             this.rooms_around = rooms_around;
             boolean hasEnemys = true;
-            
-            
-//            numberRoom = "5";
-//            hasEnemys = false;
-            
+            wumpus = false;
+
+            //            numberRoom = "5";
+            //hasEnemys = false;
+
             boolean wumpus = false;
             if(color.equals("Origin"))
             {
-            	numberRoom="0";
-            	hasEnemys = false;
-            	this.color = "Purple";
+                  numberRoom="0";
+                  hasEnemys = false;
+                  this.color = "Purple";
             }
-            
+
             if(color.equals("Wumpus"))
             {
-            	numberRoom="wumpus";
-            	hasEnemys = false;
-            	this.color = "Black";
-            	wumpus = true;
+            	  wumpus = true;
+                  numberRoom="wumpus";
+                  hasEnemys = false;
+                  this.color = "Black";
+                  wumpus = true;
             }
-            
+
             this.blocked = true;
 
             tiles = mapBuilder.buildTiles(size, pos, rooms_around,numberRoom,this);
             entities = mapBuilder.buildEntities(size, pos, numberRoom,this,hasEnemys,wumpus);
             this.updateHerosAtRoom();
-            if(hasKey)
-            {
-                  if(this.chest == null)
-                        System.out.println(this.numberRoom);
-                  this.chest.insertItem(new Key(this.color));
+
+            if(hasKey){
+                  if(this.chest == null) System.out.println(this.numberRoom);
+                  else if(this.color != "White"){
+                        this.chest.insertItem(new Key(this.color));
+//                        this.chest.insertItem(new Key("Purple"));
+//                        this.chest.insertItem(new Key("Yellow"));
+//                        this.chest.insertItem(new Key("Green"));
+//                        this.chest.insertItem(new Key("Red"));
+//                        this.chest.insertItem(new Key("Blue"));
+//                        this.chest.insertItem(new Key("Black"));
+                  }
             }
             this.dungeon = dungeon;
             this.i = pos.getFirst();
             this.j = pos.getSecond();
       }
+
+      public void setWumpusDoor() {
+            if(tiles.get(size-1).get(size/2).getFirst() instanceof Door){
+                  ((Door)tiles.get(size-1).get(size/2).getFirst()).setWumpusDoor();
+            }
+            ((Wall)tiles.get(size-1).get(size/2-1).getFirst()).toggleVisible();
+      }
+
+      public boolean hasAllKeys(){
+            return dungeon.getBag().hasAllKeys();
+      }
+      public void openWumpusDoor(){
+            dungeon.getBag().openWumpusDoor();
+      }
+
+
 
       private void renderTerrain(Renderer r){
 
@@ -112,9 +141,11 @@ public class Room implements BasicObject {
       }
 
       public void update(double dt) throws GameOver {
-    	  if(player == null)
-    		  updatePlayer();
-    	  boolean isEnemys = false;
+            boolean isEnemys = false;
+            if(player == null){
+                  updatePlayer();
+            }
+            updatePlayerSelected();
             for(int i = size-1; i >= 0; i--){
                   for(int j=0;j<size;j++){
                         if(tiles.get(i).get(j) != null){
@@ -124,80 +155,92 @@ public class Room implements BasicObject {
 
                         }
                         if(entities[i][j] != null)
-                    	{
-                        	if(entities[i][j].getClass().getSuperclass()==Enemys.class)
-	                        {
-	                        	isEnemys = true;
-	                        }
-                    		entities[i][j].update(dt);
-                    		if(entities[i][j].getDead())
-                    		{
-                    			
-                    			if(entities[i][j] instanceof Raju)
-                    			{
-                    				this.raju = null;
-                    				updatePlayer();
-                    			}
-                    				
-                    			if(entities[i][j] instanceof Ze)
-                    			{
-                    				this.ze = null;
-                    				updatePlayer();
-                    			}
-                    				
-                    			if(entities[i][j] instanceof Milo)
-                    			{
-                    				this.milo = null;
-                    				updatePlayer();
-                    			}
-                    				
-                    			if(entities[i][j] instanceof Luna)
-                    			{
-                    				this.luna = null;
-                    				updatePlayer();
-                    			}
-                    				
-                    			entities[i][j]=null;
-                    		}
-                    		
-                    	}
-                        
+                        {
+                              if(entities[i][j].getClass().getSuperclass()==Enemys.class)
+                              {
+                                    isEnemys = true;
+                              }
+                              entities[i][j].update(dt);
+                              if(entities[i][j].getDead())
+                              {
+
+                                    if(entities[i][j] instanceof Raju)
+                                    {
+                                          this.raju = null;
+                                          updatePlayer();
+                                    }
+
+                                    if(entities[i][j] instanceof Ze)
+                                    {
+                                          this.ze = null;
+                                          updatePlayer();
+                                    }
+
+                                    if(entities[i][j] instanceof Milo)
+                                    {
+                                          this.milo = null;
+                                          updatePlayer();
+                                    }
+
+                                    if(entities[i][j] instanceof Luna)
+                                    {
+                                          this.luna = null;
+                                          updatePlayer();
+                                    }
+
+                                    entities[i][j]=null;
+                              }
+
+                        }
                   }
             }
-            if(!isEnemys)
-            {
-            	open();
-            	dungeon.setState("Exploration");
+            if(!isEnemys){
+                  open();
+                  dungeon.setState("Exploration");
             }
       }
 
       private void updatePlayer() throws GameOver {
-		if(luna != null && !luna.getDead())
-		{
-			luna.select();
-			player = luna;
-		}
-		else if(milo != null && !milo.getDead())
-		{
-			milo.select();
-			player = milo;
-		}
-		else if(raju != null && !raju.getDead())
-		{
-			raju.select();
-			player = raju;
-		}
-		else if(ze != null && !ze.getDead())
-		{
-			ze.select();
-			player = ze;
-		}
-		else throw new GameOver();
-			
-		
-	}
+            if(luna != null && !luna.getDead())
+            {
+                  luna.select();
+                  setPlayer(luna);
+            }
+            else if(milo != null && !milo.getDead())
+            {
+                  milo.select();
+                  setPlayer(milo);
+            }
+            else if(raju != null && !raju.getDead())
+            {
+                  raju.select();
+                  setPlayer(raju);
+            }
+            else if(ze != null && !ze.getDead())
+            {
+                  ze.select();
+                  setPlayer(ze);
+            }
+            else throw new GameOver();
+      }
 
-	public void renderer(Renderer r) {
+      private void updatePlayerSelected(){
+            if(luna != null && !luna.getDead()){
+                  if(luna.getSelected()) setPlayer(luna);
+            }
+            else if(milo != null && !milo.getDead()){
+                  if(milo.getSelected()) setPlayer(milo);
+            }
+            else if(raju != null && !raju.getDead()){
+                  if(raju.getSelected()) setPlayer(raju);
+            }
+            else if(ze != null && !ze.getDead()){
+                  if(ze.getSelected()) setPlayer(ze);
+            }
+            else throw new GameOver();
+      }
+
+      public void renderer(Renderer r) {
 
             renderTerrain(r);
             for(int i = size-1; i >= 0; i--){
@@ -247,7 +290,12 @@ public class Room implements BasicObject {
             return raju;
       }
       public void setPlayer(Heroes player){
+            if(milo != null) milo.disselect();
+            if(luna != null) luna.disselect();
+            if(raju != null) raju.disselect();
+            if(ze != null) ze.disselect();
             this.player = player;
+            player.toggleSelect();
       }
       public Heroes getPlayer(){
             return this.player;
@@ -266,7 +314,6 @@ public class Room implements BasicObject {
       public void open()
       {
             this.blocked = false;
-
       }
 
       public boolean getBlocked()
@@ -277,16 +324,16 @@ public class Room implements BasicObject {
 
       public boolean isAccessible(int i, int j,double elevation, double legSize,int dir,Character charac){
 
-    	  	boolean cond2 = false;
-    	  	if(this.entities[i][j] instanceof Heroes)
-    	  	{
-    	  		if(charac instanceof Heroes)
-    	  		{
-	    	  		if(((Heroes)charac).getSelected())
-	    	  			cond2 = true;
-    	  		}
-    	  	}
-    	  
+            boolean cond2 = false;
+            if(this.entities[i][j] instanceof Heroes)
+            {
+                  if(charac instanceof Heroes)
+                  {
+                        if(((Heroes)charac).getSelected())
+                              cond2 = true;
+                  }
+            }
+
             if(this.entities[i][j] == null || cond2){
 
                   if(tiles.get(i).get(j) == null || tiles.get(i).get(j).getFirst() instanceof SafeZone){
@@ -338,10 +385,10 @@ public class Room implements BasicObject {
 
       public void move(int i0,int j0,int i,int j,Character charac){
 
-    	  Character removedEntity = null;
-//    	  System.out.println("movendo");
+            Character removedEntity = null;
+            //    	  System.out.println("movendo");
             if(entities[i][j] instanceof Heroes ) {
-//            	System.out.println("estou tentnando me mover pra onde tem um cara");
+                  //            	System.out.println("estou tentnando me mover pra onde tem um cara");
                   if(charac instanceof Heroes && ((Heroes)charac).getSelected())
                   {
                         removedEntity  = this.entities[i][j];
@@ -425,16 +472,18 @@ public class Room implements BasicObject {
       }
 
       private void changeRoom(int iSala, int jSala, char dir){
-    	  dungeon.setState("Combat");
+            dungeon.setState("Combat");
+
+    	  	audio.playMusic(GameMapTokens.getPathSound("newRoom"),false);
             // remover suas posicoes da sala antiga
-    	  	if(luna != null)
-            entities[luna.getPos().getFirst()][luna.getPos().getSecond()] = null;
-    	  	if(raju != null)
-            entities[raju.getPos().getFirst()][raju.getPos().getSecond()] = null;
-    	  	if(milo != null)
-            entities[milo.getPos().getFirst()][milo.getPos().getSecond()] = null;
-    	  	if(ze != null)
-            entities[ze.getPos().getFirst()][ze.getPos().getSecond()] = null;
+            if(luna != null)
+                  entities[luna.getPos().getFirst()][luna.getPos().getSecond()] = null;
+            if(raju != null)
+                  entities[raju.getPos().getFirst()][raju.getPos().getSecond()] = null;
+            if(milo != null)
+                  entities[milo.getPos().getFirst()][milo.getPos().getSecond()] = null;
+            if(ze != null)
+                  entities[ze.getPos().getFirst()][ze.getPos().getSecond()] = null;
 
 
             //setar posicoes corretas de cada um
@@ -494,13 +543,13 @@ public class Room implements BasicObject {
                         throw new ChangeRoomInvalidChar();
             }
             if(luna != null)
-            luna.setPos(li,lj);
+                  luna.setPos(li,lj);
             if(raju != null)
-            raju.setPos(ri,rj);
+                  raju.setPos(ri,rj);
             if(milo != null)
-            milo.setPos(mi,mj);
+                  milo.setPos(mi,mj);
             if(ze != null)
-            ze.setPos(zi,zj);
+                  ze.setPos(zi,zj);
 
 
             // adicionar todos os personagens na nova sala
@@ -545,18 +594,18 @@ public class Room implements BasicObject {
                               map[i][j] = '#';
                               continue;
                         }
-                     if(entities[j][i]!=null)
-                     {
-                    	 //System.out.println(entities[j][i].getClass().getSuperclass()+"  "  +Enemys.class);
-                    	if(entities[j][i].getClass().getSuperclass() == Enemys.class && !enemy)
-                    	{
-                    		//System.out.println("igaul j: "+j+" i "+i);
-                    		map[i][j] = '#'; 
-                    		continue;
-                    	}
-                    		
-                     }
-                     
+                        if(entities[j][i]!=null)
+                        {
+                              //System.out.println(entities[j][i].getClass().getSuperclass()+"  "  +Enemys.class);
+                              if(entities[j][i].getClass().getSuperclass() == Enemys.class && !enemy)
+                              {
+                                    //System.out.println("igaul j: "+j+" i "+i);
+                                    map[i][j] = '#'; 
+                                    continue;
+                              }
+
+                        }
+
                   }
 
             }
@@ -564,99 +613,93 @@ public class Room implements BasicObject {
             return map;
       }
 
-	public void atack(int i, int j, int damage) {
-		if(this.entities[i][j] == null)
-			return;
-		entities[i][j].hurt(damage);
-	}
-
-	public Character getEntityAt(int i, int j) {
-		return entities[i][j];
-	}
-
-	public Enemys chooseEnemy() throws NoEnemyHere {
-		int numOfEnemies = 0;
-		for(int i = 0;i<entities.length;i++)
-		{
-			for(int j = 0;j<entities.length;j++)
-			{
-				if(entities[i][j] instanceof Enemys)
-				{
-					numOfEnemies++;
-				}
-			}
-		}
-		if(numOfEnemies<1)
-			throw new NoEnemyHere();
-		Random rand = new Random();
-		int enemynumber = rand.nextInt(numOfEnemies);
-		
-		for(int i = 0;i<entities.length;i++)
-		{
-			for(int j = 0;j<entities.length;j++)
-			{
-				if(entities[i][j] instanceof Enemys)
-				{
-					if(enemynumber == 0)
-					{
-						return (Enemys) entities[i][j];
-					}
-					enemynumber--;
-				}
-			}
-		}
-		throw new NoEnemyHere();
-	}
-
-	public char[][] buildMapEnemyTarget() {
-		char map[][] = new char[size][size];
-		
-		for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++){
-                  Pair<Entity,Entity> tile = tiles.get(j).get(i);
-
-                  if(tile == null || tile.getFirst() instanceof SafeZone) map[i][j] = '.';
-                  else if(tile.getFirst() instanceof Platform && tile.getSecond()==null) map[i][j] = 'U';
-
-                  else if(tile.getFirst() instanceof Ladder ){
-                        if(tile.getFirst().getDirection() == 1) map[i][j] = 'M';
-                        else map[i][j] = 'N';
-                  }
-                  else if(tile.getFirst() instanceof Door) map[i][j] = 'D';
-                  else{
-                        map[i][j] = '#';
-                        continue;
-                  }
-               if(entities[j][i]!=null)
-               {
-              	if(entities[j][i] instanceof Heroes)
-              	{
-              		map[i][j] = 'O'; 
-              		continue;
-              	}
-              		
-               }
-               
-            }
-
+      public void attack(int i, int j, int damage, String attack) {
+            if(this.entities[i][j] == null)
+                  return;
+            entities[i][j].hurt(damage, attack);
       }
 
-      return map;
-	}
+      public Character getEntityAt(int i, int j) {
+            return entities[i][j];
+      }
 
-	public void setWumpusDoor() {
-		if(tiles.get(size-1).get(size/2).getFirst() instanceof Door)
-		{
-			((Door)tiles.get(size-1).get(size/2).getFirst()).setWumpusDoor();
-		}
-		((Wall)tiles.get(size-1).get(size/2-1).getFirst()).toggleVisible();
-		
-	}
-	
-	public boolean hasAllKeys()
-	{
-		return dungeon.getBag().hasAllKeys();
-	}
+      public Enemys chooseEnemy() throws NoEnemyHere {
+            int numOfEnemies = 0;
+            for(int i = 0;i<entities.length;i++)
+            {
+                  for(int j = 0;j<entities.length;j++)
+                  {
+                        if(entities[i][j] instanceof Enemys)
+                        {
+                              numOfEnemies++;
+                        }
+                  }
+            }
+            if(numOfEnemies<1)
+                  throw new NoEnemyHere();
+            Random rand = new Random();
+            int enemynumber = rand.nextInt(numOfEnemies);
+
+            for(int i = 0;i<entities.length;i++)
+            {
+                  for(int j = 0;j<entities.length;j++)
+                  {
+                        if(entities[i][j] instanceof Enemys)
+                        {
+                              if(enemynumber == 0)
+                              {
+                                    return (Enemys) entities[i][j];
+                              }
+                              enemynumber--;
+                        }
+                  }
+            }
+            throw new NoEnemyHere();
+      }
+
+      public char[][] buildMapEnemyTarget() {
+            char map[][] = new char[size][size];
+
+            for(int i = 0; i < size; i++){
+                  for(int j = 0; j < size; j++){
+                        Pair<Entity,Entity> tile = tiles.get(j).get(i);
+
+                        if(tile == null || tile.getFirst() instanceof SafeZone) map[i][j] = '.';
+                        else if(tile.getFirst() instanceof Platform && tile.getSecond()==null) map[i][j] = 'U';
+
+                        else if(tile.getFirst() instanceof Ladder ){
+                              if(tile.getFirst().getDirection() == 1) map[i][j] = 'M';
+                              else map[i][j] = 'N';
+                        }
+                        else if(tile.getFirst() instanceof Door) map[i][j] = 'D';
+                        else{
+                              map[i][j] = '#';
+                              continue;
+                        }
+                        if(entities[j][i]!=null)
+                        {
+                              if(entities[j][i] instanceof Heroes)
+                              {
+                                    map[i][j] = 'O'; 
+                                    continue;
+                              }
+
+                        }
+
+                  }
+
+            }
+
+            return map;
+      }
+      
+      
+      public String toString()
+      {
+    	  if(wumpus)
+    		  return "Wumpus";
+    	  return color;
+      }
 
 }
 

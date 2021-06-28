@@ -2,6 +2,8 @@ package mc322.game.entitiesCharacters;
 
 import java.util.ArrayList;
 
+import mc322.engine.sfx.AudioManager;
+import mc322.game.GameMapTokens;
 import mc322.engine.Renderer;
 import mc322.game.GameRenderer;
 import mc322.engine.LinearAlgebra;
@@ -17,14 +19,10 @@ public abstract class Heroes extends Character{
             super(i, j, elevation);
       }
 
-      public void use(Room room,Bag bag)
-      {
-            int iDir[] = {0,-1,0,1};
-            int jDir[] = {1,0,-1,0};
+      public void use(Room room,Bag bag){
 
             if(room.getChest()!=null){
-                  if(room.getChest().getPos().getFirst() == this.i + iDir[this.updateDir]  && room.getChest().getPos().getSecond() == jDir[this.updateDir]+this.j)
-                  {
+                  if(Math.abs(room.getChest().getPos().getFirst() - this.i) + Math.abs(room.getChest().getPos().getSecond() - this.j) < 2 ) {
                         room.getChest().toggleAnimation();
 
                         ArrayList<Item> itens;
@@ -43,7 +41,9 @@ public abstract class Heroes extends Character{
 
       @Override
       public void renderer(Renderer r) {
-            GameRenderer.drawCharacter(i,j,elevation, "Pointer",r, (int)updateFrame%nFrames, 0, "idle");
+            super.renderer(r);
+            if(selected == 1)
+                  GameRenderer.drawCharacter(i,j,elevation, "Pointer",r, (int)updateFrame%6, 0, "idle");
       }
 
       public void toggleSelect(){
@@ -52,36 +52,37 @@ public abstract class Heroes extends Character{
       }
       public void disselect()
       {
-    	  this.selected = 0;
+            this.selected = 0;
       }
-      public void select()
-      {
-    	  this.selected = 1;
+      public void select(){
+            AudioManager audio = new AudioManager();
+            audio.playMusic(GameMapTokens.getPathSound("changeCharac"),false);
+            this.selected = 1;
       }
       public boolean getSelected()
       {
-    	  if(this.selected==1)
-    		  return true;
-    	  return false;
+            if(this.selected==1)
+                  return true;
+            return false;
       }
 
 
-	public void incrementDef(int def)
-	{
-		this.armor+=def;
-	}
-	public void incrementHP(int life)
-	{
-		this.hpMax+=life;
-	}
-	public void incrementStrength(int str)
-	{
-		this.damage+=str;
-	}
+      public void incrementDef(int def)
+      {
+            this.armor+=def;
+      }
+      public void incrementHP(int life)
+      {
+            this.hpMax+=life;
+      }
+      public void incrementStrength(int str)
+      {
+            this.damage+=str;
+      }
 
-	public void printStatus() {
-		System.out.println("HP max: "+ hpMax+" hp: "+ hp+" damage: "+damage+" armor: "+armor);
-		
-	}
-	
+      public void printStatus() {
+            System.out.println("HP max: "+ hpMax+" hp: "+ hp+" damage: "+damage+" armor: "+armor);
+
+      }
+
 }

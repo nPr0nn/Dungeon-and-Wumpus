@@ -6,12 +6,13 @@ import mc322.game.GameRenderer;
 import mc322.game.Room;
 
 public class Milo extends Heroes{
-	
-	public Milo(int i, int j,double elevation)
-	{
+
+      public Milo(int i, int j,double elevation)
+      {
 		super(i,j,elevation);
 		this.name = "Milo";
             this.state = "idle";
+            this.typeOfattack = "spell1";
 
             this.updateDir = 3;
             this.updateFrame = 0;
@@ -22,6 +23,9 @@ public class Milo extends Heroes{
 
             this.nFrames = this.nFramesIdle = 6;
             this.nFramesMoving = 4;
+            this.nFramesAttacking = 11;
+
+            range = 5;
             hpMax = 100;
             hp = hpMax;
             this.damage = 50;
@@ -29,32 +33,28 @@ public class Milo extends Heroes{
 
 
 	public void attack(int i, int j, Room room) {
-		if(LinearAlgebra.getModulo(i-this.i)>4 || LinearAlgebra.getModulo(j-this.j)>4)
+		if(LinearAlgebra.getModulo(i-this.i)>range || LinearAlgebra.getModulo(j-this.j)>range)
 			return;
 		else
-			room.atack(i,j,this.damage);
+			room.attack(i,j,this.damage, this.typeOfattack);
+                  this.change_state("attacking");
 	}
 
-
-      public void change_state(String state){
-            this.state = state;
-            if(state == "moving") this.nFrames = 3;
-            if(state == "idle") this.nFrames = 5;
-      }
 
 	public void update(double dt) {
-		if(hp<=0)
-			this.die();
             this.updateFrame += this.velocityAnim*dt;
-            
-	}
+            super.update(dt);
+      }
 
-	@Override
-	public void renderer(Renderer r) {
-        if(this.selected == 1) super.renderer(r);
-		GameRenderer.drawCharacter(i,j,elevation,name,r, (int)updateFrame%nFrames, this.updateDir,this.state);
-		GameRenderer.drawLife(0,20,1,this.hpMax,this.hp,r);
-	}
+      @Override
+      public void renderer(Renderer r) {
+            int rendered_frame = (int)updateFrame%nFrames;
+            if(rendered_frame == nFrames-1 && state == "attacking"){
+                  change_state("idle");
+            }
+            GameRenderer.drawCharacter(i,j,elevation,name,r, rendered_frame,this.updateDir,this.state);
+            super.renderer(r);
+      }
 
 	@Override
 	public void toggleAnimation() {

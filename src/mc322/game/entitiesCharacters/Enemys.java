@@ -7,7 +7,6 @@ import mc322.game.Room;
 
 public abstract class Enemys extends Character{
 
-	protected int range;
 	
       public Enemys(int i, int j,double elevation) {
             super(i, j, elevation);
@@ -25,6 +24,13 @@ public abstract class Enemys extends Character{
             this.j = j;
             room.move(lastI,lastJ,i,j,this);
             this.change_state("idle");
+      }
+
+      public void hurt(int damage, String typeOfattack){
+            if(damage < 0 && typeOfattack == "heal"){
+                  super.hurt(-damage, "spell5");
+            }
+            else super.hurt(damage, typeOfattack);
       }
 
       public boolean move(char dir,Room room, double timing_keys_move){
