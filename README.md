@@ -116,7 +116,6 @@ Se o wumpus for derrotado o jogo acaba com sua vitória, mas se todos os persona
 
 ## Sistema de coordenadas isometricas
 
-A principal indentidade visual do jogo Dungeon & Wumpus é sua visual 2.5D, também conhecida como perspectiva isometrica, para alcançarmos esse visual e fazer o jogo ainda funcionar baseado em um sistema de grid carteseana nos utilizamos de uma transformação de bases para transitar entre um sistema de coordenadas carteseanas e isometricas e isso foi implementado na nossa classe propria de operações lineares.
 
 ~~~java
     public abstract class LinearAlgebra{
@@ -139,9 +138,10 @@ A principal indentidade visual do jogo Dungeon & Wumpus é sua visual 2.5D, tamb
           ...
 ~~~
 
+> A principal indentidade visual do jogo Dungeon & Wumpus é sua visual 2.5D, também conhecida como perspectiva isometrica, para alcançarmos esse visual e fazer o jogo ainda funcionar baseado em um sistema de grid carteseana nos utilizamos de uma transformação de bases para transitar entre um sistema de coordenadas carteseanas e isometricas e isso foi implementado na nossa classe propria de operações lineares.
+
 ## Busca em Largura
 
-A fim de realizar a mecânica principal de movimentos dos personagens que consiste em clicar com o mouse em um quadrado da dungeon e ele andar até lá no menor caminho e desviando de inimigos e paredes foi utiizado um algoritmo de BFS (busca em largura) em grid para resolver esse "labirinto", assim este é um destaque importante.
 
 ~~~java
       public static String solveMaze(char map[][],int iBeg,int jBeg, int iEnd, int jEnd) throws ImpossibleOriginOrDestiny // for Square maps
@@ -179,6 +179,7 @@ A fim de realizar a mecânica principal de movimentos dos personagens que consis
 
 ~~~
 
+> A fim de realizar a mecânica principal de movimentos dos personagens que consiste em clicar com o mouse em um quadrado da dungeon e ele andar até lá no menor caminho e desviando de inimigos e paredes foi utiizado um algoritmo de BFS (busca em largura) em grid para resolver esse "labirinto", assim este é um destaque importante.
 
 
 # Destaques de Pattern
@@ -225,7 +226,7 @@ A fim de realizar a mecânica principal de movimentos dos personagens que consis
           ...
 ~~~
 
-Pattern criado para padronizar operações da renderização de formas e imagens e spritesheets
+> Pattern criado para padronizar operações da renderização de formas e imagens e spritesheets
 
 ## GameMapTokens
 
@@ -258,7 +259,7 @@ Pattern criado para padronizar operações da renderização de formas e imagens
           ...
 ~~~
 
-Pattern criado para padronizar operações de acesso a elementos externos como sprites, sons, musica e arquivos de dados
+> Pattern criado para padronizar operações de acesso a elementos externos como sprites, sons, musica e arquivos de dados
 
 
 ## Menu
@@ -287,9 +288,7 @@ public class Menu implements BasicObject{
       {
 ~~~
 
-Pattern criado para padronizar operações de mudança de estado do jogo (game, combat, victory, defeat)
-
-
+> Pattern criado para padronizar operações de mudança de estado do jogo (game, combat, victory, defeat)
 
 
 # Conclusões e Trabalhos Futuros
@@ -298,107 +297,53 @@ Pattern criado para padronizar operações de mudança de estado do jogo (game, 
 É possivel afirmar que os objetos iniciais do trabalho foram obtidos com êxito com a criação de um jogo diverso de estrategia com personagens distintos e de atributos proprios que divertido de jogar mas ao mesmo tempo com uma dificuldade balanceada, as implementações de funções de baixo para renderizar objetos permitiu uma maior liberdade criativa para possibilitar animações, formas complexas e uso de spritesheet, acreditamos que no futuro isso permita a implementação de mais estados de jogo, sistema de particulas dinâmicas e maior fluidez nas animações. Planejamos implementar futuramente mais inimigos, areas, itens e bosses, além de uma história mais explicita e um sistema de dialogos para maior imersão do jogador no nosso jogo.
 
 
-
-# Diagramas
-
-## Diagrama Geral do Projeto
+# Diagrama Geral do Projeto
 
 > ![Diagrama Geral de Componentes](/img/diagrama.png)
 
-> <Faça uma breve descrição do diagrama.>
+> No diagrama apresentado, podemos ver como as classes dentro das componentes se comunicam entre si e quais suas dependencias
 
 
+# Detalhamento das Componentes 
 
 
+## Componente entitiesCharacters
 
-## Componente `<Nome do Componente>`
-
-> <Resumo do papel do componente e serviços que ele oferece.>
-
-<!--![Componente](diagrama-componente.png)-->
 
 **Ficha Técnica**
 item | detalhamento
 ----- | -----
-Classe | `<caminho completo da classe com pacotes>` <br> Exemplo: `pt.c08componentes.s20catalog.s10ds.DataSetComponent`
-Autores | `<nome dos membros que criaram o componente>`
-Interfaces | `<listagem das interfaces do componente>`
-
-
-
-
-
-
-
-
+Classe | `mc322.game.entitiesCharacters`
+Autores | `Lucas Nogueira e Nicolas Hecker`
+Interfaces e classes abstratas | `BasicObject, Entity`
 
 
 ### Interfaces
 
 Interfaces associadas a esse componente:
 
-![Diagrama Interfaces](diagrama-interfaces.png)
-
-Interface agregadora do componente em Java:
-
-~~~java
-public interface IDataSet extends ITableProducer, IDataSetProperties {
-}
-~~~
+> [diagrama]
 
 
-## Detalhamento das Interfaces
 
-### Interface `<nome da interface>`
 
-`<Resumo do papel da interface.>`
+# Detalhamento das Interfaces e Classes Abstratas
 
-~~~
-<Interface em Java.>
-~~~
+### Interface BasicObject
 
-Método | Objetivo
--------| --------
-`<id do método em Java>` | `<objetivo do método e descrição dos parâmetros>`
-
-## Exemplo:
-
-### Interface `ITableProducer`
-
-Interface provida por qualquer fonte de dados que os forneça na forma de uma tabela.
+Interface responsavel pela generalização dos objeto mais básico de um espaço celular
 
 ~~~java
-public interface ITableProducer {
-  String[] requestAttributes();
-  String[][] requestInstances();
+public interface BasicObject{
+      public void update(double dt);
+      public void renderer(Renderer r);
 }
 ~~~
 
 Método | Objetivo
 -------| --------
-`requestAttributes` | Retorna um vetor com o nome de todos os atributos (colunas) da tabela.
-`requestInstances` | Retorna uma matriz em que cada linha representa uma instância e cada coluna o valor do respectivo atributo (a ordem dos atributos é a mesma daquela fornecida por `requestAttributes`.
-
-### Interface `IDataSetProperties`
-
-Define o recurso (usualmente o caminho para um arquivo em disco) que é a fonte de dados.
-
-~~~java
-public interface IDataSetProperties {
-  public String getDataSource();
-  public void setDataSource(String dataSource);
-}
-~~~
-
-Método | Objetivo
--------| --------
-`getDataSource` | Retorna o caminho da fonte de dados.
-`setDataSource` | Define o caminho da fonte de dados, informado através do parâmetro `dataSource`.
-
-
-
-
-
+`update` | Metodo para atualizar informações referentes ao objeto
+`renderer` | Método para renderizar objeto na tela, usado para deixar ou não o objeto visivel e animar seus sprites também
 
 
 
@@ -406,9 +351,8 @@ Método | Objetivo
 # Plano de Exceções
 
 ## Diagrama da hierarquia de exceções
-`<Elabore um diagrama com a hierarquia de exceções como detalhado abaixo>`
 
-![Hierarquia Exceções](exception-hierarchy.png)
+> [diagrama]
 
 ## Descrição das classes de exceção
 
@@ -416,6 +360,11 @@ Método | Objetivo
 
 Classe | Descrição
 ----- | -----
-DivisaoInvalida | Engloba todas as exceções de divisões não aceitas.
-DivisaoInutil | Indica que a divisão por 1 é inútil.
-DivisaoNaoInteira | Indica uma divisão não inteira.
+ChangeRoomInvalidChar | Engloba todas as exceções de troca de sala
+DoorSelected | Indica que uma porta foi selecionada
+FullPlaceException | Engloba todas as exceções de posicionamento na mesma célula
+ImpossibleOriginOrDestiny | Indica movimento para local inválido
+NoEnemyHere | Indica que em uma sala não foi gerado inimigos
+Victory | Indica que o Wumpus foi morto e o jogador ganhou o jogo
+GameOver | Indica que o jogador perdeu todos os personagens
+
