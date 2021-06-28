@@ -4,16 +4,30 @@ import mc322.engine.Renderer;
 import mc322.game.GameRenderer;
 
 public class HealthPotion extends Item{
+      
+      public HealthPotion(){
+            this.name = "potion";
+            this.i = 23;
+            this.j = -10;
+            this.elevation = elevation;
 
-	@Override
-	public void update(double dt) {
-		// TODO Auto-generated method stub
-		
-	}
+            this.updateFrame = 0;
+            this.updateDir = 0; 
 
+            this.initAnimation = true;
+            this.velocityAnim = 8;
+            this.nFrames = 4;
+      }
+
+      @Override
+      public void update(double dt) {
+		this.updateFrame += this.velocityAnim*dt;
+      }	
+	
 	@Override
 	public void renderer(Renderer r) {
-		GameRenderer.drawBag(25,-10,0, "potion",r, 0, 0);
+            int renderer_frame = (int) this.updateFrame%nFrames;
+		GameRenderer.drawBag(this.i, this.j, 0, name, r, renderer_frame, updateDir);
 		
 	}
 

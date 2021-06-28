@@ -36,8 +36,11 @@ public class Door extends Entity{
 			{
 				if(name.equals("wumpus_door"))
 				{
-					if(room.hasAllKeys())
-						open(false);
+					if(room.hasAllKeys()){
+                                    open(false);
+                                    room.openWumpusDoor();
+                              }
+
 				}
 				else
 				open(true);
@@ -61,7 +64,7 @@ public class Door extends Entity{
             if(name.equals("wumpus_door"))
             	GameRenderer.drawTile(i-1,j,elevation,name,r,renderer_frame,updateDir,this.color);
             else
-		GameRenderer.drawTile(i,j,elevation,name,r,renderer_frame,updateDir,this.color);
+                  GameRenderer.drawTile(i,j,elevation,name,r,renderer_frame,updateDir,this.color);
       }
 
       public void toggleAnimation(){
@@ -70,23 +73,23 @@ public class Door extends Entity{
 
       private void open(boolean hasKey)
       {
-    	  initAnimation = true;
-		closed = false;
+            initAnimation = true;
+            closed = false;
       }
-      
+
       public boolean getClosed()
       {
-    	  return closed;
+            return closed;
       }
-      
-	public void setWumpusDoor() {
-		name = "wumpus_door";
-		this.color = "Black";
-		updateDir = 0;
-		this.velocityAnim = 3;
-		this.nFrames = 9;
-		
-	}
+
+      public void setWumpusDoor() {
+            name = "wumpus_door";
+            this.color = "Black";
+            updateDir = 0;
+            this.velocityAnim = 3;
+            this.nFrames = 9;
+
+      }
 
 }
 

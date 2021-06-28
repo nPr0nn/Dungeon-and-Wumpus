@@ -4,6 +4,8 @@ import mc322.engine.GameContainer;
 import mc322.engine.Pair;
 import mc322.game.entitiesCharacters.Heroes;
 import mc322.game.entitiesCharacters.Character;
+import mc322.game.entitiesCharacters.Ze;
+import mc322.game.entitiesCharacters.Enemys;
 
 public class HeroAction {
 
@@ -14,11 +16,19 @@ public class HeroAction {
 	private MovingControl mc;
 	private boolean firstStep;
 	private boolean finished;
-	
-	public HeroAction(Dungeon dg)
+      private Bag bag;
+
+      private boolean isZe;
+      private boolean isAttackingEnemy;
+
+	public HeroAction(Dungeon dg, Bag bag)
 	{
 		this.dg = dg;
+            this.bag = bag;
 		mc = new MovingControl(dg,false);
+
+            this.isZe = false;
+            this.isAttackingEnemy = false;
 	}
 
 	public boolean already() {
@@ -45,10 +55,17 @@ public class HeroAction {
 			break;
 		case "attack":
 			//System.out.println("atacando");
-			player.attack(target.getFirst(),target.getSecond(),dg.getCurrentRoom());
+                  player.attack(target.getFirst(),target.getSecond(),dg.getCurrentRoom());
 			finished = true;
 			break;
+
+            case "redo":
+                  player = null;
+                  target = null;
+                  action = "";
+                  break;
 		}
+
 		
 	}
 
@@ -62,18 +79,20 @@ public class HeroAction {
 		player = null;
 		firstStep = false;
 		finished = false;
-		
+		isZe = false;
 	}
 
 	public void getInfo(GameContainer gc,Room room) {
-		if(player == null)
-		{
+		if(player == null){
 			player = selectPlayer(gc,room);
 			return;
-		}
-		if(target == null)
-		{
-			target = selectTarget(gc);
+            }
+            if(target == null)
+            {
+                  target = selectTarget(gc);
+                  room.setPlayer(player);
+                  if(player instanceof Ze) isZe = true;
+                  
 			return;
 		}
 		if(action == "")
@@ -85,16 +104,22 @@ public class HeroAction {
 
 	private String decideAction(Room room) {
 		Character entity = room.getEntityAt(this.target.getFirst(),this.target.getSecond());
-		if(entity == null)
-		{
+
+            if(entity instanceof Enemys) isAttackingEnemy = true;
+            else isAttackingEnemy = false;
+
+		if(entity == null){
 			firstStep=true;
 			return "walk";
 		}
+
+            if(!isAttackingEnemy && !isZe) return "redo";
+
 		return "attack";
 	}
 
 	private Pair<Integer, Integer> selectTarget(GameContainer gc) {
-		Pair<Integer,Integer> click = KeysManager.verifyMouseClick(gc,dg,null,true);
+		Pair<Integer,Integer> click = KeysManager.verifyMouseClick(gc,dg,bag,true);
 		if(click != null)
 		{
 			click = Pair.of(click.getSecond(),click.getFirst());
@@ -106,7 +131,7 @@ public class HeroAction {
 
 	private Heroes selectPlayer(GameContainer gc,Room room) {
 		Heroes hero = null;
-		Pair<Integer,Integer> click = KeysManager.verifyMouseClick(gc,dg,null,false);
+		Pair<Integer,Integer> click = KeysManager.verifyMouseClick(gc,dg,bag,false);
 		if(click != null)
 		{
 			Entity entity = room.getEntityAt(click.getSecond(),click.getFirst());

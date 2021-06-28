@@ -17,15 +17,15 @@ public abstract class GameMapTokens{
       private static String ASSETS = "_assets";
       private static String SOUNDS = "_sounds";
       private static String DATA   = "_data";
+      private static String MUSICS = "musics";
 
       private static Map<String, ImageTile> mapTokens = new HashMap<>();
 
-      private static String DIR_BOSSES     = ASSETS + "/bosses/";
+      private static String DIR_ATTACKS     = ASSETS + "/attacks/";
       private static String DIR_CHARACTERS = ASSETS + "/characters/";
       private static String DIR_ENEMIES    = ASSETS + "/enemies/";
       private static String DIR_ITENS      = ASSETS + "/itens/";
       private static String DIR_MENU       = ASSETS + "/menu/";
-      private static String DIR_NPCS       = ASSETS + "/NPCs/";
       
       private static String DIR_TILES      = ASSETS + "/tiles/";
 
@@ -62,12 +62,12 @@ public abstract class GameMapTokens{
       }
 
       public static ImageTile getImageMenu(String object){
-          if(mapTokens.get(object) == null){
-                String path = DIR_MENU + object + PNG;
-                image = new ImageTile(path, tileWidth, tileHeight);
-                mapTokens.put(object, image);
-          }
-          return mapTokens.get(object);
+            if(mapTokens.get(object) == null){
+                  String path = DIR_MENU + object + PNG;
+                  image = new ImageTile(path, tileWidth, tileHeight);
+                  mapTokens.put(object, image);
+            }
+            return mapTokens.get(object);
       }
 
       // TokensCharacter: Milo, Luna, Raju, Ze
@@ -80,20 +80,33 @@ public abstract class GameMapTokens{
             }
             return mapTokens.get(object+state);
       }
-      
+
+      public static ImageTile getImageAttack(String attack){
+            if(mapTokens.get(attack) == null){
+                  String path = DIR_ATTACKS + attack + PNG;
+                  image = new ImageTile(path, tileWidth, tileHeight);
+                  mapTokens.put(attack, image);
+            }
+            return mapTokens.get(attack);
+      }
+
       public static ImageTile getImageEnemies(String object, String state){
-          if(mapTokens.get(object+state) == null){
-                String path = DIR_ENEMIES + object + "/" + state + PNG;
-                //System.out.println(path);
-                image = new ImageTile(path, tileWidth, tileHeight);
-                mapTokens.put(object+state, image);
-          }
-          return mapTokens.get(object+state);
-    }
-      
-      
+            if(mapTokens.get(object+state) == null){
+                  String path = DIR_ENEMIES + object + "/" + state + PNG;
+                  //System.out.println(path);
+                  image = new ImageTile(path, tileWidth, tileHeight);
+                  mapTokens.put(object+state, image);
+            }
+            return mapTokens.get(object+state);
+      }
+
+
       public static String getPathSound(String object){
-        return SOUNDS + "/" + object + WAV;
+            return SOUNDS + "/" + object + WAV;
+      }
+      
+      public static String getPathMusic(String object){
+          return SOUNDS + "/" +MUSICS +"/" + object + WAV;
     }
 
 }

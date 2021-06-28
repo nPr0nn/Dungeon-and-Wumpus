@@ -1,11 +1,11 @@
 package mc322.game;
 
-import java.util.Random;
 
 import mc322.engine.GameContainer;
 import mc322.engine.Pair;
 import mc322.game.entitiesCharacters.Character;
 import mc322.game.entitiesCharacters.Enemys;
+import mc322.game.exceptions.*;
 
 public class EnemyAction {
 

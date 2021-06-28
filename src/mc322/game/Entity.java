@@ -16,6 +16,7 @@ public abstract class Entity implements BasicObject{
       protected int velocityAnimMoving;
       
       protected int nFrames;
+      protected int nFramesAttacking;
       protected int nFramesIdle;
       protected int nFramesMoving;
 

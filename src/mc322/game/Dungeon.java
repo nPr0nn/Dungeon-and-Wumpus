@@ -4,6 +4,7 @@ import mc322.engine.BasicObject;
 import mc322.engine.Pair;
 import mc322.engine.Renderer;
 import mc322.engine.LinearAlgebra;
+import mc322.game.exceptions.*;
 
 public class Dungeon implements BasicObject{
 
@@ -12,9 +13,9 @@ public class Dungeon implements BasicObject{
       private Room[][] rooms;
       private Pair <Integer, Integer> pos;
       private GameManager game;
-      
+
       public Dungeon(GameManager game){
-    	  this.game = game;
+            this.game = game;
             MapBuilder mapBuilder = new MapBuilder();
             this.rooms = mapBuilder.buildRooms(GameMapTokens.getDungeonPATH(),this);
             this.pos   = GameBrain.getOrigin();
@@ -22,19 +23,19 @@ public class Dungeon implements BasicObject{
 
       @Override
       public void update(double dt) throws GameOver{
-    	  getCurrentRoom().update(dt);
+            getCurrentRoom().update(dt);
       }
 
       public void setState(String state)
-    	{
-    		this.game.setState(state);
-    	}
-      
+      {
+            this.game.setState(state);
+      }
+
       public String getState()
-  	{
-  		return this.game.getState();
-  	}
-      
+      {
+            return this.game.getState();
+      }
+
       @Override
       public void renderer(Renderer r){
             getCurrentRoom().renderer(r);
@@ -43,28 +44,28 @@ public class Dungeon implements BasicObject{
       public Room getCurrentRoom(){
             return rooms[this.pos.getFirst()][this.pos.getSecond()];
       }
-      
+
       public Room getRoom(int i, int j){
             return rooms[i][j];
       }
-      
+
       public void setAtual(int i, int j){
             this.pos = Pair.of(i,j);
       }
-      
+
       public void toggleFollow(){
             this.follow = !this.follow;
       }
-      
+
       public boolean getFollow(){
             return follow;
       }
 
 	public Bag getBag() {
 		return game.getBag();
-		
+
 	}
-      
-      
+
+
 
 }
