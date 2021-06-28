@@ -315,19 +315,50 @@ item | detalhamento
 ----- | -----
 Classe | `mc322.game.entitiesCharacters`
 Autores | `Lucas Nogueira e Nicolas Hecker`
-Interfaces e classes abstratas | `BasicObject, Entity`
+Interfaces e classes abstratas | `Heroes, Character, Enemys, Luna, Milo, Raju, Ze, Wumpus`
 
 
-### Interfaces
+## Componente entitiesTiles
 
-Interfaces associadas a esse componente:
 
-> [diagrama]
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `mc322.game.entitiesTiles`
+Autores | `Lucas Nogueira e Nicolas Hecker`
+Interfaces e classes abstratas | `Chest, Door, Ladder, Pillar, Platform, SafeZone, Torch`
 
+
+## Componente itens
+
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe | `mc322.game.itens`
+Autores | `Lucas Nogueira e Nicolas Hecker`
+Interfaces e classes abstratas | `BasicObject, Entity, HealthPotion, Item, Key, ResistancePotion, StrengthPotion`
 
 
 
 # Detalhamento das Interfaces e Classes Abstratas
+
+### Interface AbstractGame
+
+Interface responsavel pela generalização do controlador do fluxo do jogo
+
+~~~java
+public interface AbstractGame{
+      public void update(GameContainer gc, double dt);
+      public void renderer(GameContainer gc, Renderer r);
+}
+~~~
+
+Método | Objetivo
+-------| --------
+`update` | Metodo para atualizar informações referentes ao game manager
+`renderer` | Método para renderizar objetos pertencentes ao controlador do fluxo do jogo na tela
+
 
 ### Interface BasicObject
 
@@ -345,6 +376,45 @@ Método | Objetivo
 `update` | Metodo para atualizar informações referentes ao objeto
 `renderer` | Método para renderizar objeto na tela, usado para deixar ou não o objeto visivel e animar seus sprites também
 
+
+### Abstract Class Entity
+
+Classe abstrata responsavel pela generalização de entidades que interagem no jogo
+
+~~~java
+public abstract class Entity implements BasicObject{
+
+      ...
+      
+      public abstract void toggleAnimation();
+      public void setElevation(double newElevation)
+      {
+    	  this.elevation = newElevation;
+      }
+      public int getDirection()
+      {
+    	  return this.updateDir;
+      }
+      
+      public void setPos(int i,int j)
+      {
+    	  this.i=i;
+    	  this.j=j;
+      }
+      
+      public Pair<Integer,Integer> getPos()
+      {
+    	  return Pair.of(this.i,this.j);
+      }
+    ...
+~~~
+
+
+Método | Objetivo
+-------| --------
+`toggleAnimation` | Metodo para desligar e ligar animação da entidade
+`getDirection` | Metodo para pegar a direção da entidade
+`setPos` | Metodo para setar a posição da entidade
 
 
 
