@@ -37,7 +37,6 @@
 
 ```
 
-as
 
 ## `data`
 
@@ -102,6 +101,9 @@ Se o wumpus for derrotado o jogo acaba com sua vitória, mas se todos os persona
 ### Slides da Apresentação Final
 > [Será adicionado futuramente]
 
+# Como rodar o jogo ?
+
+Se for de seu interesse compilar e rodar os arquivos fontes do jogo, atente-se, os arquivos estão preparados para rodarem em uma IDE como Eclipse para executar da linha de comando pode ser necessário alterar no arquivo src/mc322/GameMapTokens.java o path referente as pastas externas para que os arquivos binários sejam gerados no local certo
 
 # Relatório de Evolução
 * A evolução e execução do projeto pode ser dividida em 3 etapas: planejamento, execução e finalização.
