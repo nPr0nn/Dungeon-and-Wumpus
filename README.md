@@ -426,6 +426,17 @@ Método | Objetivo
 
 > ![Diagrama Geral de Componentes](/img/diagramaExec.png)
 
+## Diagrama da dungeon
+
+> ![Diagrama Geral da Dungeon](/img/Dungeon.png)
+
+## Classe da Room
+> ![Diagrama mostrando a aquitetura interna geral da classe room](/img/Room.png)
+
+
+## Diagrama do fluxo de turn
+> ![Diagrama explicativo para o fluxo de turnos no jogo](/img/Turn.png)
+
 ## Descrição das classes de exceção
 
 `<Monte uma tabela descritiva seguindo o exemplo>:`
