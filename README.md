@@ -306,6 +306,17 @@ public class Menu implements BasicObject{
 > No diagrama apresentado, podemos ver como as classes dentro das componentes se comunicam entre si e quais suas dependencias
 
 
+## Diagrama da dungeon
+
+> ![Diagrama Geral da Dungeon](/img/Dungeon.png)
+
+## Classe da Room
+> ![Diagrama mostrando a aquitetura interna geral da classe room](/img/Room.png)
+
+
+## Diagrama do fluxo de turn
+> ![Diagrama explicativo para o fluxo de turnos no jogo](/img/Turn.png)
+
 # Detalhamento das Componentes 
 
 
@@ -425,17 +436,6 @@ Método | Objetivo
 ## Diagrama da hierarquia de exceções
 
 > ![Diagrama Geral de Componentes](/img/diagramaExec.png)
-
-## Diagrama da dungeon
-
-> ![Diagrama Geral da Dungeon](/img/Dungeon.png)
-
-## Classe da Room
-> ![Diagrama mostrando a aquitetura interna geral da classe room](/img/Room.png)
-
-
-## Diagrama do fluxo de turn
-> ![Diagrama explicativo para o fluxo de turnos no jogo](/img/Turn.png)
 
 ## Descrição das classes de exceção
 
