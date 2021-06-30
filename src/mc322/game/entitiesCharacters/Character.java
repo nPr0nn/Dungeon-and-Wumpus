@@ -120,12 +120,18 @@ public abstract class Character extends Entity{
                   //            	System.out.println("solucao "+ solution + " moving: "+movingToPointer);
                   if(solution != null && movingToPointer) {
                         //                	  System.out.println("resolvendo solucao");
+                    try {
                         if(this.move(solution.charAt(solutionIndex), room, timing_keys_move))
                               solutionIndex += 1;
                         if(solutionIndex == solution.length()) {
                               solution = null;
                               return false;
                         }
+                    }
+                	  catch(Exception e)
+                	  {
+                		  return false;
+                	  }
                   }
                   //                  System.out.println("to tentando1");
                   if(!movingToPointer){
