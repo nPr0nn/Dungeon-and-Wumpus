@@ -96,10 +96,10 @@ Se o wumpus for derrotado o jogo acaba com sua vitória, mas se todos os persona
 # Slides
 
 ### Slides da Prévia
-> [Previa](https://github.com/LucasNP/Dungeon-and-Wumpus/img/slides_previa.pdf)
+> [Previa](https://github.com/LucasNP/Dungeon-and-Wumpus/blob/main/img/slides_previa.pdf)
 
 ### Slides da Apresentação Final
-> [Será adicionado futuramente]
+> [Final](https://docs.google.com/presentation/d/12AGOCdr9TCZtNuKXdXyOH3rRsBixQjqbBebKOvMPd0Y/edit?usp=sharing)
 
 # Como rodar o jogo ?
 
