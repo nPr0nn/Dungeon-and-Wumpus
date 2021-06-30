@@ -301,7 +301,7 @@ public class Menu implements BasicObject{
 
 # Diagrama Geral do Projeto
 
-> ![Diagrama Geral de Componentes](/img/diagrama.png)
+> ![Diagrama Geral de Componentes](/img/diagram_global.png)
 
 > No diagrama apresentado, podemos ver como as classes dentro das componentes se comunicam entre si e quais suas dependencias
 
