@@ -1,5 +1,7 @@
 # Projeto Dungeon-and-Wumpus
 
+A little Java game made together with my friend as our final project in the Object Oriented Programming university class. It ships with a custom CPU rendering engine all made from scratch 
+
 # Estrutura de Arquivos e Pastas
 
  A estrutura geral das pastas em detalhes é a seguinte:
