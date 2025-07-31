@@ -1,6 +1,6 @@
 # Dungeon-and-Wumpus
 
-Join us on an exciting adventure with our Java game, created as the final project for our Object-Oriented Programming university class (due to this the rest of the description was wrote in portuguese). This collaborative effort between my friend and me showcases our passion for programming and game development. What makes this game truly special is the inclusion of a custom CPU rendering engine that we built from scratch and its isometric view. Enjoy seamless graphics and engaging gameplay as we push the boundaries of creativity and technical skills. Get ready for an enjoyable gaming experience filled with fun and excitement!
+This repository contains a Java game developed as the final project for an Object-Oriented Programming university course. The project features a custom CPU rendering engine implemented from scratch and utilizes an isometric view. It demonstrates fundamental principles of game development, object-oriented design, and low-level graphics rendering.
 
 # Estrutura de Arquivos e Pastas
 
